@@ -1,0 +1,92 @@
+#!/bin/bash
+OLD_PWD=pwd
+cd /home/bill/projects/xmas/calendar
+
+SOURCE=/mnt/camera
+PRINTER=Brother-MFC-5840CN-USB
+
+DO_SOURCE=true
+DO_PRINT=true
+
+COPYRIGHT="(C) 2009 East Lancashire Scouts"
+
+PAGE_X=`identify -format "%w" base/Calendar.png`
+PAGE_Y=`identify -format "%h" base/Calendar.png`
+
+function process_file() {
+	INFILE=$1
+	OUTFILE=$2
+
+	echo "Processing $INFILE ..."
+
+	echo "Resizing Photograph ..."
+	convert $INFILE -resize 2050! temp1.png
+
+	X=`identify -format "%w" temp1.png`
+	Y=`identify -format "%h" temp1.png`
+
+	X_OFFSET=$((($PAGE_X-$X)/2))
+	#Y_OFFSET=$((2000-$Y))
+	Y_OFFSET=$((1800-$Y))
+
+	TXTSIZE=$(($Y/8))
+	SHADOW=$(($TXTSIZE/10))
+	FOOTER=$(($TXTSIZE/8))
+    IMG_TIMESTAMP=`echo ${OUTFILE} | sed 's/pdf\/\(.\{3\}\).*\/\(.*\)\.pdf/\1-\2/'`
+
+	echo "Merging Images ..."
+	composite -compose Over temp1.png -geometry +$X_OFFSET+$Y_OFFSET base/Calendar.png temp2.png
+	composite -compose Over base/Header.png temp2.png temp3.png
+
+	echo "Adding Footer Text ..."
+	convert temp3.png \
+		-fill green -font Helvetica-Narrow -pointsize $FOOTER \
+		-draw "gravity south-west text 210,50 '$IMG_TIMESTAMP'" \
+		-draw "gravity south-east text 210,50 '$COPYRIGHT'" \
+		temp4.png
+
+	echo "Preparing PDf ..."
+	convert -page A4 -units PixelsPerInch -density 72 temp4.png $OUTFILE
+
+	if $DO_PRINT; then
+        echo -n "Printing $OUTFILE: "
+        lp -d$PRINTER -o media=a4 -o scaling=100 $OUTFILE
+        rm temp1.png temp2.png temp3.png temp4.png
+    fi
+	}
+
+
+DIR=`date +%A`
+if [ ! -d pdf/$DIR ] ; then
+	mkdir -p pdf/$DIR
+fi
+if [ ! -d outfiles/$DIR ] ; then
+	mkdir -p outfiles/$DIR
+fi
+if [ ! -d infiles ] ; then
+	mkdir -p infiles
+fi
+
+if $DO_SOURCE; then
+    clear
+    echo "Moving files from camera..."
+    mount $SOURCE
+    find $SOURCE -name "*.jp*" -exec mv {} infiles \;
+    umount $SOURCE
+    echo "Camera can now be disconnected..."
+    echo
+fi
+
+if [ -f infiles/`ls infiles/ | head -n1` ]; then
+    for file in infiles/* ; do
+        TIMESTAMP=`date +%H%M%S`
+        process_file $file pdf/$DIR/$TIMESTAMP.pdf
+        mv $file outfiles/$DIR/$TIMESTAMP.jpeg
+    done
+    echo
+else
+    echo "No pictures found. Is the camera ready?"
+fi
+
+echo "Press enter to finish."
+read

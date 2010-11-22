@@ -1,0 +1,104 @@
+#!/bin/bash
+
+OLD_PWD=pwd
+WD=/home/bill/projects/xmas/fade
+cd $WD
+
+SOURCE=/mnt/camera
+PRINTER=Brother-MFC-5840CN-USB
+
+DO_SOURCE=true
+DO_PRINT=true
+
+TOPTEXT="Christmas Experience"
+BOTTEXT="Bowley 2009"
+COPYRIGHT="(C) 2009 East Lancashire Scouts"
+
+function process_file() {
+	echo "Processing $1..."
+
+	INFILE=$1
+	OUTFILE=$2
+
+	X=`identify -format "%w" $INFILE`
+	Y=`identify -format "%h" $INFILE`
+
+	TXTSIZE=$(($Y/8))
+	SHADOW=$(($TXTSIZE/20))
+	FOOTER=$(($TXTSIZE/6))
+    IMG_TIMESTAMP=`echo ${OUTFILE} | sed 's/pdf\/\(.\{3\}\).*\/\(.*\)\.pdf/\1-\2/'`
+
+	echo "Image is size ${X}x${Y}"
+
+	# Create Base and Mask
+
+	if [ ! -f mask/${X}x${Y}.png ] ; then
+		echo "Creating ${X}x${Y} Mask..."
+		convert -size $(($X/32-2))x$(($Y/32-2)) xc:black -bordercolor white -border 1x1 -resize ${X}x${Y} mask/${X}x${Y}.png
+	fi
+
+	if [ ! -f base/${X}x${Y}.png ] ; then
+		echo "Creating ${X}x${Y} Base..."
+		convert -size ${X}x${Y} xc:white base/${X}x${Y}.png
+	fi
+
+	# Merge
+
+	echo "Applying mask..."
+	composite -compose Over base/${X}x${Y}.png $INFILE mask/${X}x${Y}.png temp.png
+
+	# Add Border and Text
+
+	echo "Adding border text..."
+	convert temp.png -bordercolor white -border 23%x20% \
+		-font Bookman-Demi -pointsize $TXTSIZE \
+		-fill green -draw "gravity north text 0,$(($TXTSIZE/2)) '$TOPTEXT'" \
+		-fill red   -draw "gravity north text $((-$SHADOW)),$(($TXTSIZE/2-$SHADOW)) '$TOPTEXT'" \
+		-fill green -draw "gravity south text 0,$(($TXTSIZE/2)) '$BOTTEXT'" \
+		-fill red   -draw "gravity south text $((-$SHADOW)),$(($TXTSIZE/2+$SHADOW)) '$BOTTEXT'" \
+		-fill green -font Helvetica -pointsize $FOOTER \
+		-draw "gravity south-west text 30,$(($FOOTER*3)) '$IMG_TIMESTAMP'" \
+		-draw "gravity south-east text 60,$(($FOOTER*3)) '$COPYRIGHT'" \
+        -rotate 90 \
+		temp2.png
+	convert temp2.png -page A4 $OUTFILE
+    if $DO_PRINT; then
+    	echo -n "Printing $OUTFILE: "
+    	lp -d$PRINTER -o media=a4 -o scaling=100 $OUTFILE
+    	echo
+    fi
+	rm temp.png temp2.png
+	}
+
+
+DIR=`date +%A`
+if [ ! -d pdf/$DIR ] ; then
+	mkdir pdf/$DIR
+fi
+if [ ! -d outfiles/$DIR ] ; then
+	mkdir outfiles/$DIR
+fi
+
+if $DO_SOURCE; then
+    echo "Moving files from camera..."
+    mount $SOURCE
+    find $SOURCE -name "*.jp*" -exec mv {} infiles \;
+    umount $SOURCE
+    echo "Camera can now be disconnected..."
+    echo
+fi
+
+if [ -f infiles/`ls infiles/ | head -n1` ]; then
+    for file in infiles/* ; do
+    	TIMESTAMP=`date +%H%M%S`
+    	process_file $file pdf/$DIR/$TIMESTAMP.pdf
+    	mv $file outfiles/$DIR/$TIMESTAMP.jpeg
+    done
+else
+    echo "No pictures found. Is the camera ready?"
+fi
+
+#if [ $OLD_PWD -ne $WD ]; then
+    echo "Press enter to finish"
+    read
+#fi
