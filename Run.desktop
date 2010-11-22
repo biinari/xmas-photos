@@ -1,0 +1,14 @@
+
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Type=Application
+Terminal=true
+Name[en_GB]=Run
+Exec=bash /home/bill/projects/xmas/calendar/go
+Icon[en_GB]=/var/www/els/assets/images/christmas/santalaughing.gif
+Comment[en_GB]=Collect and Print
+Name=Run
+Comment=Collect and Print
+Icon=/var/www/els/assets/images/christmas/santalaughing.gif
+GenericName[en_GB.UTF-8]=Collect and Print photos

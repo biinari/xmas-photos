@@ -1,0 +1,11 @@
+
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Type=Application
+Terminal=false
+Icon[en_GB]=nautilus
+Exec=nautilus /home/bill/projects/xmas/calendar/pdf
+Name[en_GB]=pdf
+Name=pdf
+Icon=/usr/share/icons/Human/scalable/places/folder.svg
