@@ -1,0 +1,83 @@
+#!/bin/bash
+
+SOURCE=camera
+PRINTER=MFC5840CN
+
+TOPTEXT="Christmas Experience"
+BOTTEXT="Bowley 2007"
+COPYRIGHT="(C) 2007 East Lancashire Scouts"
+
+function process_file() {
+	echo "Processing $1..."
+
+	INFILE=$1
+	OUTFILE=$2
+
+	X=`identify -format "%w" $INFILE`
+	Y=`identify -format "%h" $INFILE`
+
+	TXTSIZE=$(($Y/8))
+	SHADOW=$(($TXTSIZE/10))
+	FOOTER=$(($TXTSIZE/8))
+
+	echo "Image is size ${X}x${Y}"
+
+	# Create Base and Mask
+
+	if [ ! -f mask/${X}x${Y}.png ] ; then
+		echo "Creating ${X}x${Y} Mask..."
+		convert -size $(($X/32-2))x$(($Y/32-2)) xc:black -bordercolor white -border 1x1 -resize ${X}x${Y} mask/${X}x${Y}.png
+	fi
+
+	if [ ! -f base/${X}x${Y}.png ] ; then
+		echo "Creating ${X}x${Y} Base..."
+		convert -size ${X}x${Y} xc:white base/${X}x${Y}.png
+	fi
+
+	# Merge
+
+	echo "Applying mask..."
+	composite -compose Over base/${X}x${Y}.png $INFILE mask/${X}x${Y}.png temp.png
+
+	# Add Border and Text
+
+	echo "Adding border text..."
+	convert temp.png -bordercolor white -border 23%x20% \
+		-font Bookman-Demi -pointsize $TXTSIZE \
+		-fill green -draw "gravity north text 0,$(($TXTSIZE/2)) '$TOPTEXT'" \
+		-fill red   -draw "gravity north text $((-$SHADOW)),$(($TXTSIZE/2-$SHADOW)) '$TOPTEXT'" \
+		-fill green -draw "gravity south text 0,$(($TXTSIZE/2)) '$BOTTEXT'" \
+		-fill red   -draw "gravity south text $((-$SHADOW)),$(($TXTSIZE/2+$SHADOW)) '$BOTTEXT'" \
+		-fill green -font Helvetica-Narrow -pointsize $FOOTER \
+		-draw "gravity south-west text 30,$(($FOOTER*2)) '${OUTFILE}'" \
+		-draw "gravity south-east text 60,$(($FOOTER*2)) '$COPYRIGHT'" \
+		-rotate 90 \
+		temp2.png
+	convert temp2.png -page A4 $OUTFILE
+	echo -n "Printing $OUTFILE: "
+	lp -d$PRINTER $OUTFILE
+	echo
+	rm temp.png temp2.png
+	}
+
+
+DIR=`date +%A`
+if [ ! -d pdf/$DIR ] ; then
+	mkdir pdf/$DIR
+fi
+if [ ! -d outfiles/$DIR ] ; then
+	mkdir outfiles/$DIR
+fi
+
+echo "Moving files from camera..."
+mount $SOURCE
+find $SOURCE -name "*.jp*" -exec mv {} infiles \;
+umount $SOURCE
+echo "Camera can now be disconnected..."
+echo
+
+for file in infiles/* ; do
+	TIMESTAMP=`date +%H%M%S`
+	process_file $file pdf/$DIR/$TIMESTAMP.pdf
+	mv $file outfiles/$DIR/$TIMESTAMP.jpeg
+done
