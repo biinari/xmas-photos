@@ -3,7 +3,8 @@ OLD_PWD=pwd
 cd /home/bill/projects/xmas/calendar
 
 SOURCE=/mnt/camera
-PRINTER=Brother-MFC-5840CN-USB
+#PRINTER=Brother-MFC-5840CN-USB
+PRINTER=Kodak-ESP-5250-usb
 
 DO_SOURCE=true
 DO_PRINT=true

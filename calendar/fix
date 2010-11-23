@@ -1,7 +1,8 @@
 #!/bin/bash
 
 SOURCE=camera
-PRINTER=MFC5840CN
+#PRINTER=MFC5840CN
+PRINTER=Kodak-ESP-5250-usb
 
 COPYRIGHT="(C) 2009 East Lancashire Scouts"
 
