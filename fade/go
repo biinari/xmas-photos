@@ -5,7 +5,8 @@ WD=/home/bill/projects/xmas/fade
 cd $WD
 
 SOURCE=/mnt/camera
-PRINTER=Brother-MFC-5840CN-USB
+#PRINTER=Brother-MFC-5840CN-USB
+PRINTER=Kodak-ESP-5250-usb
 
 DO_SOURCE=true
 DO_PRINT=true
