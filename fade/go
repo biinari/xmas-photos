@@ -12,8 +12,8 @@ DO_SOURCE=true
 DO_PRINT=true
 
 TOPTEXT="Christmas Experience"
-BOTTEXT="Bowley 2009"
-COPYRIGHT="(C) 2009 East Lancashire Scouts"
+BOTTEXT="Bowley 2010"
+COPYRIGHT="(C) 2010 East Lancashire Scouts"
 
 function process_file() {
 	echo "Processing $1..."
