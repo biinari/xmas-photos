@@ -4,7 +4,7 @@ SOURCE=camera
 #PRINTER=MFC5840CN
 PRINTER=Kodak-ESP-5250-usb
 
-COPYRIGHT="(C) 2009 East Lancashire Scouts"
+COPYRIGHT="(C) 2010 East Lancashire Scouts"
 
 PAGE_X=`identify -format "%w" base/Calendar.png`
 PAGE_Y=`identify -format "%h" base/Calendar.png`

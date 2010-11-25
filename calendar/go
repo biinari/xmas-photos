@@ -9,7 +9,7 @@ PRINTER=Kodak-ESP-5250-usb
 DO_SOURCE=true
 DO_PRINT=true
 
-COPYRIGHT="(C) 2009 East Lancashire Scouts"
+COPYRIGHT="(C) 2010 East Lancashire Scouts"
 
 PAGE_X=`identify -format "%w" base/Calendar.png`
 PAGE_Y=`identify -format "%h" base/Calendar.png`
