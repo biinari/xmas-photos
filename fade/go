@@ -65,7 +65,7 @@ function process_file() {
 	convert temp2.png -page A4 $OUTFILE
     if $DO_PRINT; then
     	echo -n "Printing $OUTFILE: "
-    	lp -d$PRINTER -o media=a4 -o scaling=100 $OUTFILE
+    	lp -d$PRINTER -o media=a4 -o scaling=100 temp2.png
     	echo
     fi
 	rm temp.png temp2.png
