@@ -1,0 +1,14 @@
+#!/bin/bash
+OLD_PWD=pwd
+cd /home/bill/projects/xmas/calendar
+
+#PRINTER=Brother-MFC-5840CN-USB
+PRINTER=Kodak-ESP-5250-usb
+
+DO_PRINT=true
+
+COPIES=$1
+ID=$2
+DAY='Saturday'
+
+lp -d$PRINTER -o media=a4 -o scaling=100 -n $COPIES png/$DAY/$ID.png
