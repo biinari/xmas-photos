@@ -72,7 +72,7 @@ if $DO_SOURCE; then
     clear
     echo "Moving files from camera..."
     mount $SOURCE
-    find $SOURCE -name "*.jp*" -exec mv {} infiles \;
+    find $SOURCE -iname "*.jp*" -exec mv {} infiles \;
     umount $SOURCE
     echo "Camera can now be disconnected..."
     echo
