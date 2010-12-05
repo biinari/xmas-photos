@@ -17,6 +17,7 @@ PAGE_Y=`identify -format "%h" base/Calendar.png`
 function process_file() {
 	INFILE=$1
 	OUTFILE=$2
+	OUTPNG=`echo ${OUTFILE} | sed 's/pdf/png/g'`
 
 	echo "Processing $INFILE ..."
 
@@ -48,6 +49,7 @@ function process_file() {
 
 	echo "Preparing PDf ..."
 	convert -page A4 -units PixelsPerInch -density 72 temp4.png $OUTFILE
+	cp temp4.png $OUTPNG
 
 	if $DO_PRINT; then
         echo -n "Printing $OUTFILE: "
@@ -60,6 +62,9 @@ function process_file() {
 DIR=`date +%A`
 if [ ! -d pdf/$DIR ] ; then
 	mkdir -p pdf/$DIR
+fi
+if [ ! -d png/$DIR ] ; then
+	mkdir -p png/$DIR
 fi
 if [ ! -d outfiles/$DIR ] ; then
 	mkdir -p outfiles/$DIR
