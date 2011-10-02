@@ -2,6 +2,14 @@ import os, sys
 import shutil
 import Image, ImageFile
 
+def createMask(width, height):
+    mask = Image.new('RGBA', (width, height))
+    mask.save('mask/{0}x{1}.png'.format(width, height))
+
+def createBase(width, height):
+    base = Image.new('RGBA', (width, height), (255,255,255,255))
+    base.save('base/{0}x{1}.png'.format(width, height))
+
 for infile in os.listdir('infiles/'):
     try:
         photo = Image.open('infiles/' + infile)
