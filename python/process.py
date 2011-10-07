@@ -7,7 +7,7 @@ import math
 
 def maskPixel(row, col, width, height):
     exp = 24
-    val = (1 - pow((2.0 * col / width - 1), exp)) * (1 - pow((2.0 * row / height - 1), exp))
+    val = (1 - (2.0 * col / width - 1) ** exp) * (1 - (2.0 * row / height - 1) ** exp)
     return int(math.floor(255 * val))
 
 def createMask(width, height):
