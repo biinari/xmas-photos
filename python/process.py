@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# Process photos for Bowley Christmas Experience
 import os, sys
 import shutil
 import Image, ImageFile
