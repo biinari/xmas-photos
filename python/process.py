@@ -9,12 +9,12 @@ def maskPixel(row, col, width, height):
     return int(math.floor(255 * val))
 
 def createMask(width, height):
-    mask = Image.new('RGBA', (width, height))
+    mask = Image.new('LA', (width, height))
     data = []
     for row in range(height):
         for col in range(width):
             data.append(maskPixel(row, col, width, height))
-    data = zip(data, data, data, map(lambda x: 255, range(height*width)))
+    data = zip(data, map(lambda x: 255, range(height*width)))
     mask.putdata(data)
     mask.save('mask/{0}x{1}.png'.format(width, height))
 
@@ -43,4 +43,4 @@ def process():
         base.paste(photo, (0, 0, width, height), mask)
         base.save('outfiles/' + infile, 'PNG')
 
-createMask(400,300)
+createMask(2272,1704)
