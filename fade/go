@@ -35,7 +35,6 @@ function process_file() {
 
 	if [ ! -f mask/${X}x${Y}.png ] ; then
 		echo "Creating ${X}x${Y} Mask..."
-		#convert -size $(($X/32-2))x$(($Y/32-2)) xc:black -bordercolor white -border 1x1 -resize ${X}x${Y} mask/${X}x${Y}.png
 		convert -size ${X}x${Y} xc: -channel G -fx '(1-(2*i/w-1)^24)*(1-(2*j/h-1)^24)' -separate mask/${X}x${Y}.png
 	fi
 
