@@ -1,1 +1,7 @@
-*.sw[ponm]
+*/pdf/*
+*/infiles/*
+*/outfiles/*
+*/png/*
+staff/
+*.pyc
+*.deb
