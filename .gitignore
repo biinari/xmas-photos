@@ -3,5 +3,6 @@
 */outfiles/*
 */png/*
 staff/
+reprint/
 *.pyc
 *.deb
