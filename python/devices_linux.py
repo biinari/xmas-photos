@@ -30,10 +30,11 @@ class DeviceManager:
         device = dbus.Interface(device_obj, "org.freedesktop.Hal.Device")
         
         if device.QueryCapability("volume"):
-            return self._addVolume(device)
+            return self._addVolume(udi, device)
 
     def _addVolume(self, udi, volume):
         device = Device()
+        device.device_id = udi
         device.device_file = volume.GetProperty("block.device")
         device.label = volume.GetProperty("volume.label")
         device.fstype = volume.GetProperty("volume.fstype")
@@ -66,5 +67,15 @@ if __name__ == '__main__':
     from dbus.mainloop.glib import DBusGMainLoop
     DBusGMainLoop(set_as_default=True)
     loop = gobject.MainLoop()
-    DeviceManager()
+    deviceManager = DeviceManager()
+    def deviceAdded(device):
+        print("Device Added: %s" % device.device_id)
+        if device.mounted:
+            print("mount point: %s" % device.mount_point)
+        else:
+            print("not mounted")
+    def deviceRemoved(device):
+        print("Device Removed: %s" %device.device_id)
+    deviceManager.setDeviceAddedCallback(deviceAdded)
+    deviceManager.setDeviceRemovedCallback(deviceRemoved)
     loop.run()
