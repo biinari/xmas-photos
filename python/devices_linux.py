@@ -24,9 +24,8 @@ class DeviceManager:
             "org.freedesktop.Hal.Manager")
         self.hal_manager.connect_to_signal("DeviceAdded", self._add)
         self.hal_manager.connect_to_signal("DeviceRemoved", self._remove)
-        self._getDevices()
 
-    def _getDevices(self):
+    def getDevices(self):
         devices = self.hal_manager.GetAllDevices()
         for udi in devices:
             device_obj = self.bus.get_object("org.freedesktop.Hal", udi)
@@ -34,6 +33,8 @@ class DeviceManager:
                                         "org.freedesktop.Hal.Device")
             if device_int.QueryCapability("volume"):
                 self._addVolume(udi, device_int)
+                if self._deviceAddedCallback != None:
+                    self._deviceAddedCallback(self._devices[udi])
 
     def _add(self, udi):
         """Filter events to only run for "volume" devices."""
@@ -86,8 +87,13 @@ if __name__ == '__main__':
             print("mount point: %s" % device.mount_point)
         else:
             print("not mounted")
+        print("label: %s" % device.label)
+        print("fstype: %s" % device.fstype)
+        print("size: %s" %device.size)
+        print("")
     def deviceRemoved(device):
         print("Device Removed: %s" %device.device_id)
     deviceManager.setDeviceAddedCallback(deviceAdded)
     deviceManager.setDeviceRemovedCallback(deviceRemoved)
+    deviceManager.getDevices()
     loop.run()
