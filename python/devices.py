@@ -1,3 +1,6 @@
+import platform
+import device
+
 class IDeviceManager:
 
     """
@@ -28,13 +31,6 @@ class IDeviceManager:
             "FIXME: Implement method setDeviceRemvoedCallback"
         )
 
-class Device:
-    """ A storage device """
-    device_id = None
-    mounted = False
-    mount_point = None
-
-import platform
 if platform.system() == 'Linux':
     from devices_linux import DeviceManager
 elif platform.system() == 'Windows':
