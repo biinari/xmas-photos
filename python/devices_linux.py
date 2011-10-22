@@ -33,7 +33,7 @@ class DeviceManager:
             device_int = dbus.Interface(device_obj,
                                         "org.freedesktop.Hal.Device")
             if device_int.QueryCapability("volume"):
-                self._addVolume(udi, device)
+                self._addVolume(udi, device_int)
 
     def _add(self, udi):
         """Filter events to only run for "volume" devices."""
