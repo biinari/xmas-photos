@@ -5,6 +5,7 @@
 
 import dbus
 import gobject
+from device import Device
 
 class DeviceManager:
 

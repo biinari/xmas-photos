@@ -1,5 +1,5 @@
 import platform
-import device
+from device import Device
 
 class IDeviceManager:
 
