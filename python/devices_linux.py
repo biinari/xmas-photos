@@ -24,14 +24,26 @@ class DeviceManager:
             "org.freedesktop.Hal.Manager")
         self.hal_manager.connect_to_signal("DeviceAdded", self._add)
         self.hal_manager.connect_to_signal("DeviceRemoved", self._remove)
+        self._getDevices()
+
+    def _getDevices(self):
+        devices = self.hal_manager.GetAllDevices()
+        for udi in devices:
+            device_obj = self.bus.get_object("org.freedesktop.Hal", udi)
+            device_int = dbus.Interface(device_obj,
+                                        "org.freedesktop.Hal.Device")
+            if device_int.QueryCapability("volume"):
+                self._addVolume(udi, device)
 
     def _add(self, udi):
         """Filter events to only run for "volume" devices."""
         device_obj = self.bus.get_object("org.freedesktop.Hal", udi)
-        device = dbus.Interface(device_obj, "org.freedesktop.Hal.Device")
+        device_int = dbus.Interface(device_obj, "org.freedesktop.Hal.Device")
         
-        if device.QueryCapability("volume"):
-            return self._addVolume(udi, device)
+        if device_int.QueryCapability("volume"):
+            device = self._addVolume(udi, device_int)
+            if self._deviceAddedCallback != None:
+                return self._deviceAddedCallback(self._devices[udi])
 
     def _addVolume(self, udi, volume):
         device = Device()
@@ -46,8 +58,7 @@ class DeviceManager:
         except:
             device.size = 0
         self._devices[udi] = device
-        if self._deviceAddedCallback != None:
-            return self._deviceAddedCallback(device)
+        return device
 
     def _remove(self, udi):
         """Device has been removed."""
