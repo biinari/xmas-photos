@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import wx
+import devices
 
 class MainWindow(wx.Frame):
     """ Main Window Frame for Sleigh Photos. """
@@ -39,6 +40,18 @@ class MainWindow(wx.Frame):
 
     def OnExit(self, event):
         self.Close(True)
+
+    def OnDeviceAdded(self, device_id, properties):
+        message = properties.join('\n')
+        info = wx.MessageDialog(self, message, "Device Added", wx.OK)
+        info.ShowModal()
+        info.Destroy()
+
+    def OnDeviceRemoved(self, device_id):
+        message = "Device Removed: %s" % device_id
+        info = wx.MessageDialog(self, message, "Device Removed", wx.OK)
+        info.ShowModal()
+        info.Destroy()
 
 app = wx.App(False)
 frame = MainWindow(None, "Sleigh Photos")
