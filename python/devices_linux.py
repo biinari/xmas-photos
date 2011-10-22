@@ -66,5 +66,5 @@ if __name__ == '__main__':
     from dbus.mainloop.glib import DBusGMainLoop
     DBusGMainLoop(set_as_default=True)
     loop = gobject.MainLoop()
-    DeviceAddedListener()
+    DeviceManager()
     loop.run()
