@@ -5,9 +5,10 @@
 
 import dbus
 import gobject
+from idevicemanager import IDeviceManager
 from device import Device
 
-class DeviceManager:
+class DeviceManager(IDeviceManager):
 
     _deviceAddedCallback = None
     _deviceRemovedCallback = None
