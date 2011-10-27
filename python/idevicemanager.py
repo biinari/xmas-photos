@@ -6,6 +6,12 @@ class IDeviceManager:
     Should detect devices added / removed and provide their mount point
     """
 
+    def getDevices(self):
+        """
+        Get list of devices and call device added callback for each.
+        """
+        raise NotImplementedError("FIXME: Implement method getDevices")
+
     def setDeviceAddedCallback(self, callback):
         """
         Set a callback for when a new volume is mounted.
