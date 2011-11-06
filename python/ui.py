@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import wx
 import devices
+from device import Device
 
 class MainWindow(wx.Frame):
     """ Main Window Frame for Sleigh Photos. """
