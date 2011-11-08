@@ -69,7 +69,7 @@ function process_file() {
     	echo
     fi
 	rm temp.png temp2.png
-	}
+}
 
 
 DIR=`date +%A`
