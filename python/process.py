@@ -27,6 +27,3 @@ def process():
             break
         base.paste(photo, (0, 0, width, height), mask)
         base.save('outfiles/' + infile, 'PNG')
-
-fade = Fade()
-fade.createMask(2272,1704)
