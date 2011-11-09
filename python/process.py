@@ -11,22 +11,22 @@ def process(infile, group_name):
         photo = Image.open('infiles/' + infile)
     except IOError:
         print "Cannot open", infile
-        break
+        return
     (width, height) = photo.size
     fade = Fade();
     try:
         mask = fade.getMask(width, height)
     except IOError:
         print "Cannot open mask file"
-        break
+        return
     try:
         base = fade.getBase(width, height)
     except IOError:
         print "Cannot open base file"
-        break
+        return
     base.paste(photo, (0, 0, width, height), mask)
     base.save('outfiles/' + infile, 'PNG')
 
-if __name__ == __main__:
+if __name__ == "__main__":
     for infile in os.listdir('infiles/'):
         process(infile, 'Test Group')

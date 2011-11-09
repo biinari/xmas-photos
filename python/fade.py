@@ -45,7 +45,7 @@ class Fade:
             base = self.createBase(width, height)
         return base
 
-if __name__ == __main__:
+if __name__ == "__main__":
     """ Create a mask in the size we want as preparation. """
     fade = Fade()
     fade.createMask(2272,1704)
