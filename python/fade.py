@@ -10,12 +10,12 @@ class Fade:
         return int(math.floor(255 * val))
 
     def createMask(self, width, height):
-        mask = Image.new('LA', (width, height))
+        mask = Image.new('RGBA', (width, height))
         data = []
         for row in range(height):
             for col in range(width):
-                data.append(self.maskPixel(row, col, width, height))
-        data = zip(data, map(lambda x: 255, range(height*width)))
+                data.append((255, 255, 255,
+                             self.maskPixel(row, col, width, height)))
         mask.putdata(data)
         mask.save('mask/{0}x{1}.png'.format(width, height))
         return mask
