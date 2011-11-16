@@ -8,8 +8,10 @@ import math
 from fade import Fade
 
 # Landscape at 300 ppi
-a4 = (3508, 2480)
-a5 = (2480, 1754)
+a4width = 3508
+a4height = 2480
+a5width = 2480
+a5height = 1754
 
 def apply_mask(infile):
     try:
@@ -30,7 +32,7 @@ def apply_mask(infile):
         print "Cannot open base file"
         return
     base.paste(photo, (0, 0, width, height), mask)
-    base.save('outfiles/' + infile, 'PNG')
+    return base
 
 def get_centre_left(image_width, draw, text, font):
     """ Get left coordinate to draw the text centred. """
@@ -38,16 +40,13 @@ def get_centre_left(image_width, draw, text, font):
     left = (image_width - width) / 2
     return left
 
-def create_title(group_name):
-    width = 600
-    height = 200
+def create_title(base, width, height, group_name):
     title = "Christmas Experience"
     subtitle = "Bowley 2011"
     fade = Fade()
-    base = Image.new('RGBA', (width, height), (255,255,255,255))
     draw = ImageDraw.Draw(base)
-    titleFont = ImageFont.truetype('fonts/BookmanDemi.pfb', 36)
-    smallFont = ImageFont.truetype('fonts/DejaVuSans.ttf', 10)
+    titleFont = ImageFont.truetype('fonts/BookmanDemi.pfb', 72)
+    smallFont = ImageFont.truetype('fonts/DejaVuSans.ttf', 20)
     title_left = get_centre_left(width, draw, title, titleFont)
     subtitle_left = get_centre_left(width, draw, subtitle, titleFont)
     group_name_left = get_centre_left(width, draw, group_name, smallFont)
@@ -59,9 +58,12 @@ def create_title(group_name):
     base.save('fonttest.png')
 
 def process(infile, group_name):
-    apply_mask(infile)
+    page = Image.new('RGBA', (a4width, a4height), (255,255,255,255))
+    photo = apply_mask(infile)
+    page.paste(photo, (100, 100, 100 + photo.size[0], 100 + photo.size[1]))
+    create_title(page, a4width, a4height, group_name)
+    page.save('page.png')
 
 if __name__ == "__main__":
-    #for infile in os.listdir('infiles/'):
-    #    process(infile, 'Test Group')
-    create_title("Test Group")
+    for infile in os.listdir('infiles/'):
+        process(infile, 'Test Group')
