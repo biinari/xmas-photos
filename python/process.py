@@ -7,6 +7,10 @@ import ImageFont, ImageDraw
 import math
 from fade import Fade
 
+# Landscape at 300 ppi
+a4 = (3508, 2480)
+a5 = (2480, 1754)
+
 def apply_mask(infile):
     try:
         photo = Image.open('infiles/' + infile)
