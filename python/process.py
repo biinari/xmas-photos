@@ -13,13 +13,14 @@ a4height = 2480
 a5width = 2480
 a5height = 1754
 
-def apply_mask(infile):
+def apply_mask(infile, size):
+    (width, height) = size
     try:
         photo = Image.open('infiles/' + infile)
     except IOError:
         print "Cannot open", infile
         return
-    (width, height) = photo.size
+    photo = photo.resize(size, Image.NEAREST)
     fade = Fade()
     try:
         mask = fade.getMask(width, height)
@@ -34,37 +35,43 @@ def apply_mask(infile):
     base.paste(photo, (0, 0, width, height), mask)
     return base
 
-def get_centre_left(image_width, draw, text, font):
+def get_centre_rect(size, draw, text, font):
     """ Get left coordinate to draw the text centred. """
     (width, height) = draw.textsize(text, font=font)
-    left = (image_width - width) / 2
-    return left
+    left = (size[0] - width) / 2
+    top = (size[1] - height) / 2
+    pos = (left, top, left + width, top + height)
+    return pos
 
-def create_title(base, width, height, group_name):
+def create_title(base, page_size, photo_size, photo_place, group_name):
     title = "Christmas Experience"
     subtitle = "Bowley 2011"
     fade = Fade()
     draw = ImageDraw.Draw(base)
     titleFont = ImageFont.truetype('fonts/BookmanDemi.pfb', 144)
-    smallFont = ImageFont.truetype('fonts/DejaVuSans.ttf', 20)
-    title_left = get_centre_left(width, draw, title, titleFont)
-    subtitle_left = get_centre_left(width, draw, subtitle, titleFont)
-    group_name_left = get_centre_left(width, draw, group_name, smallFont)
-    draw.text((title_left + 1, 22), title, fill=(0,255,0,255), font=titleFont)
-    draw.text((title_left, 20), title, fill=(255,0,0,255), font=titleFont)
-    draw.text((subtitle_left + 1, 2002), subtitle, fill=(0,255,0,255), font=titleFont)
-    draw.text((subtitle_left, 2000), subtitle, fill=(255,0,0,255), font=titleFont)
-    draw.text((group_name_left, 2250), group_name, fill=(0,0,0,255), font=smallFont)
-    base.save('fonttest.png')
+    smallFont = ImageFont.truetype('fonts/DejaVuSans.ttf', 36)
+    title_rect = get_centre_rect((page_size[0], photo_place[1]), draw, title, titleFont)
+    subtitle_rect = get_centre_rect((page_size[0], page_size[1] - photo_place[3]), draw, subtitle, titleFont)
+    subtitle_rect = (subtitle_rect[0], subtitle_rect[1] + photo_place[3], subtitle_rect[2], subtitle_rect[3] + photo_place[3])
+    group_name_rect = get_centre_rect((page_size[0], page_size[1] - subtitle_rect[3]), draw, group_name, smallFont)
+    group_name_rect = (group_name_rect[0], group_name_rect[1] + subtitle_rect[3], group_name_rect[2], group_name_rect[3] + subtitle_rect[3])
+    draw.text((title_rect[0] + 2, title_rect[1] + 2), title, fill=(0,255,0,255), font=titleFont)
+    draw.text((title_rect[0], title_rect[1]), title, fill=(255,0,0,255), font=titleFont)
+    draw.text((subtitle_rect[0] + 2, subtitle_rect[1] + 2), subtitle, fill=(0,255,0,255), font=titleFont)
+    draw.text((subtitle_rect[0], subtitle_rect[1]), subtitle, fill=(255,0,0,255), font=titleFont)
+    draw.text((group_name_rect[0], group_name_rect[1]), group_name, fill=(0,0,0,255), font=smallFont)
 
 def process(infile, group_name):
     page = Image.new('RGBA', (a4width, a4height), (255,255,255,255))
-    photo = apply_mask(infile)
-    photo_left = (a4width - photo.size[0]) / 2
-    photo_top = (a4height - photo.size[1]) / 2
-    page.paste(photo, (photo_left, photo_top,
-                       photo_left + photo.size[0], photo_top + photo.size[1]))
-    create_title(page, a4width, a4height, group_name)
+    photo_size = (a4width * 2 / 3, a4height * 2 / 3)
+    photo = apply_mask(infile, photo_size)
+    photo_left = (a4width - photo_size[0]) / 2
+    photo_top = (a4height - photo_size[1]) / 2
+    photo_right = photo_left + photo_size[0]
+    photo_bottom = photo_top + photo_size[1]
+    photo_place = (photo_left, photo_top, photo_right, photo_bottom)
+    page.paste(photo, (photo_left, photo_top, photo_right, photo_bottom))
+    create_title(page, (a4width, a4height), photo_size, photo_place, group_name)
     page.save('page.png')
 
 if __name__ == "__main__":
