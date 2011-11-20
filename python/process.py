@@ -45,22 +45,25 @@ def create_title(base, width, height, group_name):
     subtitle = "Bowley 2011"
     fade = Fade()
     draw = ImageDraw.Draw(base)
-    titleFont = ImageFont.truetype('fonts/BookmanDemi.pfb', 72)
+    titleFont = ImageFont.truetype('fonts/BookmanDemi.pfb', 144)
     smallFont = ImageFont.truetype('fonts/DejaVuSans.ttf', 20)
     title_left = get_centre_left(width, draw, title, titleFont)
     subtitle_left = get_centre_left(width, draw, subtitle, titleFont)
     group_name_left = get_centre_left(width, draw, group_name, smallFont)
-    draw.text((title_left + 1, 11), title, fill=(0,255,0,255), font=titleFont)
-    draw.text((title_left, 10), title, fill=(255,0,0,255), font=titleFont)
-    draw.text((subtitle_left + 1, 51), subtitle, fill=(0,255,0,255), font=titleFont)
-    draw.text((subtitle_left, 50), subtitle, fill=(255,0,0,255), font=titleFont)
-    draw.text((group_name_left, 100), group_name, fill=(0,0,0,255), font=smallFont)
+    draw.text((title_left + 1, 22), title, fill=(0,255,0,255), font=titleFont)
+    draw.text((title_left, 20), title, fill=(255,0,0,255), font=titleFont)
+    draw.text((subtitle_left + 1, 2002), subtitle, fill=(0,255,0,255), font=titleFont)
+    draw.text((subtitle_left, 2000), subtitle, fill=(255,0,0,255), font=titleFont)
+    draw.text((group_name_left, 2250), group_name, fill=(0,0,0,255), font=smallFont)
     base.save('fonttest.png')
 
 def process(infile, group_name):
     page = Image.new('RGBA', (a4width, a4height), (255,255,255,255))
     photo = apply_mask(infile)
-    page.paste(photo, (100, 100, 100 + photo.size[0], 100 + photo.size[1]))
+    photo_left = (a4width - photo.size[0]) / 2
+    photo_top = (a4height - photo.size[1]) / 2
+    page.paste(photo, (photo_left, photo_top,
+                       photo_left + photo.size[0], photo_top + photo.size[1]))
     create_title(page, a4width, a4height, group_name)
     page.save('page.png')
 
