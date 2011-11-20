@@ -43,16 +43,16 @@ def get_centre_rect(size, draw, text, font):
     pos = (left, top, left + width, top + height)
     return pos
 
-def create_title(base, page_size, photo_size, photo_place, group_name):
+def create_title(base, page_size, photo_size, photo_rect, group_name):
     title = "Christmas Experience"
     subtitle = "Bowley 2011"
     fade = Fade()
     draw = ImageDraw.Draw(base)
     titleFont = ImageFont.truetype('fonts/BookmanDemi.pfb', 144)
     smallFont = ImageFont.truetype('fonts/DejaVuSans.ttf', 36)
-    title_rect = get_centre_rect((page_size[0], photo_place[1]), draw, title, titleFont)
-    subtitle_rect = get_centre_rect((page_size[0], page_size[1] - photo_place[3]), draw, subtitle, titleFont)
-    subtitle_rect = (subtitle_rect[0], subtitle_rect[1] + photo_place[3], subtitle_rect[2], subtitle_rect[3] + photo_place[3])
+    title_rect = get_centre_rect((page_size[0], photo_rect[1]), draw, title, titleFont)
+    subtitle_rect = get_centre_rect((page_size[0], page_size[1] - photo_rect[3]), draw, subtitle, titleFont)
+    subtitle_rect = (subtitle_rect[0], subtitle_rect[1] + photo_rect[3], subtitle_rect[2], subtitle_rect[3] + photo_rect[3])
     group_name_rect = get_centre_rect((page_size[0], page_size[1] - subtitle_rect[3]), draw, group_name, smallFont)
     group_name_rect = (group_name_rect[0], group_name_rect[1] + subtitle_rect[3], group_name_rect[2], group_name_rect[3] + subtitle_rect[3])
     draw.text((title_rect[0] + 2, title_rect[1] + 2), title, fill=(0,255,0,255), font=titleFont)
@@ -69,9 +69,9 @@ def process(infile, group_name):
     photo_top = (a4height - photo_size[1]) / 2
     photo_right = photo_left + photo_size[0]
     photo_bottom = photo_top + photo_size[1]
-    photo_place = (photo_left, photo_top, photo_right, photo_bottom)
-    page.paste(photo, (photo_left, photo_top, photo_right, photo_bottom))
-    create_title(page, (a4width, a4height), photo_size, photo_place, group_name)
+    photo_rect = (photo_left, photo_top, photo_right, photo_bottom)
+    page.paste(photo, photo_rect)
+    create_title(page, (a4width, a4height), photo_size, photo_rect, group_name)
     page.save('page.png')
 
 if __name__ == "__main__":
