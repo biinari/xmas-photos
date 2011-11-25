@@ -99,7 +99,7 @@ else
     echo "No pictures found. Is the camera ready?"
 fi
 
-#if [ $OLD_PWD -ne $WD ]; then
+if [ $OLD_PWD -ne $WD ]; then
     echo "Press enter to finish"
     read
-#fi
+fi
