@@ -63,7 +63,7 @@ def create_title(base, page_size, photo_size, photo_rect, group_name):
 
 def process(infile, group_name):
     page = Image.new('RGBA', (a4width, a4height), (255,255,255,255))
-    photo_size = (a4width * 2 / 3, a4height * 2 / 3)
+    photo_size = (a4width * 3 / 4, a4height * 3 / 4)
     photo = apply_mask(infile, photo_size)
     photo_left = (a4width - photo_size[0]) / 2
     photo_top = (a4height - photo_size[1]) / 2
