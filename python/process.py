@@ -6,6 +6,7 @@ import shutil
 import Image, ImageFile
 import ImageFont, ImageDraw
 import math
+import time
 from fade import Fade
 
 # Landscape at 300 ppi
@@ -52,13 +53,21 @@ def get_right_rect(rect, draw, text, font):
     pos = (left, top, left + width, top + height)
     return pos
 
+def get_left_rect(rect, draw, text, font):
+    """ Get rectangle tuple to align text left, vertically centred. """
+    (width, height) = draw.textsize(text, font=font)
+    left = rect[0]
+    top = (rect[3] - rect[1] - height) / 2 + rect[1]
+    pos = (left, top, left + width, top + height)
+    return pos
+
 def draw_text(draw, rect, text, fill, font, shadow=None, shadowFill=None):
     if (shadow != None):
         draw.text((rect[0] + shadow, rect[1] + shadow),
                   text, fill=shadowFill, font=font)
     draw.text((rect[0], rect[1]), text, fill=fill, font=font)
 
-def create_title(base, page_size, photo_size, photo_rect, group_name):
+def create_title(base, page_size, photo_size, photo_rect, group_name, timeid):
     title = "Christmas Experience"
     subtitle = "Bowley 2011"
     copy = u"© 2011 East Lancashire Scouts"
@@ -79,6 +88,9 @@ def create_title(base, page_size, photo_size, photo_rect, group_name):
     subtitle_rect = get_centre_rect(
         (0, group_rect[3], page_size[0], page_size[1]),
         draw, subtitle, subtitleFont)
+    timeid_rect = get_left_rect(
+        (photo_rect[0], group_rect[3], page_size[0], page_size[1]),
+        draw, timeid, smallFont)
     copy_rect = get_right_rect(
         (0, group_rect[3], photo_rect[2], page_size[1]),
         draw, copy, smallFont)
@@ -87,9 +99,10 @@ def create_title(base, page_size, photo_size, photo_rect, group_name):
     draw_text(draw, group_rect, group_name, (0,0,0,255), groupFont)
     draw_text(draw, subtitle_rect, subtitle, (255,0,0,255),
               subtitleFont, shadow, shadowFill)
+    draw_text(draw, timeid_rect, timeid, (65, 90, 104, 255), smallFont)
     draw_text(draw, copy_rect, copy, (65,90,104,255), smallFont)
 
-def process(infile, group_name):
+def process(infile, group_name, timeid):
     page = Image.new('RGBA', (a4width, a4height), (255,255,255,255))
     photo_size = (a4width * 3 / 4, a4height * 3 / 4)
     photo = apply_mask(infile, photo_size)
@@ -99,9 +112,10 @@ def process(infile, group_name):
     photo_bottom = photo_top + photo_size[1]
     photo_rect = (photo_left, photo_top, photo_right, photo_bottom)
     page.paste(photo, photo_rect)
-    create_title(page, (a4width, a4height), photo_size, photo_rect, group_name)
+    create_title(page, (a4width, a4height), photo_size, photo_rect, group_name, timeid)
     page.save('page.png')
 
 if __name__ == "__main__":
     for infile in os.listdir('infiles/'):
-        process(infile, 'Test Group')
+        timeid = time.strftime('%I%M%S', time.localtime())
+        process(infile, 'Test Group', timeid)
