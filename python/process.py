@@ -46,7 +46,7 @@ def get_centre_rect(rect, draw, text, font):
 def get_right_rect(rect, draw, text, font):
     """ Get rectangle tuple to align text right, vertically centred. """
     (width, height) = draw.textsize(text, font=font)
-    left = size[0] - width
+    left = rect[2] - width
     top = (rect[3] - rect[1] - height) / 2 + rect[1]
     pos = (left, top, left + width, top + height)
     return pos
