@@ -15,6 +15,7 @@ a4height = 2480
 a5width = 2480
 a5height = 1754
 camera_mount = '/mnt/camera'
+do_print = True
 
 def apply_mask(infile, size):
     (width, height) = size
@@ -121,7 +122,10 @@ def process(infile, group_name, timeid):
     day = time.strftime('%a', time.localtime())
     if not os.path.exists('png/{}'.format(day)):
         os.mkdir('png/{}'.format(day))
-    page.save('png/{}.png'.format(timeid))
+    png_file = 'png/{}_{}.png'.format(timeid, group_name.replace(' ','_'))
+    page.save(png_file)
+    if (do_print):
+        print_image(png_file)
 
 def mount_camera():
     if os.path.exists(camera_mount) and os.path.ismount(camera_mount):
@@ -137,15 +141,19 @@ def umount_camera():
         umounted = True
     return umounted
 
+def print_image(filename):
+    printer = 'Kodak-ESP-5250-wifi'
+    success = not subprocess.call(['lp', '-d' + printer, '-o', 'media=a4', '-o', 'scaling=100', filename])
+    return success
+
 if __name__ == "__main__":
-    if mount_camera():
-        for infile in os.listdir('infiles/'):
-            timeid = time.strftime('%a/%H%M%S', time.localtime())
-            process(infile, 'Test Group', timeid)
-            os.rename('infiles/' + infile, 'outfiles/' + infile)
-        if umount_camera():
-            print('Finished. You can disconnect the camera now.')
-        else:
-            print('Could not disconnect from camera. Please use the software safely remove function before disconnecting.')
+    if not mount_camera():
+        print 'Could not connect to camera. Try again.'
+    for infile in os.listdir('infiles/'):
+        timeid = time.strftime('%a/%H%M%S', time.localtime())
+        process(infile, 'Test Group', timeid)
+        os.rename('infiles/' + infile, 'outfiles/' + infile)
+    if umount_camera():
+        print 'Finished. You can disconnect the camera now.'
     else:
-        print('Could not connect to camera. Try again.')
+        print 'Could not disconnect from camera. Please use the software safely remove function before disconnecting.'
