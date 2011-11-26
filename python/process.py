@@ -35,11 +35,19 @@ def apply_mask(infile, size):
     base.paste(photo, (0, 0, width, height), mask)
     return base
 
-def get_centre_rect(size, draw, text, font):
-    """ Get left coordinate to draw the text centred. """
+def get_centre_rect(rect, draw, text, font):
+    """ Get rectangle tuple to draw the text centred. """
     (width, height) = draw.textsize(text, font=font)
-    left = (size[0] - width) / 2
-    top = (size[1] - height) / 2
+    left = (rect[2] - rect[0] - width) / 2 + rect[0]
+    top = (rect[3] - rect[1] - height) / 2 + rect[1]
+    pos = (left, top, left + width, top + height)
+    return pos
+
+def get_right_rect(rect, draw, text, font):
+    """ Get rectangle tuple to align text right, vertically centred. """
+    (width, height) = draw.textsize(text, font=font)
+    left = size[0] - width
+    top = (rect[3] - rect[1] - height) / 2 + rect[1]
     pos = (left, top, left + width, top + height)
     return pos
 
@@ -50,11 +58,9 @@ def create_title(base, page_size, photo_size, photo_rect, group_name):
     draw = ImageDraw.Draw(base)
     titleFont = ImageFont.truetype('fonts/BookmanDemi.pfb', 144)
     smallFont = ImageFont.truetype('fonts/DejaVuSans.ttf', 36)
-    title_rect = get_centre_rect((page_size[0], photo_rect[1]), draw, title, titleFont)
-    subtitle_rect = get_centre_rect((page_size[0], page_size[1] - photo_rect[3]), draw, subtitle, titleFont)
-    subtitle_rect = (subtitle_rect[0], subtitle_rect[1] + photo_rect[3], subtitle_rect[2], subtitle_rect[3] + photo_rect[3])
-    group_name_rect = get_centre_rect((page_size[0], page_size[1] - subtitle_rect[3]), draw, group_name, smallFont)
-    group_name_rect = (group_name_rect[0], group_name_rect[1] + subtitle_rect[3], group_name_rect[2], group_name_rect[3] + subtitle_rect[3])
+    title_rect = get_centre_rect((0, 0, page_size[0], photo_rect[1]), draw, title, titleFont)
+    subtitle_rect = get_centre_rect((0, photo_rect[3], page_size[0], page_size[1]), draw, subtitle, titleFont)
+    group_name_rect = get_right_rect((0, subtitle_rect[3], page_size[0], page_size[1]), draw, group_name, smallFont)
     draw.text((title_rect[0] + 2, title_rect[1] + 2), title, fill=(0,255,0,255), font=titleFont)
     draw.text((title_rect[0], title_rect[1]), title, fill=(255,0,0,255), font=titleFont)
     draw.text((subtitle_rect[0] + 2, subtitle_rect[1] + 2), subtitle, fill=(0,255,0,255), font=titleFont)
