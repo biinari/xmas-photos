@@ -72,7 +72,13 @@ def create_title(base, page_size, photo_size, photo_rect, group_name, timeid):
     subtitle = "Bowley 2011"
     copy = u"© 2011 East Lancashire Scouts"
     shadow = 2
-    shadowFill = (0,255,0,255)
+    darkred = (176, 7, 7, 255)
+    red = (238, 9, 9, 255)
+    darkgreen = (41, 105, 13, 255)
+    green = (67, 173, 22, 255)
+    black = (0, 0, 0, 255)
+    grey = (65, 90, 104, 255)
+    margin = 48
     fade = Fade()
     draw = ImageDraw.Draw(base)
     titleFont = ImageFont.truetype('fonts/BookmanDemi.pfb', 144)
@@ -86,21 +92,19 @@ def create_title(base, page_size, photo_size, photo_rect, group_name, timeid):
         (0, photo_rect[3], page_size[0], page_size[1] - (page_size[1] - photo_rect[3]) / 3),
         draw, group_name, groupFont)
     subtitle_rect = get_centre_rect(
-        (0, group_rect[3], page_size[0], page_size[1]),
+        (0, group_rect[3], page_size[0], page_size[1] - margin),
         draw, subtitle, subtitleFont)
     timeid_rect = get_left_rect(
-        (photo_rect[0], group_rect[3], page_size[0], page_size[1]),
+        (photo_rect[0], group_rect[3], page_size[0], page_size[1] - margin),
         draw, timeid, smallFont)
     copy_rect = get_right_rect(
-        (0, group_rect[3], photo_rect[2], page_size[1]),
+        (0, group_rect[3], photo_rect[2], page_size[1] - margin),
         draw, copy, smallFont)
-    draw_text(draw, title_rect, title, (255,0,0,255), titleFont,
-              shadow, shadowFill)
-    draw_text(draw, group_rect, group_name, (0,0,0,255), groupFont)
-    draw_text(draw, subtitle_rect, subtitle, (255,0,0,255),
-              subtitleFont, shadow, shadowFill)
-    draw_text(draw, timeid_rect, timeid, (65, 90, 104, 255), smallFont)
-    draw_text(draw, copy_rect, copy, (65,90,104,255), smallFont)
+    draw_text(draw, title_rect, title, red, titleFont, shadow, darkred)
+    draw_text(draw, group_rect, group_name, darkgreen, groupFont, shadow, green)
+    draw_text(draw, subtitle_rect, subtitle, red, subtitleFont, shadow, darkred)
+    draw_text(draw, timeid_rect, timeid, grey, smallFont)
+    draw_text(draw, copy_rect, copy, grey, smallFont)
 
 def process(infile, group_name, timeid):
     page = Image.new('RGBA', (a4width, a4height), (255,255,255,255))
@@ -117,5 +121,5 @@ def process(infile, group_name, timeid):
 
 if __name__ == "__main__":
     for infile in os.listdir('infiles/'):
-        timeid = time.strftime('%I%M%S', time.localtime())
+        timeid = time.strftime('%H%M%S', time.localtime())
         process(infile, 'Test Group', timeid)
