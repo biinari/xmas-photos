@@ -62,10 +62,10 @@ def create_title(base, page_size, photo_size, photo_rect, group_name):
         (0, 0, page_size[0], photo_rect[1]),
         draw, title, titleFont)
     subtitle_rect = get_centre_rect(
-        (0, photo_rect[3], page_size[0], page_size[1]),
+        (0, photo_rect[3], page_size[0], page_size[1] - (page_size[1] - photo_rect[3]) / 3),
         draw, subtitle, titleFont)
     group_name_rect = get_right_rect(
-        (0, subtitle_rect[3], page_size[0], page_size[1]),
+        (0, subtitle_rect[3], photo_rect[2], page_size[1]),
         draw, group_name, smallFont)
     draw.text((title_rect[0] + 2, title_rect[1] + 2), title, fill=(0,255,0,255), font=titleFont)
     draw.text((title_rect[0], title_rect[1]), title, fill=(255,0,0,255), font=titleFont)
@@ -78,7 +78,7 @@ def process(infile, group_name):
     photo_size = (a4width * 3 / 4, a4height * 3 / 4)
     photo = apply_mask(infile, photo_size)
     photo_left = (a4width - photo_size[0]) / 2
-    photo_top = (a4height - photo_size[1]) / 2
+    photo_top = (a4height - photo_size[1]) / 2 - a4height / 64
     photo_right = photo_left + photo_size[0]
     photo_bottom = photo_top + photo_size[1]
     photo_rect = (photo_left, photo_top, photo_right, photo_bottom)
