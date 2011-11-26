@@ -126,3 +126,4 @@ if __name__ == "__main__":
     for infile in os.listdir('infiles/'):
         timeid = time.strftime('%a/%H%M%S', time.localtime())
         process(infile, 'Test Group', timeid)
+        os.rename('infiles/' + infile, 'outfiles/' + infile)
