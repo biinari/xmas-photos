@@ -2,7 +2,7 @@
 # vim: set fileencoding=utf-8 :
 # Process photos for Bowley Christmas Experience
 import os, sys
-import shutil
+import subprocess
 import Image, ImageFile
 import ImageFont, ImageDraw
 import math
@@ -14,6 +14,7 @@ a4width = 3508
 a4height = 2480
 a5width = 2480
 a5height = 1754
+camera_mount = '/mnt/camera'
 
 def apply_mask(infile, size):
     (width, height) = size
@@ -118,12 +119,33 @@ def process(infile, group_name, timeid):
     page.paste(photo, photo_rect)
     create_title(page, (a4width, a4height), photo_size, photo_rect, group_name, timeid)
     day = time.strftime('%a', time.localtime())
-    if (not os.path.exists('png/{}'.format(day))):
+    if not os.path.exists('png/{}'.format(day)):
         os.mkdir('png/{}'.format(day))
     page.save('png/{}.png'.format(timeid))
 
+def mount_camera():
+    if os.path.exists(camera_mount) and os.path.ismount(camera_mount):
+        mounted = True
+    else:
+        mounted = not subprocess.call(['mount', camera_mount])
+    return mounted
+
+def umount_camera():
+    if os.path.exists(camera_mount) and os.path.ismount(camera_mount):
+        umounted = not subprocess.call(['umount', camera_mount])
+    else:
+        umounted = True
+    return umounted
+
 if __name__ == "__main__":
-    for infile in os.listdir('infiles/'):
-        timeid = time.strftime('%a/%H%M%S', time.localtime())
-        process(infile, 'Test Group', timeid)
-        os.rename('infiles/' + infile, 'outfiles/' + infile)
+    if mount_camera():
+        for infile in os.listdir('infiles/'):
+            timeid = time.strftime('%a/%H%M%S', time.localtime())
+            process(infile, 'Test Group', timeid)
+            os.rename('infiles/' + infile, 'outfiles/' + infile)
+        if umount_camera():
+            print('Finished. You can disconnect the camera now.')
+        else:
+            print('Could not disconnect from camera. Please use the software safely remove function before disconnecting.')
+    else:
+        print('Could not connect to camera. Try again.')
