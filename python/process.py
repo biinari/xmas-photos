@@ -58,9 +58,15 @@ def create_title(base, page_size, photo_size, photo_rect, group_name):
     draw = ImageDraw.Draw(base)
     titleFont = ImageFont.truetype('fonts/BookmanDemi.pfb', 144)
     smallFont = ImageFont.truetype('fonts/DejaVuSans.ttf', 36)
-    title_rect = get_centre_rect((0, 0, page_size[0], photo_rect[1]), draw, title, titleFont)
-    subtitle_rect = get_centre_rect((0, photo_rect[3], page_size[0], page_size[1]), draw, subtitle, titleFont)
-    group_name_rect = get_right_rect((0, subtitle_rect[3], page_size[0], page_size[1]), draw, group_name, smallFont)
+    title_rect = get_centre_rect(
+        (0, 0, page_size[0], photo_rect[1]),
+        draw, title, titleFont)
+    subtitle_rect = get_centre_rect(
+        (0, photo_rect[3], page_size[0], page_size[1]),
+        draw, subtitle, titleFont)
+    group_name_rect = get_right_rect(
+        (0, subtitle_rect[3], page_size[0], page_size[1]),
+        draw, group_name, smallFont)
     draw.text((title_rect[0] + 2, title_rect[1] + 2), title, fill=(0,255,0,255), font=titleFont)
     draw.text((title_rect[0], title_rect[1]), title, fill=(255,0,0,255), font=titleFont)
     draw.text((subtitle_rect[0] + 2, subtitle_rect[1] + 2), subtitle, fill=(0,255,0,255), font=titleFont)
