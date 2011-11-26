@@ -81,7 +81,7 @@ def create_title(base, page_size, photo_size, photo_rect, group_name):
         draw, subtitle, subtitleFont)
     copy_rect = get_right_rect(
         (0, group_rect[3], photo_rect[2], page_size[1]),
-        draw, group_name, smallFont)
+        draw, copy, smallFont)
     draw_text(draw, title_rect, title, (255,0,0,255), titleFont,
               shadow, shadowFill)
     draw_text(draw, group_rect, group_name, (0,0,0,255), groupFont)
