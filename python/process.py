@@ -84,7 +84,7 @@ def create_title(base, page_size, photo_size, photo_rect, group_name, timeid):
     titleFont = ImageFont.truetype('fonts/BookmanDemi.pfb', 144)
     subtitleFont = ImageFont.truetype('fonts/BookmanDemi.pfb', 100)
     groupFont = ImageFont.truetype('fonts/CooperBlackStd-Italic.otf', 120)
-    smallFont = ImageFont.truetype('fonts/DejaVuSans.ttf', 36)
+    smallFont = ImageFont.truetype('fonts/DejaVuSans.ttf', 42)
     title_rect = get_centre_rect(
         (0, 0, page_size[0], photo_rect[1]),
         draw, title, titleFont)
