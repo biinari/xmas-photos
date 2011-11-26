@@ -52,11 +52,18 @@ def get_right_rect(rect, draw, text, font):
     pos = (left, top, left + width, top + height)
     return pos
 
+def draw_text(draw, rect, text, fill, font, shadow=None, shadowFill=None):
+    if (shadow != None):
+        draw.text((rect[0] + shadow, rect[1] + shadow),
+                  text, fill=shadowFill, font=font)
+    draw.text((rect[0], rect[1]), text, fill=fill, font=font)
+
 def create_title(base, page_size, photo_size, photo_rect, group_name):
     title = "Christmas Experience"
     subtitle = "Bowley 2011"
     copy = u"© 2011 East Lancashire Scouts"
-    offset = 2
+    shadow = 2
+    shadowFill = (0,255,0,255)
     fade = Fade()
     draw = ImageDraw.Draw(base)
     titleFont = ImageFont.truetype('fonts/BookmanDemi.pfb', 144)
@@ -75,12 +82,12 @@ def create_title(base, page_size, photo_size, photo_rect, group_name):
     copy_rect = get_right_rect(
         (0, group_rect[3], photo_rect[2], page_size[1]),
         draw, group_name, smallFont)
-    draw.text((title_rect[0] + offset, title_rect[1] + offset), title, fill=(0,255,0,255), font=titleFont)
-    draw.text((title_rect[0], title_rect[1]), title, fill=(255,0,0,255), font=titleFont)
-    draw.text((group_rect[0], group_rect[1]), group_name, fill=(0,0,0,255), font=groupFont)
-    draw.text((subtitle_rect[0] + offset, subtitle_rect[1] + offset), subtitle, fill=(0,255,0,255), font=subtitleFont)
-    draw.text((subtitle_rect[0], subtitle_rect[1]), subtitle, fill=(255,0,0,255), font=subtitleFont)
-    draw.text((copy_rect[0], copy_rect[1]), copy, fill=(65,90,104,255), font=smallFont)
+    draw_text(draw, title_rect, title, (255,0,0,255), titleFont,
+              shadow, shadowFill)
+    draw_text(draw, group_rect, group_name, (0,0,0,255), groupFont)
+    draw_text(draw, subtitle_rect, subtitle, (255,0,0,255),
+              subtitleFont, shadow, shadowFill)
+    draw_text(draw, copy_rect, copy, (65,90,104,255), smallFont)
 
 def process(infile, group_name):
     page = Image.new('RGBA', (a4width, a4height), (255,255,255,255))
