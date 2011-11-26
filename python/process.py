@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# vim: set fileencoding=utf-8 :
 # Process photos for Bowley Christmas Experience
 import os, sys
 import shutil
@@ -54,24 +55,32 @@ def get_right_rect(rect, draw, text, font):
 def create_title(base, page_size, photo_size, photo_rect, group_name):
     title = "Christmas Experience"
     subtitle = "Bowley 2011"
+    copy = u"© 2011 East Lancashire Scouts"
+    offset = 2
     fade = Fade()
     draw = ImageDraw.Draw(base)
     titleFont = ImageFont.truetype('fonts/BookmanDemi.pfb', 144)
+    subtitleFont = ImageFont.truetype('fonts/BookmanDemi.pfb', 100)
+    groupFont = ImageFont.truetype('fonts/CooperBlackStd-Italic.otf', 120)
     smallFont = ImageFont.truetype('fonts/DejaVuSans.ttf', 36)
     title_rect = get_centre_rect(
         (0, 0, page_size[0], photo_rect[1]),
         draw, title, titleFont)
-    subtitle_rect = get_centre_rect(
+    group_rect = get_centre_rect(
         (0, photo_rect[3], page_size[0], page_size[1] - (page_size[1] - photo_rect[3]) / 3),
-        draw, subtitle, titleFont)
-    group_rect = get_right_rect(
-        (0, subtitle_rect[3], photo_rect[2], page_size[1]),
+        draw, group_name, groupFont)
+    subtitle_rect = get_centre_rect(
+        (0, group_rect[3], page_size[0], page_size[1]),
+        draw, subtitle, subtitleFont)
+    copy_rect = get_right_rect(
+        (0, group_rect[3], photo_rect[2], page_size[1]),
         draw, group_name, smallFont)
-    draw.text((title_rect[0] + 2, title_rect[1] + 2), title, fill=(0,255,0,255), font=titleFont)
+    draw.text((title_rect[0] + offset, title_rect[1] + offset), title, fill=(0,255,0,255), font=titleFont)
     draw.text((title_rect[0], title_rect[1]), title, fill=(255,0,0,255), font=titleFont)
-    draw.text((subtitle_rect[0] + 2, subtitle_rect[1] + 2), subtitle, fill=(0,255,0,255), font=titleFont)
-    draw.text((subtitle_rect[0], subtitle_rect[1]), subtitle, fill=(255,0,0,255), font=titleFont)
-    draw.text((group_rect[0], group_rect[1]), group_name, fill=(0,0,0,255), font=smallFont)
+    draw.text((group_rect[0], group_rect[1]), group_name, fill=(0,0,0,255), font=groupFont)
+    draw.text((subtitle_rect[0] + offset, subtitle_rect[1] + offset), subtitle, fill=(0,255,0,255), font=subtitleFont)
+    draw.text((subtitle_rect[0], subtitle_rect[1]), subtitle, fill=(255,0,0,255), font=subtitleFont)
+    draw.text((copy_rect[0], copy_rect[1]), copy, fill=(65,90,104,255), font=smallFont)
 
 def process(infile, group_name):
     page = Image.new('RGBA', (a4width, a4height), (255,255,255,255))
