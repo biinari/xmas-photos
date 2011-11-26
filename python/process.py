@@ -64,14 +64,14 @@ def create_title(base, page_size, photo_size, photo_rect, group_name):
     subtitle_rect = get_centre_rect(
         (0, photo_rect[3], page_size[0], page_size[1] - (page_size[1] - photo_rect[3]) / 3),
         draw, subtitle, titleFont)
-    group_name_rect = get_right_rect(
+    group_rect = get_right_rect(
         (0, subtitle_rect[3], photo_rect[2], page_size[1]),
         draw, group_name, smallFont)
     draw.text((title_rect[0] + 2, title_rect[1] + 2), title, fill=(0,255,0,255), font=titleFont)
     draw.text((title_rect[0], title_rect[1]), title, fill=(255,0,0,255), font=titleFont)
     draw.text((subtitle_rect[0] + 2, subtitle_rect[1] + 2), subtitle, fill=(0,255,0,255), font=titleFont)
     draw.text((subtitle_rect[0], subtitle_rect[1]), subtitle, fill=(255,0,0,255), font=titleFont)
-    draw.text((group_name_rect[0], group_name_rect[1]), group_name, fill=(0,0,0,255), font=smallFont)
+    draw.text((group_rect[0], group_rect[1]), group_name, fill=(0,0,0,255), font=smallFont)
 
 def process(infile, group_name):
     page = Image.new('RGBA', (a4width, a4height), (255,255,255,255))
