@@ -117,7 +117,10 @@ def process(infile, group_name, timeid):
     photo_rect = (photo_left, photo_top, photo_right, photo_bottom)
     page.paste(photo, photo_rect)
     create_title(page, (a4width, a4height), photo_size, photo_rect, group_name, timeid)
-    page.save('page.png')
+    day = time.strftime('%a', time.localtime())
+    if (not os.path.exists('png/{}'.format(day))):
+        os.mkdir('png/{}'.format(day))
+    page.save('png/{}.png'.format(timeid))
 
 if __name__ == "__main__":
     for infile in os.listdir('infiles/'):
