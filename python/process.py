@@ -15,7 +15,8 @@ a4height = 2480
 a5width = 2480
 a5height = 1754
 camera_mount = '/mnt/camera'
-do_print = True
+do_camera = False
+do_print = False
 
 def apply_mask(infile, size):
     (width, height) = size
@@ -128,18 +129,24 @@ def process(infile, group_name, timeid):
         print_image(png_file)
 
 def mount_camera():
-    if os.path.exists(camera_mount) and os.path.ismount(camera_mount):
-        mounted = True
+    if do_camera:
+        if os.path.exists(camera_mount) and os.path.ismount(camera_mount):
+            mounted = True
+        else:
+            mounted = not subprocess.call(['mount', camera_mount])
+        return mounted
     else:
-        mounted = not subprocess.call(['mount', camera_mount])
-    return mounted
+        return True
 
 def umount_camera():
-    if os.path.exists(camera_mount) and os.path.ismount(camera_mount):
-        umounted = not subprocess.call(['umount', camera_mount])
+    if do_camera:
+        if os.path.exists(camera_mount) and os.path.ismount(camera_mount):
+            umounted = not subprocess.call(['umount', camera_mount])
+        else:
+            umounted = True
+        return umounted
     else:
-        umounted = True
-    return umounted
+        return True
 
 def print_image(filename):
     printer = 'Kodak-ESP-5250-wifi'
