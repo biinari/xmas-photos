@@ -24,7 +24,7 @@ def process(infile, group_name, timeid):
     fade = Fade()
     photo = fade.applyMask(infile, photo_size)
     photo_left = (a4width - photo_size[0]) / 2
-    photo_top = (a4height - photo_size[1]) / 2
+    photo_top = 520
     photo_right = photo_left + photo_size[0]
     photo_bottom = photo_top + photo_size[1]
     photo_rect = (photo_left, photo_top, photo_right, photo_bottom)
