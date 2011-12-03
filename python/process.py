@@ -8,6 +8,7 @@ import ImageFont, ImageDraw
 import math
 import time
 from fade import Fade
+from textdraw import TextDraw
 
 # Landscape at 300 ppi
 a4width = 3508
@@ -17,36 +18,6 @@ a5height = 1754
 camera_mount = '/mnt/camera'
 do_camera = False
 do_print = False
-
-def get_centre_rect(rect, draw, text, font):
-    """ Get rectangle tuple to draw the text centred. """
-    (width, height) = draw.textsize(text, font=font)
-    left = (rect[2] - rect[0] - width) / 2 + rect[0]
-    top = (rect[3] - rect[1] - height) / 2 + rect[1]
-    pos = (left, top, left + width, top + height)
-    return pos
-
-def get_right_rect(rect, draw, text, font):
-    """ Get rectangle tuple to align text right, vertically centred. """
-    (width, height) = draw.textsize(text, font=font)
-    left = rect[2] - width
-    top = (rect[3] - rect[1] - height) / 2 + rect[1]
-    pos = (left, top, left + width, top + height)
-    return pos
-
-def get_left_rect(rect, draw, text, font):
-    """ Get rectangle tuple to align text left, vertically centred. """
-    (width, height) = draw.textsize(text, font=font)
-    left = rect[0]
-    top = (rect[3] - rect[1] - height) / 2 + rect[1]
-    pos = (left, top, left + width, top + height)
-    return pos
-
-def draw_text(draw, rect, text, fill, font, shadow=None, shadowFill=None):
-    if (shadow != None):
-        draw.text((rect[0] + shadow, rect[1] + shadow),
-                  text, fill=shadowFill, font=font)
-    draw.text((rect[0], rect[1]), text, fill=fill, font=font)
 
 def create_title(base, page_size, photo_size, photo_rect, group_name, timeid):
     title = "Christmas Experience"
@@ -66,26 +37,27 @@ def create_title(base, page_size, photo_size, photo_rect, group_name, timeid):
     subtitleFont = ImageFont.truetype('fonts/BookmanDemi.pfb', 100)
     groupFont = ImageFont.truetype('fonts/CooperBlackStd-Italic.otf', 120)
     smallFont = ImageFont.truetype('fonts/DejaVuSans.ttf', 42)
-    title_rect = get_centre_rect(
+    textdraw = TextDraw(draw)
+    title_rect = textdraw.centre(
         (0, 0, page_size[0], photo_rect[1]),
-        draw, title, titleFont)
-    group_rect = get_centre_rect(
+        title, titleFont)
+    group_rect = textdraw.centre(
         (0, photo_rect[3], page_size[0], page_size[1] - (page_size[1] - photo_rect[3]) / 3),
-        draw, group_name, groupFont)
-    subtitle_rect = get_centre_rect(
+        group_name, groupFont)
+    subtitle_rect = textdraw.centre(
         (0, group_rect[3], page_size[0], page_size[1] - margin),
-        draw, subtitle, subtitleFont)
-    timeid_rect = get_left_rect(
+        subtitle, subtitleFont)
+    timeid_rect = textdraw.left(
         (photo_rect[0], group_rect[3], page_size[0], page_size[1] - margin),
-        draw, timeid, smallFont)
-    copy_rect = get_right_rect(
+        timeid, smallFont)
+    copy_rect = textdraw.right(
         (0, group_rect[3], photo_rect[2], page_size[1] - margin),
-        draw, copy, smallFont)
-    draw_text(draw, title_rect, title, red, titleFont, shadow, darkred)
-    draw_text(draw, group_rect, group_name, darkgreen, groupFont, shadow, green)
-    draw_text(draw, subtitle_rect, subtitle, red, subtitleFont, shadow, darkred)
-    draw_text(draw, timeid_rect, timeid, grey, smallFont)
-    draw_text(draw, copy_rect, copy, grey, smallFont)
+        copy, smallFont)
+    textdraw.text(title_rect, title, red, titleFont, shadow, darkred)
+    textdraw.text(group_rect, group_name, darkgreen, groupFont, shadow, green)
+    textdraw.text(subtitle_rect, subtitle, red, subtitleFont, shadow, darkred)
+    textdraw.text(timeid_rect, timeid, grey, smallFont)
+    textdraw.text(copy_rect, copy, grey, smallFont)
 
 def process(infile, group_name, timeid):
     page = Image.new('RGBA', (a4width, a4height), (255,255,255,255))
