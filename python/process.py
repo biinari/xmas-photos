@@ -90,7 +90,7 @@ def create_title(base, page_size, photo_size, photo_rect, group_name, timeid):
 def process(infile, group_name, timeid):
     page = Image.new('RGBA', (a4width, a4height), (255,255,255,255))
     photo_size = (a4width * 3 / 4, a4height * 3 / 4)
-    fade = new Fade()
+    fade = Fade()
     photo = fade.applyMask(infile, photo_size)
     photo_left = (a4width - photo_size[0]) / 2
     photo_top = (a4height - photo_size[1]) / 2 - a4height / 64
