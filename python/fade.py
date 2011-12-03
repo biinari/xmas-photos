@@ -5,7 +5,7 @@ class Fade:
     """Manages mask and base for fade border"""
 
     def maskPixel(self, row, col, width, height):
-        exp = 24
+        exp = 48
         val = (1 - (2.0 * col / width - 1) ** exp) * (1 - (2.0 * row / height - 1) ** exp)
         return int(math.floor(255 * val))
 
