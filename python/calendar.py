@@ -14,7 +14,7 @@ import tools
 a4width = 2480
 a4height = 3508
 
-def process(infile, group_name, timeid):
+def process(infile, timeid):
     try:
         page = Image.open('base/Calendar_2011.png')
     except IOError:
@@ -29,7 +29,9 @@ def process(infile, group_name, timeid):
     photo_bottom = photo_top + photo_size[1]
     photo_rect = (photo_left, photo_top, photo_right, photo_bottom)
     page.paste(photo, photo_rect)
-    png_file = 'cal.png'
+    if not os.path.exists('png/{}'.format(day)):
+        os.mkdir('png/{}'.format(day))
+    png_file = 'png/{}.png'.format(timeid)
     page.save(png_file)
     tools.print_image(png_file)
 
@@ -38,7 +40,7 @@ if __name__ == "__main__":
         print 'Could not connect to camera. Try again.'
     for infile in os.listdir('infiles/'):
         timeid = time.strftime('%a/%H%M%S', time.localtime())
-        process(infile, 'Test Group', timeid)
+        process(infile, timeid)
         #os.rename('infiles/' + infile, 'outfiles/' + infile)
     if tools.umount_camera():
         print 'Finished. You can disconnect the camera now.'
