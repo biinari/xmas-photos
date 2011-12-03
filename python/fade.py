@@ -4,9 +4,32 @@ import math
 class Fade:
     """Manages mask and base for fade border"""
 
+    def applyMask(infile, size):
+        (width, height) = size
+        try:
+            photo = Image.open('infiles/' + infile)
+        except IOError:
+            print "Cannot open", infile
+            return
+        photo = photo.resize(size, Image.NEAREST)
+        fade = Fade()
+        try:
+            mask = self.getMask(width, height)
+        except IOError:
+            print "Cannot open mask file"
+            return
+        try:
+            base = self.getBase(width, height)
+        except IOError:
+            print "Cannot open base file"
+            return
+        base.paste(photo, (0, 0, width, height), mask)
+        return base
+
     def maskPixel(self, row, col, width, height):
         exp = 48
-        val = (1 - (2.0 * col / width - 1) ** exp) * (1 - (2.0 * row / height - 1) ** exp)
+        val = (1 - (2.0 * col / width - 1) ** exp) *
+              (1 - (2.0 * row / height - 1) ** exp)
         return int(math.floor(255 * val))
 
     def createMask(self, width, height):

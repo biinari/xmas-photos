@@ -18,28 +18,6 @@ camera_mount = '/mnt/camera'
 do_camera = False
 do_print = False
 
-def apply_mask(infile, size):
-    (width, height) = size
-    try:
-        photo = Image.open('infiles/' + infile)
-    except IOError:
-        print "Cannot open", infile
-        return
-    photo = photo.resize(size, Image.NEAREST)
-    fade = Fade()
-    try:
-        mask = fade.getMask(width, height)
-    except IOError:
-        print "Cannot open mask file"
-        return
-    try:
-        base = fade.getBase(width, height)
-    except IOError:
-        print "Cannot open base file"
-        return
-    base.paste(photo, (0, 0, width, height), mask)
-    return base
-
 def get_centre_rect(rect, draw, text, font):
     """ Get rectangle tuple to draw the text centred. """
     (width, height) = draw.textsize(text, font=font)
@@ -112,7 +90,7 @@ def create_title(base, page_size, photo_size, photo_rect, group_name, timeid):
 def process(infile, group_name, timeid):
     page = Image.new('RGBA', (a4width, a4height), (255,255,255,255))
     photo_size = (a4width * 3 / 4, a4height * 3 / 4)
-    photo = apply_mask(infile, photo_size)
+    photo = fade.applyMask(infile, photo_size)
     photo_left = (a4width - photo_size[0]) / 2
     photo_top = (a4height - photo_size[1]) / 2 - a4height / 64
     photo_right = photo_left + photo_size[0]
