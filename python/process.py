@@ -159,7 +159,7 @@ if __name__ == "__main__":
     for infile in os.listdir('infiles/'):
         timeid = time.strftime('%a/%H%M%S', time.localtime())
         process(infile, 'Test Group', timeid)
-        os.rename('infiles/' + infile, 'outfiles/' + infile)
+        #os.rename('infiles/' + infile, 'outfiles/' + infile)
     if umount_camera():
         print 'Finished. You can disconnect the camera now.'
     else:
