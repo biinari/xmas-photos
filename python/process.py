@@ -1,23 +1,20 @@
 #!/usr/bin/env python
 # vim: set fileencoding=utf-8 :
 # Process photos for Bowley Christmas Experience
-import os, sys
-import subprocess
+import os
 import Image, ImageFile
 import ImageFont, ImageDraw
 import math
 import time
 from fade import Fade
 from textdraw import TextDraw
+import tools
 
 # Landscape at 300 ppi
 a4width = 3508
 a4height = 2480
 a5width = 2480
 a5height = 1754
-camera_mount = '/mnt/camera'
-do_camera = False
-do_print = False
 
 def create_title(base, page_size, photo_size, photo_rect, group_name, timeid):
     title = "Christmas Experience"
@@ -76,42 +73,16 @@ def process(infile, group_name, timeid):
         os.mkdir('png/{}'.format(day))
     png_file = 'png/{}_{}.png'.format(timeid, group_name.replace(' ','_'))
     page.save(png_file)
-    if (do_print):
-        print_image(png_file)
-
-def mount_camera():
-    if do_camera:
-        if os.path.exists(camera_mount) and os.path.ismount(camera_mount):
-            mounted = True
-        else:
-            mounted = not subprocess.call(['mount', camera_mount])
-        return mounted
-    else:
-        return True
-
-def umount_camera():
-    if do_camera:
-        if os.path.exists(camera_mount) and os.path.ismount(camera_mount):
-            umounted = not subprocess.call(['umount', camera_mount])
-        else:
-            umounted = True
-        return umounted
-    else:
-        return True
-
-def print_image(filename):
-    printer = 'Kodak-ESP-5250-wifi'
-    success = not subprocess.call(['lp', '-d' + printer, '-o', 'media=a4', '-o', 'scaling=100', filename])
-    return success
+    tools.print_image(png_file)
 
 if __name__ == "__main__":
-    if not mount_camera():
+    if not tools.mount_camera():
         print 'Could not connect to camera. Try again.'
     for infile in os.listdir('infiles/'):
         timeid = time.strftime('%a/%H%M%S', time.localtime())
         process(infile, 'Test Group', timeid)
         #os.rename('infiles/' + infile, 'outfiles/' + infile)
-    if umount_camera():
+    if tools.umount_camera():
         print 'Finished. You can disconnect the camera now.'
     else:
         print 'Could not disconnect from camera. Please use the software safely remove function before disconnecting.'
