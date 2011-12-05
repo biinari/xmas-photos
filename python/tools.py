@@ -4,9 +4,9 @@ import os
 import subprocess
 
 camera_mount = "/mnt/camera"
-printer = 'Kodak-ESP-5250-wifi'
-do_camera = False
-do_print = False
+printer = 'Kodak-ESP-5250-usb'
+do_camera = True
+do_print = True
 
 def mount_camera():
     if do_camera:
