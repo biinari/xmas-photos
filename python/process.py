@@ -79,6 +79,7 @@ if __name__ == "__main__":
     if not tools.mount_camera():
         print 'Could not connect to camera. Try again.'
     for infile in os.listdir('infiles/'):
+        group_name = raw_input('Group name: ')
         timeid = time.strftime('%a/%H%M%S', time.localtime())
         process(infile, 'Test Group', timeid)
         #os.rename('infiles/' + infile, 'outfiles/' + infile)
