@@ -22,8 +22,9 @@ def mount_camera():
         return True
 
 def get_camera_files():
-    for src_file in os.listdir(camera_src):
-        shutil.move(camera_src + '/' + src_file, 'infiles/')
+    if os.path.exists(camera_src):
+        for src_file in os.listdir(camera_src):
+            shutil.move(camera_src + '/' + src_file, 'infiles/')
 
 def umount_camera():
     if do_camera:
