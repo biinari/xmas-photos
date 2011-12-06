@@ -78,12 +78,14 @@ def process(infile, group_name, timeid):
 if __name__ == "__main__":
     if not tools.mount_camera():
         print 'Could not connect to camera. Try again.'
+    tools.get_camera_files()
+    if tools.umount_camera():
+        print 'You can disconnect the camera now.'
+    else:
+        print 'Could not disconnect from camera.'
     for infile in os.listdir('infiles/'):
         group_name = raw_input('Group name: ')
         timeid = time.strftime('%a/%H%M%S', time.localtime())
         process(infile, group_name, timeid)
         os.rename('infiles/' + infile, 'outfiles/{}_{}.jpg'.format(timeid, group_name.replace(' ','_')))
-    if tools.umount_camera():
-        print 'Finished. You can disconnect the camera now.'
-    else:
-        print 'Could not disconnect from camera. Please use the software safely remove function before disconnecting.'
+    print 'Finished.'

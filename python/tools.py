@@ -1,9 +1,11 @@
 # vim: set fileencoding=utf-8 :
 # Mount and print functions
 import os
+import shutil
 import subprocess
 
 camera_mount = "/mnt/camera"
+camera_src = camera_mount + "/DCIM/100OLYMP"
 printer = 'Kodak-ESP-5250-usb'
 do_camera = True
 do_print = True
@@ -17,6 +19,10 @@ def mount_camera():
         return mounted
     else:
         return True
+
+def get_camera_files():
+    for src_file in os.listdir(camera_src):
+        shutil.move(camera_src + '/' + src_file, 'infiles/')
 
 def umount_camera():
     if do_camera:
