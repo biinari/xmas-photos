@@ -57,7 +57,7 @@ def create_title(base, page_size, photo_size, photo_rect, group_name, timeid):
     textdraw.text(copy_rect, copy, grey, smallFont)
 
 def process(infile, group_name, timeid):
-    page = Image.new('RGBA', (a4width, a4height), (255,255,255,255))
+    page = Image.new('RGB', (a4width, a4height), (255,255,255,255))
     photo_size = (a4width * 3 / 4, a4height * 3 / 4)
     fade = Fade()
     photo = fade.applyMask(infile, photo_size)
