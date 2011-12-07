@@ -72,7 +72,7 @@ def process(infile, group_name, timeid):
     if not os.path.exists('png/{}'.format(day)):
         os.mkdir('png/{}'.format(day))
     png_file = 'png/{}_{}.jpg'.format(timeid, group_name.replace(' ','_'))
-    page.save(png_file, quality=100)
+    page.save(png_file, quality=75)
     tools.print_image(png_file)
 
 if __name__ == "__main__":
