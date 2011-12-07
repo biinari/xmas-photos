@@ -6,7 +6,7 @@ import subprocess
 
 camera_mount = "/mnt/camera"
 camera_src = camera_mount + "/DCIM/100OLYMP"
-printer = 'Kodak-ESP-5250-usb'
+printer = 'Kodak-ESP-5250-wifi'
 #printer = 'Brother-MFC-5840CN-USB'
 do_camera = True
 do_print = True
