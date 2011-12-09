@@ -31,8 +31,8 @@ def process(infile, timeid):
     page.paste(photo, photo_rect)
     if not os.path.exists('png/{}'.format(day)):
         os.mkdir('png/{}'.format(day))
-    png_file = 'png/{}.png'.format(timeid)
-    page.save(png_file)
+    png_file = 'png/{}.jpg'.format(timeid)
+    page.save(png_file, quality=75)
     tools.print_image(png_file)
 
 if __name__ == "__main__":
