@@ -4,14 +4,15 @@ import os
 import shutil
 import subprocess
 
-camera_mount = "/mnt/camera"
-camera_src = camera_mount + "/DCIM/100OLYMP"
+camera_mount = "/media/NIKON D60"
+camera_src = camera_mount + "/DCIM/100KM530"
 printer = 'Kodak-ESP-5250-wifi'
 #printer = 'Brother-MFC-5840CN-USB'
 do_camera = True
 do_print = True
 
 def mount_camera():
+    return True
     if do_camera:
         if os.path.exists(camera_mount) and os.path.ismount(camera_mount):
             mounted = True
@@ -22,9 +23,10 @@ def mount_camera():
         return True
 
 def get_camera_files():
-    if os.path.exists(camera_src):
-        for src_file in os.listdir(camera_src):
-            shutil.move(camera_src + '/' + src_file, 'infiles/')
+    if do_camera:
+        if os.path.exists(camera_src):
+            for src_file in os.listdir(camera_src):
+                shutil.move(camera_src + '/' + src_file, 'infiles/')
 
 def umount_camera():
     if do_camera:
