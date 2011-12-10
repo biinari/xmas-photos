@@ -26,27 +26,29 @@ def create_title(base, page_size, photo_size, photo_rect, group_name, timeid):
     black = (0, 0, 0, 255)
     grey = (65, 90, 104, 255)
     margin = 48
+    cal_top = 2100
+    cal_bottom = 3350
     fade = Fade()
     draw = ImageDraw.Draw(base)
     titleFont = ImageFont.truetype('fonts/BookmanDemi.pfb', 144)
-    subtitleFont = ImageFont.truetype('fonts/BookmanDemi.pfb', 100)
+    subtitleFont = ImageFont.truetype('fonts/BookmanDemi.pfb', 120)
     groupFont = ImageFont.truetype('fonts/CooperBlackStd-Italic.otf', 120)
     smallFont = ImageFont.truetype('fonts/DejaVuSans.ttf', 42)
     textdraw = TextDraw(draw)
     title_rect = textdraw.centre(
-        (0, 0, page_size[0], photo_rect[1]),
+        (0, margin * 2, page_size[0], photo_rect[1] / 2),
         title, titleFont)
     group_rect = textdraw.centre(
-        (0, photo_rect[3], page_size[0], page_size[1] - (page_size[1] - photo_rect[3]) / 3),
+        (0, photo_rect[1] / 2, page_size[0], photo_rect[1]),
         group_name, groupFont)
     subtitle_rect = textdraw.centre(
-        (0, group_rect[3], page_size[0], page_size[1] - margin),
+        (0, photo_rect[3], page_size[0], cal_top),
         subtitle, subtitleFont)
     timeid_rect = textdraw.left(
-        (photo_rect[0], group_rect[3], page_size[0], page_size[1] - margin),
+        (photo_rect[0], cal_bottom, page_size[0], page_size[1] - margin),
         timeid, smallFont)
     copy_rect = textdraw.right(
-        (0, group_rect[3], photo_rect[2], page_size[1] - margin),
+        (0, cal_bottom, photo_rect[2], page_size[1] - margin),
         copy, smallFont)
     textdraw.text(title_rect, title, red, titleFont, shadow, darkred)
     textdraw.text(group_rect, group_name, darkgreen, groupFont, shadow, green)
