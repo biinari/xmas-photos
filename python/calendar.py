@@ -88,7 +88,7 @@ if __name__ == "__main__":
         group_name = raw_input('Group name: ')
         timeid = time.strftime('%a/%H%M%S', time.localtime())
         process(infile, group_name, timeid)
-        #os.rename('infiles/' + infile, 'outfiles/' + infile)
+        os.rename('infiles/' + infile, 'outfiles/' + infile)
     if tools.umount_camera():
         print 'Finished. You can disconnect the camera now.'
     else:
