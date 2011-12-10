@@ -80,7 +80,9 @@ def process(infile, group_name, timeid):
 if __name__ == "__main__":
     if not tools.mount_camera():
         print 'Could not connect to camera. Try again.'
-    for infile in os.listdir('infiles/').sort():
+    names = os.listdir('infiles/')
+    names.sort()
+    for infile in names:
         group_name = raw_input('Group name: ')
         timeid = time.strftime('%a/%H%M%S', time.localtime())
         process(infile, group_name, timeid)
