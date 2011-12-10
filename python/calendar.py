@@ -38,7 +38,7 @@ def process(infile, timeid):
 if __name__ == "__main__":
     if not tools.mount_camera():
         print 'Could not connect to camera. Try again.'
-    for infile in os.listdir('infiles/'):
+    for infile in os.listdir('infiles/').sort():
         timeid = time.strftime('%a/%H%M%S', time.localtime())
         process(infile, timeid)
         #os.rename('infiles/' + infile, 'outfiles/' + infile)
