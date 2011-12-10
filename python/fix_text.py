@@ -51,7 +51,9 @@ def process(infile, group_name, timeid):
     tools.print_image(png_file)
 
 if __name__ == "__main__":
-    for infile in os.listdir('infiles/').sort():
+    names = os.listdir('infiles/')
+    names.sort()
+    for infile in names:
         day = time.strftime('%a', time.localtime())
         timeid = day + '/' + raw_input('Time id: ')
         group_name = raw_input('Group name: ')

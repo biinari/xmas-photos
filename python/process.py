@@ -83,7 +83,9 @@ if __name__ == "__main__":
         print 'You can disconnect the camera now.'
     else:
         print 'Could not disconnect from camera.'
-    for infile in os.listdir('infiles/').sort():
+    names = os.listdir('infiles/')
+    names.sort()
+    for infile in names:
         group_name = raw_input('Group name: ')
         timeid = time.strftime('%a/%H%M%S', time.localtime())
         process(infile, group_name, timeid)
