@@ -8,8 +8,8 @@ camera_mount = "/media/NIKON D60"
 camera_src = camera_mount + "/DCIM/100KM530"
 printer = 'Kodak-ESP-5250-wifi'
 #printer = 'Brother-MFC-5840CN-USB'
-do_camera = True
-do_print = True
+do_camera = False
+do_print = False
 
 def mount_camera():
     return True
