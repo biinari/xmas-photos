@@ -38,9 +38,9 @@ def umount_camera():
     else:
         return True
 
-def print_image(filename):
+def print_image(filename, copies=1):
     if do_print:
-        success = not subprocess.call(['lp', '-d' + printer, '-o', 'media=a4', '-o', 'scaling=100', filename])
+        success = not subprocess.call(['lp', '-d' + printer, '-o', 'media=a4', '-o', 'scaling=100', '-n', int(copies), filename])
         return success
     else:
         return True
