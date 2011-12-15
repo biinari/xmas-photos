@@ -1,0 +1,17 @@
+Linux printer driver for Kodak ESP 5250 doesn't work well in USB so need to power cycle printer between every print job
+Use wifi to print - that driver works
+
+Make sure process in right order
+
+Get new camera
+
+Use 2 printers so that we can change cartridges / catch up
+Select which printer to print to:
+- Round-robin
+- user select
+- Read print queue and add to shortest
+NB: make sure the printer pool can easily be changed - e.g. if printing labels on one printer or while changing cartridges
+
+Preview photo when prompting for group name
+
+Create a reprint script
