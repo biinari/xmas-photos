@@ -15,6 +15,11 @@ class MainWindow(wx.Frame):
     def createWidgets(self):
         horiz = wx.BoxSizer(wx.HORIZONTAL)
         self.scheduleCtrl = wx.TextCtrl(self, style=wx.TE_MULTILINE)
+        self.processBtn = wx.Button(self, label="Process")
+
+        self.Bind(wx.EVT_BUTTON, self.OnProcess, self.processBtn)
+
+        horiz.Add(self.processBtn, 1, wx.ALIGN_LEFT)
         horiz.Add(self.scheduleCtrl, 1, wx.EXPAND)
         self.SetSizer(horiz)
         self.Centre()
@@ -48,6 +53,9 @@ class MainWindow(wx.Frame):
 
     def OnExit(self, event):
         self.Close(True)
+
+    def OnProcess(self, event):
+        process.process()
 
     def OnDeviceAdded(self, device_id, properties):
         message = properties.join('\n')
