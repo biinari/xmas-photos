@@ -50,7 +50,7 @@ def process(infile, group_name, timeid):
     page.save(png_file, quality=75)
     tools.print_image(png_file)
 
-if __name__ == "__main__":
+def run():
     names = os.listdir('infiles/')
     names.sort()
     for infile in names:
@@ -59,3 +59,6 @@ if __name__ == "__main__":
         group_name = raw_input('Group name: ')
         process(infile, group_name, timeid)
         os.rename('infiles/' + infile, 'outfiles/{}_{}.jpg'.format(timeid, group_name.replace(' ','_')))
+
+if __name__ == "__main__":
+    run()

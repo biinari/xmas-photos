@@ -75,7 +75,7 @@ def process(infile, group_name, timeid):
     page.save(png_file, quality=75)
     tools.print_image(png_file)
 
-if __name__ == "__main__":
+def run():
     if not tools.mount_camera():
         print 'Could not connect to camera. Try again.'
     tools.get_camera_files()
@@ -91,3 +91,6 @@ if __name__ == "__main__":
         process(infile, group_name, timeid)
         os.rename('infiles/' + infile, 'outfiles/{}_{}.jpg'.format(timeid, group_name.replace(' ','_')))
     print 'Finished.'
+
+if __name__ == "__main__":
+    run()
