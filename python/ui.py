@@ -7,10 +7,17 @@ class MainWindow(wx.Frame):
     """ Main Window Frame for Sleigh Photos. """
     def __init__(self, parent, title):
         wx.Frame.__init__(self, parent, title=title)
-        self.scheduleCtrl = wx.TextCtrl(self, style=wx.TE_MULTILINE)
+        self.createWidgets()
         self.CreateStatusBar()
         self.setupMenu()
         self.Show(True)
+
+    def createWidgets(self):
+        horiz = wx.BoxSizer(wx.HORIZONTAL)
+        self.scheduleCtrl = wx.TextCtrl(self, style=wx.TE_MULTILINE)
+        horiz.Add(self.scheduleCtrl, 1, wx.EXPAND)
+        self.SetSizer(horiz)
+        self.Centre()
 
     def setupMenu(self):
         """ Setup menu bar. """
