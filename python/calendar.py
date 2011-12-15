@@ -14,7 +14,7 @@ import tools
 a4width = 2480
 a4height = 3508
 
-def create_title(base, page_size, photo_size, photo_rect, group_name, timeid):
+def create_title(base, page_size, photo_size, photo_rect, timeid):
     title = "Christmas Experience"
     subtitle = "December - 2011"
     copy = u"© 2011 East Lancashire Scouts"
@@ -30,17 +30,17 @@ def create_title(base, page_size, photo_size, photo_rect, group_name, timeid):
     cal_bottom = 3350
     fade = Fade()
     draw = ImageDraw.Draw(base)
-    titleFont = ImageFont.truetype('fonts/BookmanDemi.pfb', 144)
+    #titleFont = ImageFont.truetype('fonts/BookmanDemi.pfb', 144)
     subtitleFont = ImageFont.truetype('fonts/BookmanDemi.pfb', 120)
-    groupFont = ImageFont.truetype('fonts/CooperBlackStd-Italic.otf', 120)
+    #groupFont = ImageFont.truetype('fonts/CooperBlackStd-Italic.otf', 120)
     smallFont = ImageFont.truetype('fonts/DejaVuSans.ttf', 42)
     textdraw = TextDraw(draw)
-    title_rect = textdraw.centre(
-        (0, margin * 2, page_size[0], photo_rect[1] / 2),
-        title, titleFont)
-    group_rect = textdraw.centre(
-        (0, photo_rect[1] / 2, page_size[0], photo_rect[1]),
-        group_name, groupFont)
+    #title_rect = textdraw.centre(
+    #    (0, margin * 2, page_size[0], photo_rect[1] / 2),
+    #    title, titleFont)
+    #group_rect = textdraw.centre(
+    #    (0, photo_rect[1] / 2, page_size[0], photo_rect[1]),
+    #    group_name, groupFont)
     subtitle_rect = textdraw.centre(
         (0, photo_rect[3], page_size[0], cal_top),
         subtitle, subtitleFont)
@@ -50,13 +50,13 @@ def create_title(base, page_size, photo_size, photo_rect, group_name, timeid):
     copy_rect = textdraw.right(
         (0, cal_bottom, photo_rect[2], page_size[1] - margin),
         copy, smallFont)
-    textdraw.text(title_rect, title, red, titleFont, shadow, darkred)
-    textdraw.text(group_rect, group_name, darkgreen, groupFont, shadow, green)
+    #textdraw.text(title_rect, title, red, titleFont, shadow, darkred)
+    #textdraw.text(group_rect, group_name, darkgreen, groupFont, shadow, green)
     textdraw.text(subtitle_rect, subtitle, red, subtitleFont, shadow, darkred)
     textdraw.text(timeid_rect, timeid, grey, smallFont)
     textdraw.text(copy_rect, copy, grey, smallFont)
 
-def process(infile, group_name, timeid):
+def process(infile, timeid):
     try:
         page = Image.open('base/Calendar_2011.png')
     except IOError:
@@ -71,7 +71,7 @@ def process(infile, group_name, timeid):
     photo_bottom = photo_top + photo_size[1]
     photo_rect = (photo_left, photo_top, photo_right, photo_bottom)
     page.paste(photo, photo_rect)
-    create_title(page, (a4width, a4height), photo_size, photo_rect, group_name, timeid)
+    create_title(page, (a4width, a4height), photo_size, photo_rect, timeid)
     day = time.strftime('%a', time.localtime())
     if not os.path.exists('png/{}'.format(day)):
         os.mkdir('png/{}'.format(day))
@@ -82,14 +82,16 @@ def process(infile, group_name, timeid):
 if __name__ == "__main__":
     if not tools.mount_camera():
         print 'Could not connect to camera. Try again.'
+    tools.get_camera_files()
+    if tools.umount_camera():
+        print 'You can disconnect the camera now.'
+    else:
+        print 'Could not disconnect from camera. Please use the software safely remove function before disconnecting.'
     names = os.listdir('infiles/')
     names.sort()
     for infile in names:
-        group_name = raw_input('Group name: ')
+        #group_name = raw_input('Group name: ')
         timeid = time.strftime('%a/%H%M%S', time.localtime())
-        process(infile, group_name, timeid)
-        os.rename('infiles/' + infile, 'outfiles/' + infile)
-    if tools.umount_camera():
-        print 'Finished. You can disconnect the camera now.'
-    else:
-        print 'Could not disconnect from camera. Please use the software safely remove function before disconnecting.'
+        process(infile, timeid)
+        os.rename('infiles/' + infile, 'outfiles/{}.jpg'.format(timeid))
+    print "Finished."
