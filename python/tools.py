@@ -11,6 +11,22 @@ printer = 'Kodak-ESP-5250-wifi'
 do_camera = False
 do_print = False
 
+class UnboundCallbackError (UnboundLocalError):
+	""" Callback function not set error. """
+	pass
+
+class Logger:
+	_callback = None
+
+	def setCallback(self, callback=None):
+		type(self)._callback = callback
+
+	def log(self, message):
+		if self._callback != None:
+			self._callback(message)
+		else:
+			raise UnboundCallbackError, "Callback function not set"
+
 def mount_camera():
     return True
     if do_camera:
