@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 # vim: set fileencoding=utf-8 :
 # Calendar layout for Saturday at Bowley Christmas Experience
 import os
