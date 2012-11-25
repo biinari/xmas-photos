@@ -8,7 +8,8 @@ from devices.device import Device
 class MainWindow(wx.Frame):
     """ Main Window Frame for Sleigh Photos. """
     def __init__(self, parent, title):
-        wx.Frame.__init__(self, parent, title=title, size=(650, 450))
+        wx.Frame.__init__(self, parent, title=title, size=(610, 500))
+        self.SetMinSize(self.GetSize())
         self.createWidgets()
         self.CreateStatusBar()
         self.setupMenu()
@@ -17,16 +18,18 @@ class MainWindow(wx.Frame):
     def createWidgets(self):
         vert = wx.BoxSizer(wx.VERTICAL)
         horiz = wx.BoxSizer(wx.HORIZONTAL)
-        self.staticImage = wx.StaticBitmap(self, wx.ID_ANY)
-        self.staticImage.SetSize((600, 400))
-        self.scheduleCtrl = wx.TextCtrl(self, style=wx.TE_MULTILINE)
+        self.staticImage = wx.StaticBitmap(self, wx.ID_ANY, size=(600, 400))
+        self.groupLabel = wx.StaticText(self, label="Group Name:")
+        self.groupName = wx.TextCtrl(self)
         self.processBtn = wx.Button(self, label="Process")
 
         self.Bind(wx.EVT_BUTTON, self.OnProcess, self.processBtn)
 
-        horiz.Add(self.processBtn, 1, wx.ALIGN_LEFT)
-        horiz.Add(self.scheduleCtrl, 1, wx.EXPAND)
-        vert.Add(horiz)
+        horiz.Add(self.groupLabel, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
+        horiz.Add(self.groupName, 4, wx.ALIGN_CENTER_VERTICAL)
+        horiz.Add(self.processBtn, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
+        vert.Add(self.staticImage, 0, wx.TOP | wx.ALIGN_CENTER_HORIZONTAL, 5)
+        vert.Add(horiz, 1, wx.ALIGN_CENTER_HORIZONTAL)
         self.SetSizer(vert)
         self.Centre()
 
