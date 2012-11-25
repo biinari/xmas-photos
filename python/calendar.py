@@ -58,7 +58,7 @@ def create_title(base, page_size, photo_size, photo_rect, timeid):
 
 def process(infile, timeid):
     try:
-        page = Image.open('base/Calendar_2011.png')
+        page = Image.open('base/Calendar_2012.png')
     except IOError:
         print "Cannot open calendar page base"
         return
