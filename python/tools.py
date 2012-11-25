@@ -6,7 +6,7 @@ import subprocess
 
 camera_mount = "/media/NIKON D60"
 camera_src = camera_mount + "/DCIM/100KM530"
-printer = 'Kodak-ESP-5250-wifi'
+printer = 'Kodak_ESP_5200_Series_AiO'
 #printer = 'Brother-MFC-5840CN-USB'
 do_camera = False
 do_print = False
@@ -56,7 +56,7 @@ def umount_camera():
 
 def print_image(filename, copies=1):
     if do_print:
-        success = not subprocess.call(['lp', '-d' + printer, '-o', 'media=a4', '-o', 'scaling=100', '-n', int(copies), filename])
+        success = not subprocess.call(['lp', '-d', printer, '-o', 'media=a4', '-o', 'scaling=100', '-n', str(int(copies)), filename])
         return success
     else:
         return True
