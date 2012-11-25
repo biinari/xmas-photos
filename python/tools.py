@@ -6,7 +6,8 @@ import subprocess
 
 camera_mount = "/media/NIKON D60"
 camera_src = camera_mount + "/DCIM/100KM530"
-printer = 'Kodak_ESP_5200_Series_AiO'
+printer = 'HP-Photosmart-C5280'
+#printer = 'Kodak_ESP_5200_Series_AiO'
 #printer = 'Brother-MFC-5840CN-USB'
 do_camera = False
 do_print = False
