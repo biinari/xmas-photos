@@ -8,7 +8,7 @@ from devices.device import Device
 class MainWindow(wx.Frame):
     """ Main Window Frame for Sleigh Photos. """
     def __init__(self, parent, title):
-        wx.Frame.__init__(self, parent, title=title)
+        wx.Frame.__init__(self, parent, title=title, size=(650, 450))
         self.createWidgets()
         self.CreateStatusBar()
         self.setupMenu()
@@ -34,6 +34,7 @@ class MainWindow(wx.Frame):
         """ Setup menu bar. """
         fileMenu = wx.Menu()
         menuOpen = fileMenu.Append(wx.ID_OPEN, "&Open", "Open Photo")
+        fileMenu.AppendSeparator()
         menuExit = fileMenu.Append(wx.ID_EXIT, "E&xit", "Quit Sleigh Photos")
 
         helpMenu = wx.Menu()
