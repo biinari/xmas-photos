@@ -1,11 +1,14 @@
 #!/usr/bin/env python2
 import wx
 import wx.lib.imagebrowser
+import time
 import os
 import devices
 from devices.device import Device
 
 class MainWindow(wx.Frame):
+    infile = None
+
     """ Main Window Frame for Sleigh Photos. """
     def __init__(self, parent, title):
         wx.Frame.__init__(self, parent, title=title, size=(610, 500))
@@ -76,6 +79,7 @@ class MainWindow(wx.Frame):
         dlg.Destroy()
 
     def LoadImage(self, name):
+        self.infile = name
         image = wx.Image(name)
         (width, height) = self.staticImage.GetSize()
         image = image.Scale(width, height, wx.IMAGE_QUALITY_HIGH)
@@ -83,7 +87,9 @@ class MainWindow(wx.Frame):
         self.staticImage.SetBitmap(bitmap)
 
     def OnProcess(self, event):
-        process.process()
+        if self.ValidateImage() and self.ValidateGroupName():
+            timeid= time.strftime('%a/%H%M%S', time.localtime())
+            process.process(self.infile, self.groupName.GetValue(), timeid)
 
     def OnDeviceAdded(self, device_id, properties):
         message = properties.join('\n')
@@ -96,6 +102,21 @@ class MainWindow(wx.Frame):
         info = wx.MessageDialog(self, message, "Device Removed", wx.OK)
         info.ShowModal()
         info.Destroy()
+
+    def ValidateGroupName(self):
+        name = self.groupName.GetValue()
+        if name == '':
+            wx.MessageBox("Please enter group name",
+                          caption="Group name is missing")
+        return name != ''
+
+    def ValidateImage(self):
+        if self.infile == None or self.infile == '':
+            wx.MessageBox("Please open an image", caption="No image open")
+            return False
+        else:
+            return True
+
 
 app = wx.App(False)
 frame = MainWindow(None, "Sleigh Photos")
