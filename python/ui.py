@@ -76,6 +76,10 @@ class MainWindow(wx.Frame):
         info.ShowModal()
         info.Destroy()
 
-app = wx.App(False)
-frame = MainWindow(None, "Sleigh Photos")
-app.MainLoop()
+def main():
+    app = wx.App(False)
+    frame = MainWindow(None, "Sleigh Photos")
+    app.MainLoop()
+
+if __name__ == '__main__':
+    main()
