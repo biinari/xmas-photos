@@ -5,6 +5,7 @@ import time
 import os
 import devices
 from devices.device import Device
+from ui.process_panel import ProcessPanel
 
 class MainWindow(wx.Frame):
     infile = None
@@ -13,28 +14,13 @@ class MainWindow(wx.Frame):
     def __init__(self, parent, title):
         wx.Frame.__init__(self, parent, title=title, size=(610, 500))
         self.SetMinSize(self.GetSize())
-        self.createWidgets()
+        self.CreateFrames()
         self.CreateStatusBar()
         self.setupMenu()
         self.Show(True)
 
-    def createWidgets(self):
-        vert = wx.BoxSizer(wx.VERTICAL)
-        horiz = wx.BoxSizer(wx.HORIZONTAL)
-        self.staticImage = wx.StaticBitmap(self, wx.ID_ANY, size=(600, 400))
-        self.groupLabel = wx.StaticText(self, label="Group Name:")
-        self.groupName = wx.TextCtrl(self)
-        self.processBtn = wx.Button(self, label="Process")
-
-        self.Bind(wx.EVT_BUTTON, self.OnProcess, self.processBtn)
-
-        horiz.Add(self.groupLabel, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
-        horiz.Add(self.groupName, 4, wx.ALIGN_CENTER_VERTICAL)
-        horiz.Add(self.processBtn, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
-        vert.Add(self.staticImage, 0, wx.TOP | wx.ALIGN_CENTER_HORIZONTAL, 5)
-        vert.Add(horiz, 1, wx.ALIGN_CENTER_HORIZONTAL)
-        self.SetSizer(vert)
-        self.Centre()
+    def CreateFrames(self):
+        self.processPanel = ProcessPanel(self)
 
     def setupMenu(self):
         """ Setup menu bar. """
@@ -75,21 +61,8 @@ class MainWindow(wx.Frame):
         dlg = wx.lib.imagebrowser.ImageDialog(self, initial_dir)
         dlg.Centre()
         if dlg.ShowModal() == wx.ID_OK:
-            self.LoadImage(dlg.GetFile())
+            self.processPanel.staticImage.LoadFromFile(dlg.GetFile())
         dlg.Destroy()
-
-    def LoadImage(self, name):
-        self.infile = name
-        image = wx.Image(name)
-        (width, height) = self.staticImage.GetSize()
-        image = image.Scale(width, height, wx.IMAGE_QUALITY_HIGH)
-        bitmap = wx.BitmapFromImage(image)
-        self.staticImage.SetBitmap(bitmap)
-
-    def OnProcess(self, event):
-        if self.ValidateImage() and self.ValidateGroupName():
-            timeid= time.strftime('%a/%H%M%S', time.localtime())
-            process.process(self.infile, self.groupName.GetValue(), timeid)
 
     def OnDeviceAdded(self, device_id, properties):
         message = properties.join('\n')
@@ -102,21 +75,6 @@ class MainWindow(wx.Frame):
         info = wx.MessageDialog(self, message, "Device Removed", wx.OK)
         info.ShowModal()
         info.Destroy()
-
-    def ValidateGroupName(self):
-        name = self.groupName.GetValue()
-        if name == '':
-            wx.MessageBox("Please enter group name",
-                          caption="Group name is missing")
-        return name != ''
-
-    def ValidateImage(self):
-        if self.infile == None or self.infile == '':
-            wx.MessageBox("Please open an image", caption="No image open")
-            return False
-        else:
-            return True
-
 
 app = wx.App(False)
 frame = MainWindow(None, "Sleigh Photos")
