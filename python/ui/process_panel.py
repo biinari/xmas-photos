@@ -28,7 +28,7 @@ class ProcessPanel(wx.Panel):
 
     def OnProcess(self, event):
         if self.staticImage.ValidateImage() and self.ValidateGroupName():
-            timeid= time.strftime('%a/%H%M%S', time.localtime())
+            timeid = time.strftime('%a/%H%M%S', time.localtime())
             process.process(self.infile, self.groupName.GetValue(), timeid)
 
     def ValidateGroupName(self):
