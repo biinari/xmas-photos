@@ -12,7 +12,7 @@ class MainWindow(wx.Frame):
 
     """ Main Window Frame for Sleigh Photos. """
     def __init__(self, parent, title):
-        wx.Frame.__init__(self, parent, title=title, size=(610, 500))
+        wx.Frame.__init__(self, parent, title=title, size=(610, 530))
         self.SetMinSize(self.GetSize())
         self.CreateFrames()
         self.CreateStatusBar()
@@ -20,7 +20,10 @@ class MainWindow(wx.Frame):
         self.Show(True)
 
     def CreateFrames(self):
-        self.processPanel = ProcessPanel(self)
+        self.notebook = wx.Notebook(self)
+        self.processPage = wx.NotebookPage(self.notebook)
+        self.processPanel = ProcessPanel(self.processPage)
+        self.notebook.AddPage(self.processPage, "Process")
 
     def setupMenu(self):
         """ Setup menu bar. """
