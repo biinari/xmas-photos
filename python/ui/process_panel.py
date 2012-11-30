@@ -1,5 +1,6 @@
 import wx
 from ui.photo import Photo
+import process
 
 class ProcessPanel(wx.Panel):
 
