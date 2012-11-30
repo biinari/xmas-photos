@@ -29,7 +29,6 @@ class Logger:
 			raise UnboundCallbackError, "Callback function not set"
 
 def mount_camera():
-    return True
     if do_camera:
         if os.path.exists(camera_mount) and os.path.ismount(camera_mount):
             mounted = True
