@@ -9,6 +9,9 @@ Usage: reprint filename copies
 import sys
 import tools
 
+def reprint(filename, copies=1):
+    tools.print_image(filename, copies)
+
 def main():
     if len(sys.argv) > 1:
         filename = sys.argv[1]
@@ -20,7 +23,7 @@ def main():
     else:
         copies = 1
 
-    tools.print_image(filename, copies)
+    reprint(filename, copies)
 
 if __name__ == '__main__':
     main()

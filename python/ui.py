@@ -6,6 +6,7 @@ import os
 import devices
 from devices.device import Device
 from ui.process_panel import ProcessPanel
+from ui.reprint_panel import ReprintPanel
 
 class MainWindow(wx.Frame):
     infile = None
@@ -24,6 +25,9 @@ class MainWindow(wx.Frame):
         self.processPage = wx.NotebookPage(self.notebook)
         self.processPanel = ProcessPanel(self.processPage)
         self.notebook.AddPage(self.processPage, "Process")
+        self.reprintPage = wx.NotebookPage(self.notebook)
+        self.reprintPanel = ReprintPanel(self.reprintPage)
+        self.notebook.AddPage(self.reprintPage, "Reprint")
 
     def setupMenu(self):
         """ Setup menu bar. """
