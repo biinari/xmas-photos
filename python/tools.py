@@ -3,6 +3,7 @@
 import os
 import shutil
 import subprocess
+import time
 
 camera_mount = "/media/NIKON D60"
 camera_src = camera_mount + "/DCIM/100KM530"
@@ -60,3 +61,9 @@ def print_image(filename, copies=1):
         return success
     else:
         return True
+
+def get_day():
+    return time.strftime('%a', time.localtime())
+
+def get_year():
+    return time.strftime('%Y', time.localtime())

@@ -68,7 +68,7 @@ def process(infile, group_name, timeid):
     photo_rect = (photo_left, photo_top, photo_right, photo_bottom)
     page.paste(photo, photo_rect)
     create_title(page, (a4width, a4height), photo_size, photo_rect, group_name, timeid)
-    day = time.strftime('%a', time.localtime())
+    day = tools.get_day()
     if not os.path.exists('png/{}'.format(day)):
         os.mkdir('png/{}'.format(day))
     png_file = 'png/{}_{}.jpg'.format(timeid, group_name.replace(' ','_'))
@@ -85,7 +85,7 @@ def run():
         print 'Could not disconnect from camera.'
     names = os.listdir('infiles/')
     names.sort()
-    day = time.strftime('%a', time.localtime())
+    day = tools.get_day()
     if not os.path.exists('outfiles/{}'.format(day)):
         os.mkdir('outfiles/{}'.format(day))
     for infile in names:

@@ -68,7 +68,7 @@ def process(infile, group_name, timeid):
     photo_rect = (photo_left, photo_top, photo_right, photo_bottom)
     page.paste(photo, photo_rect)
     create_title(page, (a4width, a4height), photo_size, photo_rect, group_name, timeid)
-    day = time.strftime('%a', time.localtime())
+    day = tools.get_day()
     if not os.path.exists('png/{}'.format(day)):
         os.mkdir('png/{}'.format(day))
     png_file = 'png/{}_{}.jpg'.format(timeid, group_name.replace(' ','_'))
@@ -79,7 +79,7 @@ def run():
     names = os.listdir('infiles/')
     names.sort()
     for infile in names:
-        day = time.strftime('%a/', time.localtime())
+        day = tools.get_day()
         timeid = day + '/' + raw_input('Time id: ')
         group_name = raw_input('Group name: ')
         #timeid = time.strftime('%a/%H%M%S', time.localtime())

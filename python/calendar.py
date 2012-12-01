@@ -72,7 +72,7 @@ def process(infile, timeid):
     photo_rect = (photo_left, photo_top, photo_right, photo_bottom)
     page.paste(photo, photo_rect)
     create_title(page, (a4width, a4height), photo_size, photo_rect, timeid)
-    day = time.strftime('%a', time.localtime())
+    day = tools.get_day()
     if not os.path.exists('png/{}'.format(day)):
         os.mkdir('png/{}'.format(day))
     png_file = 'png/{}.jpg'.format(timeid)
