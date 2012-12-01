@@ -9,7 +9,9 @@ import process
 import calendar
 
 def main(calendar=False):
-	tools.Logger.setCallback(lambda x: print x)
+    def cli_log(x):
+        print x
+	tools.Logger.setCallback(cli_log)
 	if calendar:
 		calendar.run()
 	else:
