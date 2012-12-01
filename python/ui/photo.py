@@ -22,9 +22,8 @@ class Photo(wx.StaticBitmap):
 
     """ Validate image is set. """
     def ValidateImage(self):
-        if self.infile == None or self.infile == '':
+        valid = self.infile != None and self.infile != ''
+        if valid:
             wx.MessageBox("Please open an image", caption="No image open", parent=self.parent)
-            return False
-        else:
-            return True
+        return valid
 

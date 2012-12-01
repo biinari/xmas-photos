@@ -45,8 +45,9 @@ class ProcessPanel(wx.Panel):
 
     def ValidateGroupName(self):
         name = self.groupName.GetValue()
-        if name == '':
+        valid = name != ''
+        if not valid:
             wx.MessageBox("Please enter group name",
                           caption="Group name is missing")
-        return name != ''
+        return valid
 
