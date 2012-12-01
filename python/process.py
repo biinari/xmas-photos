@@ -85,6 +85,9 @@ def run():
         print 'Could not disconnect from camera.'
     names = os.listdir('infiles/')
     names.sort()
+    day = time.strftime('%a', time.localtime())
+    if not os.path.exists('outfiles/{}'.format(day)):
+        os.mkdir('outfiles/{}'.format(day))
     for infile in names:
         group_name = raw_input('Group name: ')
         timeid = time.strftime('%a/%H%M%S', time.localtime())
