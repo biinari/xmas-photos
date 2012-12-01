@@ -27,6 +27,15 @@ class ReprintPanel(wx.Panel):
         self.SetSizer(vert)
         self.Centre()
 
+    def OnOpen(self, event):
+        cwd = os.getcwd()
+        initial_dir = os.path.join(cwd, 'examples')
+        dlg = wx.lib.imagebrowser.ImageDialog(self, initial_dir)
+        dlg.Centre()
+        if dlg.ShowModal() == wx.ID_OK:
+            self.staticImage.LoadFromFile(dlg.GetFile())
+        dlg.Destroy()
+
     def OnReprint(self, event):
         if self.staticImage.ValidateImage() and self.ValidateNumCopies:
             numCopies = self.numCopies.GetValue()

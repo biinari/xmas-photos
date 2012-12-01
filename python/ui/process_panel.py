@@ -1,6 +1,7 @@
 import wx
 from ui.photo import Photo
 import process
+import tools
 
 class ProcessPanel(wx.Panel):
 
@@ -26,6 +27,16 @@ class ProcessPanel(wx.Panel):
         vert.Add(horiz, 1, wx.ALIGN_CENTER_HORIZONTAL)
         self.SetSizer(vert)
         self.Centre()
+
+    def OnOpen(self, event):
+        cwd = os.getcwd()
+        day = tools.get_day()
+        initial_dir = os.path.join(cwd, 'png/{}'.format(day))
+        dlg = wx.lib.imagebrowser.ImageDialog(self, initial_dir)
+        dlg.Centre()
+        if dlg.ShowModal() == wx.ID_OK:
+            self.staticImage.LoadFromFile(dlg.GetFile())
+        dlg.Destroy()
 
     def OnProcess(self, event):
         if self.staticImage.ValidateImage() and self.ValidateGroupName():

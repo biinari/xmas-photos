@@ -63,13 +63,9 @@ class MainWindow(wx.Frame):
         self.Close(True)
 
     def OnOpen(self, event):
-        cwd = os.getcwd()
-        initial_dir = os.path.join(cwd, 'png')
-        dlg = wx.lib.imagebrowser.ImageDialog(self, initial_dir)
-        dlg.Centre()
-        if dlg.ShowModal() == wx.ID_OK:
-            self.processPanel.staticImage.LoadFromFile(dlg.GetFile())
-        dlg.Destroy()
+        page = self.notebook.GetCurrentPage()
+        panel = page.GetChildren()[0]
+        panel.OnOpen(event)
 
     def OnDeviceAdded(self, device_id, properties):
         message = properties.join('\n')
