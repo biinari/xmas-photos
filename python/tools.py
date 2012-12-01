@@ -10,8 +10,8 @@ camera_src = camera_mount + "/DCIM/101___12"
 printer = 'HP-Photosmart-C5280'
 #printer = 'Kodak_ESP_5200_Series_AiO'
 #printer = 'Brother-MFC-5840CN-USB'
-do_camera = False
-do_print = False
+do_camera = True
+do_print = True
 
 class UnboundCallbackError (UnboundLocalError):
 	""" Callback function not set error. """
