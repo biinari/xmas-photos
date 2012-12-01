@@ -16,8 +16,8 @@ a4height = 3508
 
 def create_title(base, page_size, photo_size, photo_rect, timeid):
     title = "Christmas Experience"
-    subtitle = "December - 2011"
-    copy = u"© 2011 East Lancashire Scouts"
+    subtitle = "December - 2012"
+    copy = u"© 2012 East Lancashire Scouts"
     shadow = 2
     darkred = (176, 7, 7, 255)
     red = (238, 9, 9, 255)
