@@ -13,6 +13,12 @@ printer = 'HP-Photosmart-C5280'
 do_camera = True
 do_print = True
 
+def detect_gphoto():
+    output = subprocess.check_output(['gphoto2', '--auto-detect'])
+    return output.find('USB PTP Class Camera') != -1
+
+use_gphoto = detect_gphoto()
+
 class UnboundCallbackError (UnboundLocalError):
 	""" Callback function not set error. """
 	pass
@@ -30,7 +36,7 @@ class Logger:
 			raise UnboundCallbackError, "Callback function not set"
 
 def mount_camera():
-    if do_camera:
+    if do_camera and not use_gphoto:
         if os.path.exists(camera_mount) and os.path.ismount(camera_mount):
             mounted = True
         else:
@@ -41,12 +47,21 @@ def mount_camera():
 
 def get_camera_files():
     if do_camera:
-        if os.path.exists(camera_src):
-            for src_file in os.listdir(camera_src):
-                shutil.move(camera_src + '/' + src_file, 'infiles/')
+        if use_gphoto:
+            old_cwd = os.getcwd()
+            os.chdir('infiles')
+            try:
+                subprocess.check_call(['gphoto2', '--get-all-files'])
+                subprocess.check_call(['gphoto2', '--delete-all-files', '--recurse'])
+            finally:
+                os.chdir(old_cwd)
+        else:
+            if os.path.exists(camera_src):
+                for src_file in os.listdir(camera_src):
+                    shutil.move(camera_src + '/' + src_file, 'infiles/')
 
 def umount_camera():
-    if do_camera:
+    if do_camera and not use_gphoto:
         if os.path.exists(camera_mount) and os.path.ismount(camera_mount):
             umounted = not subprocess.call(['umount', camera_mount])
         else:
