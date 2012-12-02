@@ -10,6 +10,7 @@ class Photo(wx.StaticBitmap):
     def __init__(self, *args, **kwargs):
         kwargs['size'] = kwargs.get('size', self.default_size)
         wx.StaticBitmap.__init__(self, *args, **kwargs)
+        self.LoadBlank()
 
     """ Load Photo from filename. """
     def LoadFromFile(self, name):
@@ -19,6 +20,13 @@ class Photo(wx.StaticBitmap):
         bitmap = wx.BitmapFromImage(image)
         self.SetBitmap(bitmap)
         self.path = name
+
+    """ Load a blank image. """
+    def LoadBlank(self):
+        (width, height) = self.GetSize()
+        bitmap = wx.EmptyBitmap(width, height)
+        self.SetBitmap(bitmap)
+        self.path = None
 
     """ Validate image is set. """
     def ValidateImage(self):
