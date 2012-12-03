@@ -2,6 +2,7 @@ import wx
 import os
 from ui.photo import Photo
 import reprint
+import tools
 
 class ReprintPanel(wx.Panel):
 
@@ -30,7 +31,8 @@ class ReprintPanel(wx.Panel):
 
     def OnOpen(self, event):
         cwd = os.getcwd()
-        initial_dir = os.path.join(cwd, 'examples')
+        day = tools.get_day()
+        initial_dir = os.path.join(cwd, 'png/{}'.format(day))
         dlg = wx.lib.imagebrowser.ImageDialog(self, initial_dir)
         dlg.Centre()
         if dlg.ShowModal() == wx.ID_OK:
