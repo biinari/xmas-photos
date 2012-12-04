@@ -23,6 +23,8 @@ class ProcessPanel(wx.Panel):
         topRow = wx.BoxSizer(wx.HORIZONTAL)
         horiz = wx.BoxSizer(wx.HORIZONTAL)
         self.getPhotosBtn = wx.Button(self, label="Get Photos")
+        self.discardBtn = wx.Button(self, label="Discard")
+        self.discardBtn.Disable()
 
         self.prevBtn = wx.Button(self, label="<")
         self.prevBtn.Disable()
@@ -35,6 +37,7 @@ class ProcessPanel(wx.Panel):
         self.processBtn = wx.Button(self, label="Process")
 
         self.Bind(wx.EVT_BUTTON, self.OnGetPhotos, self.getPhotosBtn)
+        self.Bind(wx.EVT_BUTTON, self.OnDiscard, self.discardBtn)
         self.Bind(wx.EVT_BUTTON, self.OnPrevious, self.prevBtn)
         self.Bind(wx.EVT_BUTTON, self.OnNext, self.nextBtn)
         self.Bind(wx.EVT_BUTTON, self.OnProcess, self.processBtn)
@@ -42,6 +45,7 @@ class ProcessPanel(wx.Panel):
         topRow.Add(self.prevBtn, 1)
         topRow.Add(self.getPhotosBtn, 2)
         topRow.Add(self.nextBtn, 1)
+        topRow.Add(self.discardBtn, 2)
         horiz.Add(self.groupLabel, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
         horiz.Add(self.groupName, 4, wx.ALIGN_CENTER_VERTICAL)
         horiz.Add(self.processBtn, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
@@ -54,6 +58,7 @@ class ProcessPanel(wx.Panel):
     def LoadImage(self, index):
         self.index = index
         self.staticImage.LoadFromFile('infiles/' + self.names[index])
+        self.discardBtn.Enable()
         if index >= len(self.names) - 1:
             self.nextBtn.Disable()
         else:
@@ -62,6 +67,19 @@ class ProcessPanel(wx.Panel):
             self.prevBtn.Disable()
         else:
             self.prevBtn.Enable()
+
+    def LoadNextImage(self):
+        del(self.names[self.index])
+        if len(self.names) > self.index:
+            self.LoadImage(self.index)
+        elif len(self.names) > 0:
+            self.LoadImage(len(self.names) - 1)
+        else:
+            self.LoadBlank()
+
+    def LoadBlank(self):
+        self.staticImage.LoadBlank()
+        self.discardBtn.Disable()
 
     def OnNext(self, event):
         if self.index + 1 < len(self.names):
@@ -91,6 +109,7 @@ class ProcessPanel(wx.Panel):
             group_name = self.groupName.GetValue()
             process.process(infile, group_name, timeid)
             os.rename('infiles/' + infile, 'outfiles/{}_{}.jpg'.format(timeid, group_name.replace(' ','_')))
+            self.LoadNextImage()
 
     def OnGetPhotos(self, event):
         if not tools.mount_camera():
@@ -111,7 +130,15 @@ class ProcessPanel(wx.Panel):
         else:
             self.nextBtn.Disable()
             self.prevBtn.Disable()
-            self.staticImage.LoadBlank()
+            self.LoadBlank()
+
+    def OnDiscard(self, event):
+        name = self.names[self.index]
+        day = tools.get_day()
+        if not os.path.exists('discard/{}'.format(day)):
+            os.mkdir('discard/{}'.format(day))
+        os.rename('infiles/' + name, 'discard/{}/{}'.format(day, name))
+        self.LoadNextImage()
 
     def SetStatusText(self, message):
         self.Parent.Parent.Parent.SetStatusText(message)
