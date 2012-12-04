@@ -22,7 +22,7 @@ class ProcessPanel(wx.Panel):
         vert = wx.BoxSizer(wx.VERTICAL)
         topRow = wx.BoxSizer(wx.HORIZONTAL)
         horiz = wx.BoxSizer(wx.HORIZONTAL)
-        self.runBtn = wx.Button(self, label="Run")
+        self.getPhotosBtn = wx.Button(self, label="Get Photos")
 
         self.prevBtn = wx.Button(self, label="<")
         self.prevBtn.Disable()
@@ -34,13 +34,13 @@ class ProcessPanel(wx.Panel):
         self.groupName = wx.TextCtrl(self)
         self.processBtn = wx.Button(self, label="Process")
 
-        self.Bind(wx.EVT_BUTTON, self.OnRun, self.runBtn)
+        self.Bind(wx.EVT_BUTTON, self.OnGetPhotos, self.getPhotosBtn)
         self.Bind(wx.EVT_BUTTON, self.OnPrevious, self.prevBtn)
         self.Bind(wx.EVT_BUTTON, self.OnNext, self.nextBtn)
         self.Bind(wx.EVT_BUTTON, self.OnProcess, self.processBtn)
 
         topRow.Add(self.prevBtn, 1)
-        topRow.Add(self.runBtn, 2)
+        topRow.Add(self.getPhotosBtn, 2)
         topRow.Add(self.nextBtn, 1)
         horiz.Add(self.groupLabel, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
         horiz.Add(self.groupName, 4, wx.ALIGN_CENTER_VERTICAL)
@@ -92,7 +92,7 @@ class ProcessPanel(wx.Panel):
             process.process(infile, group_name, timeid)
             os.rename('infiles/' + infile, 'outfiles/{}_{}.jpg'.format(timeid, group_name.replace(' ','_')))
 
-    def OnRun(self, event):
+    def OnGetPhotos(self, event):
         if not tools.mount_camera():
             self.SetStatusText('Could not connect to camera. Try again.')
         tools.get_camera_files()
