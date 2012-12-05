@@ -6,6 +6,8 @@ import tools
 
 class ReprintPanel(wx.Panel):
 
+    filename = None
+
     """ Panel to find and reprint photos already processed. """
     def __init__(self, parent, *args, **kwargs):
         wx.Panel.__init__(self, parent, *args, **kwargs)
@@ -36,7 +38,8 @@ class ReprintPanel(wx.Panel):
         dlg = wx.lib.imagebrowser.ImageDialog(self, initial_dir)
         dlg.Centre()
         if dlg.ShowModal() == wx.ID_OK:
-            self.staticImage.LoadFromFile(dlg.GetFile())
+            self.filename = dlg.GetFile()
+            self.staticImage.LoadFromFile(self.filename)
         dlg.Destroy()
 
     def OnReprint(self, event):
