@@ -6,7 +6,7 @@ from ui.photo import Photo
 import process
 import tools
 
-class ProcessPanel(wx.Panel):
+class GroupPanel(wx.Panel):
 
     """ Files in infiles/ for choosing from (just the basenames) """
     names = []

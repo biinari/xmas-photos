@@ -5,7 +5,7 @@ import time
 import os
 import devices
 from devices.device import Device
-from ui.process_panel import ProcessPanel
+from ui.group_panel import GroupPanel
 from ui.reprint_panel import ReprintPanel
 
 class MainWindow(wx.Frame):
@@ -22,9 +22,9 @@ class MainWindow(wx.Frame):
 
     def CreateFrames(self):
         self.notebook = wx.Notebook(self)
-        self.processPage = wx.NotebookPage(self.notebook)
-        self.processPanel = ProcessPanel(self.processPage)
-        self.notebook.AddPage(self.processPage, "Process")
+        self.groupPage = wx.NotebookPage(self.notebook)
+        self.groupPanel = GroupPanel(self.groupPage)
+        self.notebook.AddPage(self.groupPage, "Group")
         self.reprintPage = wx.NotebookPage(self.notebook)
         self.reprintPanel = ReprintPanel(self.reprintPage)
         self.notebook.AddPage(self.reprintPage, "Reprint")
