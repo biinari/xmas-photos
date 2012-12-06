@@ -6,6 +6,7 @@ import os
 import devices
 from devices.device import Device
 from ui.group_panel import GroupPanel
+from ui.calendar_panel import CalendarPanel
 from ui.reprint_panel import ReprintPanel
 
 class MainWindow(wx.Frame):
@@ -25,6 +26,9 @@ class MainWindow(wx.Frame):
         self.groupPage = wx.NotebookPage(self.notebook)
         self.groupPanel = GroupPanel(self.groupPage)
         self.notebook.AddPage(self.groupPage, "Group")
+        self.calendarPage = wx.NotebookPage(self.notebook)
+        self.calendarPanel = CalendarPanel(self.calendarPage)
+        self.notebook.AddPage(self.calendarPage, "Calendar")
         self.reprintPage = wx.NotebookPage(self.notebook)
         self.reprintPanel = ReprintPanel(self.reprintPage)
         self.notebook.AddPage(self.reprintPage, "Reprint")
