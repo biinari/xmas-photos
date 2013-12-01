@@ -1,4 +1,4 @@
-import Image, ImageFile
+from PIL import Image, ImageFile
 import math
 
 class Fade:
