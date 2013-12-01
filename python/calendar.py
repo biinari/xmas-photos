@@ -16,8 +16,8 @@ a4height = 3508
 
 def create_title(base, page_size, photo_size, photo_rect, timeid):
     title = "Christmas Experience"
-    subtitle = "December - 2012"
-    copy = u"© 2012 East Lancashire Scouts"
+    subtitle = "December - 2013"
+    copy = u"© 2013 East Lancashire Scouts"
     shadow = 2
     darkred = (176, 7, 7, 255)
     red = (238, 9, 9, 255)
@@ -58,7 +58,7 @@ def create_title(base, page_size, photo_size, photo_rect, timeid):
 
 def process(infile, timeid):
     try:
-        page = Image.open('base/Calendar_2012.png')
+        page = Image.open('base/Calendar_2013.png')
     except IOError:
         print "Cannot open calendar page base"
         return
