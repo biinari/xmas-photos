@@ -16,16 +16,19 @@ class ReprintPanel(wx.Panel):
     def CreateWidgets(self):
         vert = wx.BoxSizer(wx.VERTICAL)
         horiz = wx.BoxSizer(wx.HORIZONTAL)
+        self.openBtn = wx.Button(self, label="Open")
         self.staticImage = Photo(self)
         self.numCopiesLabel = wx.StaticText(self, label="Number of copies:")
         self.numCopies = wx.TextCtrl(self)
         self.reprintBtn = wx.Button(self, label="Reprint")
 
+        self.Bind(wx.EVT_BUTTON, self.OnOpen, self.openBtn)
         self.Bind(wx.EVT_BUTTON, self.OnReprint, self.reprintBtn)
 
         horiz.Add(self.numCopiesLabel, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
         horiz.Add(self.numCopies, 1, wx.ALIGN_CENTER_VERTICAL)
         horiz.Add(self.reprintBtn, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
+        vert.Add(self.openBtn, 1, wx.TOP | wx.ALIGN_CENTER_HORIZONTAL)
         vert.Add(self.staticImage, 0, wx.TOP | wx.ALIGN_CENTER_HORIZONTAL, 5)
         vert.Add(horiz, 1, wx.ALIGN_CENTER_HORIZONTAL)
         self.SetSizer(vert)
