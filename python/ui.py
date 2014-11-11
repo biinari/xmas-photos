@@ -65,7 +65,7 @@ class MainWindow(wx.Frame):
     def on_open(self, event):
         page = self.notebook.GetCurrentPage()
         panel = page.GetChildren()[0]
-        panel.OnOpen(event)
+        panel.on_open(event)
 
     def on_device_added(self, device_id_, properties):
         message = properties.join('\n')

@@ -6,14 +6,14 @@ class Photo(wx.StaticBitmap):
 
     default_size = (600, 400)
 
-    """ View a photo selected for processing. """
     def __init__(self, *args, **kwargs):
+        """ View a photo selected for processing. """
         kwargs['size'] = kwargs.get('size', self.default_size)
         wx.StaticBitmap.__init__(self, *args, **kwargs)
-        self.LoadBlank()
+        self.load_blank()
 
-    """ Load Photo from filename. """
-    def LoadFromFile(self, name):
+    def load_from_file(self, name):
+        """ Load Photo from filename. """
         image = wx.Image(name)
         (width, height) = self.GetSize()
         image = image.Scale(width, height, wx.IMAGE_QUALITY_HIGH)
@@ -21,15 +21,15 @@ class Photo(wx.StaticBitmap):
         self.SetBitmap(bitmap)
         self.path = name
 
-    """ Load a blank image. """
-    def LoadBlank(self):
+    def load_blank(self):
+        """ Load a blank image. """
         (width, height) = self.GetSize()
         bitmap = wx.EmptyBitmap(width, height)
         self.SetBitmap(bitmap)
         self.path = None
 
-    """ Validate image is set. """
-    def ValidateImage(self):
+    def validate_image(self):
+        """ Validate image is set. """
         valid = self.path != None and self.path != ''
         if not valid:
             wx.MessageBox("Please open an image", caption="No image open", parent=self.Parent)

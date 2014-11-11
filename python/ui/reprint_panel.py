@@ -11,30 +11,30 @@ class ReprintPanel(wx.Panel):
     """ Panel to find and reprint photos already processed. """
     def __init__(self, parent, *args, **kwargs):
         wx.Panel.__init__(self, parent, *args, **kwargs)
-        self.CreateWidgets()
+        self.create_widgets()
 
-    def CreateWidgets(self):
+    def create_widgets(self):
         vert = wx.BoxSizer(wx.VERTICAL)
         horiz = wx.BoxSizer(wx.HORIZONTAL)
-        self.openBtn = wx.Button(self, label="Open")
-        self.staticImage = Photo(self)
-        self.numCopiesLabel = wx.StaticText(self, label="Number of copies:")
-        self.numCopies = wx.TextCtrl(self)
-        self.reprintBtn = wx.Button(self, label="Reprint")
+        self.open_btn = wx.Button(self, label="Open")
+        self.static_image = Photo(self)
+        self.num_copies_label = wx.StaticText(self, label="Number of copies:")
+        self.num_copies = wx.TextCtrl(self)
+        self.reprint_btn = wx.Button(self, label="Reprint")
 
-        self.Bind(wx.EVT_BUTTON, self.OnOpen, self.openBtn)
-        self.Bind(wx.EVT_BUTTON, self.OnReprint, self.reprintBtn)
+        self.Bind(wx.EVT_BUTTON, self.on_open, self.open_btn)
+        self.Bind(wx.EVT_BUTTON, self.on_reprint, self.reprint_btn)
 
-        horiz.Add(self.numCopiesLabel, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
-        horiz.Add(self.numCopies, 1, wx.ALIGN_CENTER_VERTICAL)
-        horiz.Add(self.reprintBtn, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
-        vert.Add(self.openBtn, 1, wx.TOP | wx.ALIGN_CENTER_HORIZONTAL)
-        vert.Add(self.staticImage, 0, wx.TOP | wx.ALIGN_CENTER_HORIZONTAL, 5)
+        horiz.Add(self.num_copies_label, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
+        horiz.Add(self.num_copies, 1, wx.ALIGN_CENTER_VERTICAL)
+        horiz.Add(self.reprint_btn, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
+        vert.Add(self.open_btn, 1, wx.TOP | wx.ALIGN_CENTER_HORIZONTAL)
+        vert.Add(self.static_image, 0, wx.TOP | wx.ALIGN_CENTER_HORIZONTAL, 5)
         vert.Add(horiz, 1, wx.ALIGN_CENTER_HORIZONTAL)
         self.SetSizer(vert)
         self.Centre()
 
-    def OnOpen(self, event):
+    def on_open(self, event_):
         cwd = os.getcwd()
         day = tools.get_day()
         initial_dir = os.path.join(cwd, 'png/{}'.format(day))
@@ -42,20 +42,20 @@ class ReprintPanel(wx.Panel):
         dlg.Centre()
         if dlg.ShowModal() == wx.ID_OK:
             self.filename = dlg.GetFile()
-            self.staticImage.LoadFromFile(self.filename)
+            self.static_image.load_from_file(self.filename)
         dlg.Destroy()
 
-    def OnReprint(self, event):
-        if self.staticImage.ValidateImage() and self.ValidateNumCopies:
-            numCopies = self.numCopies.GetValue()
-            if numCopies != '':
-                reprint.reprint(self.filename, int(numCopies))
+    def on_reprint(self, event_):
+        if self.static_image.validate_image() and self.validate_num_copies:
+            num_copies = self.num_copies.GetValue()
+            if num_copies != '':
+                reprint.reprint(self.filename, int(num_copies))
             else:
                 reprint.reprint(self.filename)
 
-    def ValidateNumCopies(self):
-        numCopies = self.numCopies.GetValue()
-        valid = numCopies == "" or numCopies.isdigit()
+    def validate_num_copies(self):
+        num_copies = self.num_copies.GetValue()
+        valid = num_copies == "" or num_copies.isdigit()
         if not valid:
             wx.MessageBox("Integer required",
                           caption="Number of copies must be an integer")

@@ -16,80 +16,80 @@ class GroupPanel(wx.Panel):
     """ Panel to select and process photo """
     def __init__(self, parent, *args, **kwargs):
         wx.Panel.__init__(self, parent, *args, **kwargs)
-        self.CreateWidgets()
+        self.create_widgets()
 
-    def CreateWidgets(self):
+    def create_widgets(self):
         vert = wx.BoxSizer(wx.VERTICAL)
-        topRow = wx.BoxSizer(wx.HORIZONTAL)
+        top_row = wx.BoxSizer(wx.HORIZONTAL)
         horiz = wx.BoxSizer(wx.HORIZONTAL)
-        self.getPhotosBtn = wx.Button(self, label="Get Photos")
-        self.discardBtn = wx.Button(self, label="Discard")
-        self.discardBtn.Disable()
+        self.get_photos_btn = wx.Button(self, label="Get Photos")
+        self.discard_btn = wx.Button(self, label="Discard")
+        self.discard_btn.Disable()
 
-        self.prevBtn = wx.Button(self, label="<")
-        self.prevBtn.Disable()
-        self.staticImage = Photo(self)
-        self.nextBtn = wx.Button(self, label=">")
-        self.nextBtn.Disable()
+        self.prev_btn = wx.Button(self, label="<")
+        self.prev_btn.Disable()
+        self.static_image = Photo(self)
+        self.next_btn = wx.Button(self, label=">")
+        self.next_btn.Disable()
 
-        self.groupLabel = wx.StaticText(self, label="Group Name:")
-        self.groupName = wx.TextCtrl(self)
-        self.processBtn = wx.Button(self, label="Process")
+        self.group_label = wx.StaticText(self, label="Group Name:")
+        self.group_name = wx.TextCtrl(self)
+        self.process_btn = wx.Button(self, label="Process")
 
-        self.Bind(wx.EVT_BUTTON, self.OnGetPhotos, self.getPhotosBtn)
-        self.Bind(wx.EVT_BUTTON, self.OnDiscard, self.discardBtn)
-        self.Bind(wx.EVT_BUTTON, self.OnPrevious, self.prevBtn)
-        self.Bind(wx.EVT_BUTTON, self.OnNext, self.nextBtn)
-        self.Bind(wx.EVT_BUTTON, self.OnProcess, self.processBtn)
+        self.Bind(wx.EVT_BUTTON, self.on_get_photos, self.get_photos_btn)
+        self.Bind(wx.EVT_BUTTON, self.on_discard, self.discard_btn)
+        self.Bind(wx.EVT_BUTTON, self.on_previous, self.prev_btn)
+        self.Bind(wx.EVT_BUTTON, self.on_next, self.next_btn)
+        self.Bind(wx.EVT_BUTTON, self.on_process, self.process_btn)
 
-        topRow.Add(self.prevBtn, 1)
-        topRow.Add(self.getPhotosBtn, 2)
-        topRow.Add(self.nextBtn, 1)
-        topRow.Add(self.discardBtn, 2)
-        horiz.Add(self.groupLabel, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
-        horiz.Add(self.groupName, 4, wx.ALIGN_CENTER_VERTICAL)
-        horiz.Add(self.processBtn, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
-        vert.Add(topRow, 1, wx.ALIGN_CENTER_HORIZONTAL)
-        vert.Add(self.staticImage, 0, wx.TOP | wx.ALIGN_CENTER_HORIZONTAL, 5)
+        top_row.Add(self.prev_btn, 1)
+        top_row.Add(self.get_photos_btn, 2)
+        top_row.Add(self.next_btn, 1)
+        top_row.Add(self.discard_btn, 2)
+        horiz.Add(self.group_label, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
+        horiz.Add(self.group_name, 4, wx.ALIGN_CENTER_VERTICAL)
+        horiz.Add(self.process_btn, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
+        vert.Add(top_row, 1, wx.ALIGN_CENTER_HORIZONTAL)
+        vert.Add(self.static_image, 0, wx.TOP | wx.ALIGN_CENTER_HORIZONTAL, 5)
         vert.Add(horiz, 1, wx.ALIGN_CENTER_HORIZONTAL)
         self.SetSizer(vert)
         self.Centre()
 
-    def LoadImage(self, index):
+    def load_image(self, index):
         self.index = index
-        self.staticImage.LoadFromFile('infiles/' + self.names[index])
-        self.discardBtn.Enable()
+        self.static_image.load_from_file('infiles/' + self.names[index])
+        self.discard_btn.Enable()
         if index >= len(self.names) - 1:
-            self.nextBtn.Disable()
+            self.next_btn.Disable()
         else:
-            self.nextBtn.Enable()
+            self.next_btn.Enable()
         if index == 0:
-            self.prevBtn.Disable()
+            self.prev_btn.Disable()
         else:
-            self.prevBtn.Enable()
+            self.prev_btn.Enable()
 
-    def LoadNextImage(self):
-        del(self.names[self.index])
+    def load_next_image(self):
+        del self.names[self.index]
         if len(self.names) > self.index:
-            self.LoadImage(self.index)
+            self.load_image(self.index)
         elif len(self.names) > 0:
-            self.LoadImage(len(self.names) - 1)
+            self.load_image(len(self.names) - 1)
         else:
-            self.LoadBlank()
+            self.load_blank()
 
-    def LoadBlank(self):
-        self.staticImage.LoadBlank()
-        self.discardBtn.Disable()
+    def load_blank(self):
+        self.static_image.load_blank()
+        self.discard_btn.Disable()
 
-    def OnNext(self, event):
+    def on_next(self, event_):
         if self.index + 1 < len(self.names):
-            self.LoadImage(self.index + 1)
+            self.load_image(self.index + 1)
 
-    def OnPrevious(self, event):
+    def on_previous(self, event_):
         if self.index > 0:
-            self.LoadImage(self.index - 1)
+            self.load_image(self.index - 1)
 
-    def OnOpen(self, event):
+    def on_open(self, event_):
         cwd = os.getcwd()
         initial_dir = os.path.join(cwd)
         dlg = wx.lib.imagebrowser.ImageDialog(self, initial_dir)
@@ -99,19 +99,20 @@ class GroupPanel(wx.Panel):
             name = os.path.basename(path)
             shutil.copyfile(path, 'infiles/' + name)
             self.names.append(name)
-            self.LoadImage(len(self.names) - 1)
+            self.load_image(len(self.names) - 1)
         dlg.Destroy()
 
-    def OnProcess(self, event):
-        if self.staticImage.ValidateImage() and self.ValidateGroupName():
+    def on_process(self, event_):
+        if self.static_image.validate_image() and self.validate_group_name():
             timeid = time.strftime('%a/%H%M%S', time.localtime())
             infile = self.names[self.index]
-            group_name = self.groupName.GetValue()
+            group_name = self.group_name.GetValue()
             process.process(infile, group_name, timeid)
-            os.rename('infiles/' + infile, 'outfiles/{}_{}.jpg'.format(timeid, group_name.replace(' ','_')))
-            self.LoadNextImage()
+            os.rename('infiles/' + infile,
+                      'outfiles/{}_{}.jpg'.format(timeid, group_name.replace(' ', '_')))
+            self.load_next_image()
 
-    def OnGetPhotos(self, event):
+    def on_get_photos(self, event_):
         if not tools.mount_camera():
             self.SetStatusText('Could not connect to camera. Try again.')
         tools.get_camera_files()
@@ -126,25 +127,25 @@ class GroupPanel(wx.Panel):
             os.mkdir('outfiles/{}'.format(day))
         self.names = names
         if len(self.names) > 0:
-            self.LoadImage(0)
+            self.load_image(0)
         else:
-            self.nextBtn.Disable()
-            self.prevBtn.Disable()
-            self.LoadBlank()
+            self.next_btn.Disable()
+            self.prev_btn.Disable()
+            self.load_blank()
 
-    def OnDiscard(self, event):
+    def on_discard(self, event_):
         name = self.names[self.index]
         day = tools.get_day()
         if not os.path.exists('discard/{}'.format(day)):
             os.mkdir('discard/{}'.format(day))
         os.rename('infiles/' + name, 'discard/{}/{}'.format(day, name))
-        self.LoadNextImage()
+        self.load_next_image()
 
     def SetStatusText(self, message):
         self.Parent.Parent.Parent.SetStatusText(message)
 
-    def ValidateGroupName(self):
-        name = self.groupName.GetValue()
+    def validate_group_name(self):
+        name = self.group_name.GetValue()
         valid = name != ''
         if not valid:
             wx.MessageBox("Please enter group name",
