@@ -1,10 +1,6 @@
 #!/usr/bin/env python2
 import wx
 import wx.lib.imagebrowser
-import time
-import os
-import devices
-from devices.device import Device
 from ui.group_panel import GroupPanel
 from ui.calendar_panel import CalendarPanel
 from ui.reprint_panel import ReprintPanel
@@ -16,44 +12,44 @@ class MainWindow(wx.Frame):
     def __init__(self, parent, title):
         wx.Frame.__init__(self, parent, title=title, size=(610, 550))
         self.SetMinSize(self.GetSize())
-        self.CreateFrames()
+        self.create_frames()
         self.CreateStatusBar()
-        self.setupMenu()
+        self.setup_menu()
         self.Show(True)
 
-    def CreateFrames(self):
+    def create_frames(self):
         self.notebook = wx.Notebook(self)
-        self.groupPage = wx.NotebookPage(self.notebook)
-        self.groupPanel = GroupPanel(self.groupPage)
-        self.notebook.AddPage(self.groupPage, "Group")
-        self.calendarPage = wx.NotebookPage(self.notebook)
-        self.calendarPanel = CalendarPanel(self.calendarPage)
-        self.notebook.AddPage(self.calendarPage, "Calendar")
-        self.reprintPage = wx.NotebookPage(self.notebook)
-        self.reprintPanel = ReprintPanel(self.reprintPage)
-        self.notebook.AddPage(self.reprintPage, "Reprint")
+        self.group_page = wx.NotebookPage(self.notebook)
+        self.group_panel = GroupPanel(self.group_page)
+        self.notebook.AddPage(self.group_page, "Group")
+        self.calendar_page = wx.NotebookPage(self.notebook)
+        self.calendar_panel = CalendarPanel(self.calendar_page)
+        self.notebook.AddPage(self.calendar_page, "Calendar")
+        self.reprint_page = wx.NotebookPage(self.notebook)
+        self.reprint_panel = ReprintPanel(self.reprint_page)
+        self.notebook.AddPage(self.reprint_page, "Reprint")
 
-    def setupMenu(self):
+    def setup_menu(self):
         """ Setup menu bar. """
-        fileMenu = wx.Menu()
-        menuOpen = fileMenu.Append(wx.ID_OPEN, "&Open", "Open Photo")
-        fileMenu.AppendSeparator()
-        menuExit = fileMenu.Append(wx.ID_EXIT, "E&xit", "Quit Sleigh Photos")
+        file_menu = wx.Menu()
+        menu_open = file_menu.Append(wx.ID_OPEN, "&Open", "Open Photo")
+        file_menu.AppendSeparator()
+        menu_exit = file_menu.Append(wx.ID_EXIT, "E&xit", "Quit Sleigh Photos")
 
-        helpMenu = wx.Menu()
-        menuAbout = helpMenu.Append(wx.ID_ABOUT, "&About",
-                                    "About Sleigh Photos")
+        help_menu = wx.Menu()
+        menu_about = help_menu.Append(wx.ID_ABOUT, "&About",
+                                      "About Sleigh Photos")
 
-        menuBar = wx.MenuBar()
-        menuBar.Append(fileMenu, "&File")
-        menuBar.Append(helpMenu, "&Help")
+        menu_bar = wx.MenuBar()
+        menu_bar.Append(file_menu, "&File")
+        menu_bar.Append(help_menu, "&Help")
 
-        self.SetMenuBar(menuBar)
-        self.Bind(wx.EVT_MENU, self.OnOpen, menuOpen)
-        self.Bind(wx.EVT_MENU, self.OnExit, menuExit)
-        self.Bind(wx.EVT_MENU, self.OnAbout, menuAbout)
+        self.SetMenuBar(menu_bar)
+        self.Bind(wx.EVT_MENU, self.on_open, menu_open)
+        self.Bind(wx.EVT_MENU, self.on_exit, menu_exit)
+        self.Bind(wx.EVT_MENU, self.on_about, menu_about)
 
-    def OnAbout(self, event):
+    def on_about(self, event_):
         about = wx.MessageDialog(
             self,
             "Print photos of Scouts in the sleigh at the Christmas Experience",
@@ -63,21 +59,21 @@ class MainWindow(wx.Frame):
         about.ShowModal()
         about.Destroy()
 
-    def OnExit(self, event):
+    def on_exit(self, event_):
         self.Close(True)
 
-    def OnOpen(self, event):
+    def on_open(self, event):
         page = self.notebook.GetCurrentPage()
         panel = page.GetChildren()[0]
         panel.OnOpen(event)
 
-    def OnDeviceAdded(self, device_id, properties):
+    def on_device_added(self, device_id_, properties):
         message = properties.join('\n')
         info = wx.MessageDialog(self, message, "Device Added", wx.OK)
         info.ShowModal()
         info.Destroy()
 
-    def OnDeviceRemoved(self, device_id):
+    def on_device_removed(self, device_id):
         message = "Device Removed: %s" % device_id
         info = wx.MessageDialog(self, message, "Device Removed", wx.OK)
         info.ShowModal()
@@ -85,7 +81,7 @@ class MainWindow(wx.Frame):
 
 def main():
     app = wx.App(False)
-    frame = MainWindow(None, "Sleigh Photos")
+    MainWindow(None, "Sleigh Photos")
     app.MainLoop()
 
 if __name__ == '__main__':
