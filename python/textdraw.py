@@ -1,4 +1,4 @@
-class TextDraw:
+class TextDraw(object):
     draw = None
 
     def __init__(self, draw):
@@ -28,8 +28,8 @@ class TextDraw:
         pos = (left, top, left + width, top + height)
         return pos
 
-    def text(self, rect, text, fill, font, shadow=None, shadowFill=None):
-        if (shadow != None):
+    def text(self, rect, text, fill, font, shadow=None, shadow_fill=None):
+        if shadow != None:
             self.draw.text((rect[0] + shadow, rect[1] + shadow),
-                           text, fill=shadowFill, font=font)
+                           text, fill=shadow_fill, font=font)
         self.draw.text((rect[0], rect[1]), text, fill=fill, font=font)
