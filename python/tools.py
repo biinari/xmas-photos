@@ -18,6 +18,7 @@ def detect_gphoto():
     return output.find('USB PTP Class Camera') != -1
 
 use_gphoto = detect_gphoto()
+#use_gphoto = False
 
 class UnboundCallbackError (UnboundLocalError):
 	""" Callback function not set error. """
