@@ -11,7 +11,7 @@ def main(use_calendar=False):
     def cli_log(message):
         print message
 
-    tools.Logger.setCallback(cli_log)
+    tools.Logger.set_callback(cli_log)
     if use_calendar:
         calendar.run()
     else:
