@@ -11,8 +11,8 @@ from textdraw import TextDraw
 import tools
 
 # Landscape at 300 ppi
-a4width = 3508
-a4height = 2480
+A4_WIDTH = 3508
+A4_HEIGHT = 2480
 a5width = 2480
 a5height = 1754
 
@@ -35,14 +35,14 @@ def create_title(base, page_size, photo_size, photo_rect, group_name, timeid):
 
 def process(infile, group_name, timeid):
     page = Image.open('infiles/' + infile)
-    photo_size = (a4width * 3 / 4, a4height * 3 / 4)
+    photo_size = (A4_WIDTH * 3 / 4, A4_HEIGHT * 3 / 4)
     fade = Fade()
-    photo_left = (a4width - photo_size[0]) / 2
-    photo_top = (a4height - photo_size[1]) / 2 - a4height / 64
+    photo_left = (A4_WIDTH - photo_size[0]) / 2
+    photo_top = (A4_HEIGHT - photo_size[1]) / 2 - A4_HEIGHT / 64
     photo_right = photo_left + photo_size[0]
     photo_bottom = photo_top + photo_size[1]
     photo_rect = (photo_left, photo_top, photo_right, photo_bottom)
-    create_title(page, (a4width, a4height), photo_size, photo_rect, group_name, timeid)
+    create_title(page, (A4_WIDTH, A4_HEIGHT), photo_size, photo_rect, group_name, timeid)
     day = tools.get_day()
     if not os.path.exists('png/{}'.format(day)):
         os.mkdir('png/{}'.format(day))

@@ -11,8 +11,8 @@ from textdraw import TextDraw
 import tools
 
 # Portrait at 300 ppi
-a4width = 2480
-a4height = 3508
+A4_WIDTH = 2480
+A4_HEIGHT = 3508
 
 def create_title(base, page_size, photo_size, photo_rect, timeid):
     title = "Christmas Experience"
@@ -62,16 +62,16 @@ def process(infile, timeid):
     except IOError:
         print "Cannot open calendar page base"
         return
-    photo_size = (a4width * 3 / 4, a4height * 3 / 8)
+    photo_size = (A4_WIDTH * 3 / 4, A4_HEIGHT * 3 / 8)
     fade = Fade()
     photo = fade.applyMask(infile, photo_size)
-    photo_left = (a4width - photo_size[0]) / 2
+    photo_left = (A4_WIDTH - photo_size[0]) / 2
     photo_top = 520
     photo_right = photo_left + photo_size[0]
     photo_bottom = photo_top + photo_size[1]
     photo_rect = (photo_left, photo_top, photo_right, photo_bottom)
     page.paste(photo, photo_rect)
-    create_title(page, (a4width, a4height), photo_size, photo_rect, timeid)
+    create_title(page, (A4_WIDTH, A4_HEIGHT), photo_size, photo_rect, timeid)
     day = tools.get_day()
     if not os.path.exists('png/{}'.format(day)):
         os.mkdir('png/{}'.format(day))
