@@ -1,4 +1,4 @@
-class IDeviceManager:
+class IDeviceManager(object):
 
     """
     Interface to manage storage devices.
@@ -6,27 +6,27 @@ class IDeviceManager:
     Should detect devices added / removed and provide their mount point
     """
 
-    def getDevices(self):
+    def get_devices(self):
         """
         Get list of devices and call device added callback for each.
         """
-        raise NotImplementedError("FIXME: Implement method getDevices")
+        raise NotImplementedError("FIXME: Implement method get_devices")
 
-    def setDeviceAddedCallback(self, callback):
+    def set_device_added_callback(self, callback):
         """
         Set a callback for when a new volume is mounted.
-        
+
         callback should follow this specification
         OnDeviceAdded(device)
         """
         raise NotImplementedError(
-            "FIXME: Implement method setDeviceAddedCallback"
+            "FIXME: Implement method set_device_added_callback"
         )
 
-    def setDeviceRemovedCallback(self, callback):
+    def set_device_removed_callback(self, callback):
         """
         Set a callback for when a volume is removed.
-        
+
         callback should follow this specification
         OnDeviceRemove(device)
         """

@@ -1,33 +1,32 @@
 #!/usr/bin/env python2
 import pyudev
-from idevicemanager import IDeviceManager
-from device import Device
+from devices.idevicemanager import IDeviceManager
 
 class DeviceManager(IDeviceManager):
-    
-    _deviceAddedCallback = None
-    _deviceRemovedCallback = None
+
+    _device_added_callback = None
+    _device_removed_callback = None
     _devices = {}
 
     def __init__(self):
         self.context = pyudev.Context()
-    
-    def getDevices(self):
-        devices = context.list_devices(
+
+    def get_devices(self):
+        devices = self.context.list_devices(
             subsystem='block',
             ID_TYPE='disk',
             DEV_TYPE='disk'
         )
         for device in devices:
-            self._addVolume(device)
-            if self._deviceAddedCallback != None:
-                self._deviceAddedCallback(device)
+            self._add_volume(device)
+            if self._device_added_callback != None:
+                self._device_added_callback(device)
 
-    def _addVolume(device):
+    def _add_volume(self, device):
         self._devices.append(device)
 
-    def setDeviceAddedCallback(self, callback):
-        self._deviceAddedCallback = callback
+    def set_device_added_callback(self, callback):
+        self._device_added_callback = callback
 
-    def setDeviceRemovedCallback(self, callback):
-        self._deviceRemovedCallback = callback
+    def set_device_removed_callback(self, callback):
+        self._device_removed_callback = callback

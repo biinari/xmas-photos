@@ -5,13 +5,13 @@
 
 import dbus
 import gobject
-from idevicemanager import IDeviceManager
-from device import Device
+from devices.idevicemanager import IDeviceManager
+from devices.device import Device
 
 class DeviceManager(IDeviceManager):
 
-    _deviceAddedCallback = None
-    _deviceRemovedCallback = None
+    _device_added_callback = None
+    _device_removed_callback = None
     _devices = {}
 
     def __init__(self):
@@ -26,28 +26,28 @@ class DeviceManager(IDeviceManager):
         self.hal_manager.connect_to_signal("DeviceAdded", self._add)
         self.hal_manager.connect_to_signal("DeviceRemoved", self._remove)
 
-    def getDevices(self):
+    def get_devices(self):
         devices = self.hal_manager.GetAllDevices()
         for udi in devices:
             device_obj = self.bus.get_object("org.freedesktop.Hal", udi)
             device_int = dbus.Interface(device_obj,
                                         "org.freedesktop.Hal.Device")
             if device_int.QueryCapability("volume"):
-                self._addVolume(udi, device_int)
-                if self._deviceAddedCallback != None:
-                    self._deviceAddedCallback(self._devices[udi])
+                self._add_volume(udi, device_int)
+                if self._device_added_callback != None:
+                    self._device_added_callback(self._devices[udi])
 
     def _add(self, udi):
         """Filter events to only run for "volume" devices."""
         device_obj = self.bus.get_object("org.freedesktop.Hal", udi)
         device_int = dbus.Interface(device_obj, "org.freedesktop.Hal.Device")
-        
-        if device_int.QueryCapability("volume"):
-            device = self._addVolume(udi, device_int)
-            if self._deviceAddedCallback != None:
-                return self._deviceAddedCallback(self._devices[udi])
 
-    def _addVolume(self, udi, volume):
+        if device_int.QueryCapability("volume"):
+            device = self._add_volume(udi, device_int)
+            if self._device_added_callback != None:
+                return self._device_added_callback(self._devices[udi])
+
+    def _add_volume(self, udi, volume):
         device = Device()
         device.device_id = udi
         device.device_file = volume.GetProperty("block.device")
@@ -67,34 +67,40 @@ class DeviceManager(IDeviceManager):
         if udi in self._devices:
             device = self._devices[udi]
             del self._devices[udi]
-            if self._deviceRemovedCallback != None:
-                return self._deviceRemovedCallback(device)
+            if self._device_removed_callback != None:
+                return self._device_removed_callback(device)
 
-    def setDeviceAddedCallback(self, callback):
-        self._deviceAddedCallback = callback
+    def set_device_added_callback(self, callback):
+        self._device_added_callback = callback
 
-    def setDeviceRemovedCallback(self, callback):
-        self._deviceRemovedCallback = callback
+    def set_device_removed_callback(self, callback):
+        self._device_removed_callback = callback
 
 
-if __name__ == '__main__':
+def main():
     from dbus.mainloop.glib import DBusGMainLoop
     DBusGMainLoop(set_as_default=True)
     loop = gobject.MainLoop()
-    deviceManager = DeviceManager()
-    def deviceAdded(device):
-        print("Device Added: %s" % device.device_id)
+    device_manager = DeviceManager()
+
+    def device_added(device):
+        print "Device Added: %s" % device.device_id
         if device.mounted:
-            print("mount point: %s" % device.mount_point)
+            print "mount point: %s" % device.mount_point
         else:
-            print("not mounted")
-        print("label: %s" % device.label)
-        print("fstype: %s" % device.fstype)
-        print("size: %s" %device.size)
-        print("")
-    def deviceRemoved(device):
-        print("Device Removed: %s" %device.device_id)
-    deviceManager.setDeviceAddedCallback(deviceAdded)
-    deviceManager.setDeviceRemovedCallback(deviceRemoved)
-    deviceManager.getDevices()
+            print "not mounted"
+        print "label: %s" % device.label
+        print "fstype: %s" % device.fstype
+        print "size: %s" %device.size
+        print ""
+
+    def device_removed(device):
+        print "Device Removed: %s" %device.device_id
+
+    device_manager.set_device_added_callback(device_added)
+    device_manager.set_device_removed_callback(device_removed)
+    device_manager.get_devices()
     loop.run()
+
+if __name__ == '__main__':
+    main()
