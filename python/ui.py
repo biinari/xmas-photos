@@ -3,6 +3,7 @@ import wx
 import wx.lib.imagebrowser
 from ui.group_panel import GroupPanel
 from ui.reprint_panel import ReprintPanel
+from ui.edit_panel import EditPanel
 
 class MainWindow(wx.Frame):
     infile = None
@@ -24,6 +25,9 @@ class MainWindow(wx.Frame):
         self.reprint_page = wx.NotebookPage(self.notebook)
         self.reprint_panel = ReprintPanel(self.reprint_page)
         self.notebook.AddPage(self.reprint_page, "Reprint")
+        self.edit_page = wx.NotebookPage(self.notebook)
+        self.edit_panel = EditPanel(self.edit_page)
+        self.notebook.AddPage(self.edit_page, "Edit")
 
     def setup_menu(self):
         """ Setup menu bar. """
