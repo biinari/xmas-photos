@@ -2,7 +2,6 @@
 import wx
 import wx.lib.imagebrowser
 from ui.group_panel import GroupPanel
-from ui.calendar_panel import CalendarPanel
 from ui.reprint_panel import ReprintPanel
 
 class MainWindow(wx.Frame):
@@ -22,9 +21,6 @@ class MainWindow(wx.Frame):
         self.group_page = wx.NotebookPage(self.notebook)
         self.group_panel = GroupPanel(self.group_page)
         self.notebook.AddPage(self.group_page, "Group")
-        self.calendar_page = wx.NotebookPage(self.notebook)
-        self.calendar_panel = CalendarPanel(self.calendar_page)
-        self.notebook.AddPage(self.calendar_page, "Calendar")
         self.reprint_page = wx.NotebookPage(self.notebook)
         self.reprint_panel = ReprintPanel(self.reprint_page)
         self.notebook.AddPage(self.reprint_page, "Reprint")
