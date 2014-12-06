@@ -46,12 +46,16 @@ class ReprintPanel(wx.Panel):
         dlg.Destroy()
 
     def on_reprint(self, event_):
-        if self.static_image.validate_image() and self.validate_num_copies:
+        if self.validate():
             num_copies = self.num_copies.GetValue()
             if num_copies != '':
                 reprint.reprint(self.filename, int(num_copies))
             else:
                 reprint.reprint(self.filename)
+
+    def validate(self):
+        return self.static_image.validate_image() \
+            and self.validate_num_copies
 
     def validate_num_copies(self):
         num_copies = self.num_copies.GetValue()

@@ -103,7 +103,7 @@ class GroupPanel(wx.Panel):
         dlg.Destroy()
 
     def on_process(self, event_):
-        if self.static_image.validate_image() and self.validate_group_name():
+        if self.validate():
             timeid = time.strftime('%a/%H%M%S', time.localtime())
             infile = self.names[self.index]
             group_name = self.group_name.GetValue()
@@ -143,6 +143,10 @@ class GroupPanel(wx.Panel):
 
     def SetStatusText(self, message):
         self.Parent.Parent.Parent.SetStatusText(message)
+
+    def validate(self):
+        return self.static_image.validate_image() \
+            and self.validate_group_name()
 
     def validate_group_name(self):
         name = self.group_name.GetValue()
