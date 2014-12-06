@@ -9,7 +9,7 @@ class MainWindow(wx.Frame):
 
     """ Main Window Frame for Sleigh Photos. """
     def __init__(self, parent, title):
-        wx.Frame.__init__(self, parent, title=title, size=(610, 570))
+        wx.Frame.__init__(self, parent, title=title, size=(610, 600))
         self.SetMinSize(self.GetSize())
         self.create_frames()
         self.CreateStatusBar()

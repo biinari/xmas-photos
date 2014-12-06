@@ -21,7 +21,8 @@ class GroupPanel(wx.Panel):
     def create_widgets(self):
         vert = wx.BoxSizer(wx.VERTICAL)
         top_row = wx.BoxSizer(wx.HORIZONTAL)
-        horiz = wx.BoxSizer(wx.HORIZONTAL)
+        name_row = wx.BoxSizer(wx.HORIZONTAL)
+        bottom_row = wx.BoxSizer(wx.HORIZONTAL)
         self.get_photos_btn = wx.Button(self, label="Get Photos")
         self.discard_btn = wx.Button(self, label="Discard")
         self.discard_btn.Disable()
@@ -32,8 +33,10 @@ class GroupPanel(wx.Panel):
         self.next_btn = wx.Button(self, label=">")
         self.next_btn.Disable()
 
-        self.group_label = wx.StaticText(self, label="Group Name:")
+        group_label = wx.StaticText(self, label="Group Name:")
         self.group_name = wx.TextCtrl(self)
+        num_copies_label = wx.StaticText(self, label="Number of copies:")
+        self.num_copies = wx.TextCtrl(self)
         self.process_btn = wx.Button(self, label="Process")
 
         self.Bind(wx.EVT_BUTTON, self.on_get_photos, self.get_photos_btn)
@@ -46,12 +49,15 @@ class GroupPanel(wx.Panel):
         top_row.Add(self.get_photos_btn, 2)
         top_row.Add(self.next_btn, 1)
         top_row.Add(self.discard_btn, 2)
-        horiz.Add(self.group_label, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
-        horiz.Add(self.group_name, 4, wx.ALIGN_CENTER_VERTICAL)
-        horiz.Add(self.process_btn, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
+        name_row.Add(group_label, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
+        name_row.Add(self.group_name, 4, wx.ALIGN_CENTER_VERTICAL)
+        bottom_row.Add(num_copies_label, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
+        bottom_row.Add(self.num_copies, 1, wx.ALIGN_CENTER_VERTICAL)
+        bottom_row.Add(self.process_btn, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
         vert.Add(top_row, 1, wx.ALIGN_CENTER_HORIZONTAL)
         vert.Add(self.static_image, 0, wx.TOP | wx.ALIGN_CENTER_HORIZONTAL, 5)
-        vert.Add(horiz, 1, wx.ALIGN_CENTER_HORIZONTAL)
+        vert.Add(name_row, 1, wx.ALIGN_CENTER_HORIZONTAL)
+        vert.Add(bottom_row, 1, wx.ALIGN_CENTER_HORIZONTAL)
         self.SetSizer(vert)
         self.Centre()
 
@@ -107,7 +113,11 @@ class GroupPanel(wx.Panel):
             timeid = time.strftime('%a/%H%M%S', time.localtime())
             infile = self.names[self.index]
             group_name = self.group_name.GetValue()
-            process.process(infile, group_name, timeid)
+            num_copies = self.num_copies.GetValue()
+            if num_copies != '':
+                process.process(infile, group_name, timeid, int(num_copies))
+            else:
+                process.process(infile, group_name, timeid)
             os.rename('infiles/' + infile,
                       'outfiles/{}_{}.jpg'.format(timeid, group_name.replace(' ', '_')))
             self.load_next_image()
@@ -156,3 +166,10 @@ class GroupPanel(wx.Panel):
                           caption="Group name is missing")
         return valid
 
+    def validate_num_copies(self):
+        num_copies = self.num_copies.GetValue()
+        valid = num_copies == "" or num_copies.isdigit()
+        if not valid:
+            wx.MessageBox("Integer required",
+                          caption="Number of copies must be an integer")
+        return valid

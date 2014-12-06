@@ -54,7 +54,7 @@ def create_title(base, page_size, photo_rect, group_name, timeid):
     textdraw.text(timeid_rect, timeid, grey, small_font)
     textdraw.text(copy_rect, copy, grey, small_font)
 
-def process(infile, group_name, timeid):
+def process(infile, group_name, timeid, copies=1):
     page = Image.new('RGB', (A4_WIDTH, A4_HEIGHT), (255, 255, 255, 255))
     photo_size = (A4_WIDTH * 3 / 4, A4_HEIGHT * 3 / 4)
     fade = Fade()
@@ -71,7 +71,7 @@ def process(infile, group_name, timeid):
         os.mkdir('png/{}'.format(day))
     png_file = 'png/{}_{}.jpg'.format(timeid, group_name.replace(' ', '_'))
     page.save(png_file, quality=75)
-    tools.print_image(png_file)
+    tools.print_image(png_file, copies)
 
 def run():
     if not tools.mount_camera():
