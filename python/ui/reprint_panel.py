@@ -20,6 +20,7 @@ class ReprintPanel(wx.Panel):
         self.static_image = Photo(self)
         self.num_copies_label = wx.StaticText(self, label="Number of copies:")
         self.num_copies = wx.TextCtrl(self)
+        self.num_copies.SetValue("1")
         self.reprint_btn = wx.Button(self, label="Reprint")
 
         self.Bind(wx.EVT_BUTTON, self.on_open, self.open_btn)
