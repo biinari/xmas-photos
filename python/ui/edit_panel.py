@@ -17,9 +17,11 @@ class EditPanel(wx.Panel):
 
     def create_widgets(self):
         vert = wx.BoxSizer(wx.VERTICAL)
+        open_row = wx.BoxSizer(wx.HORIZONTAL)
         name_row = wx.BoxSizer(wx.HORIZONTAL)
         bottom_row = wx.BoxSizer(wx.HORIZONTAL)
         open_btn = wx.Button(self, label="Open")
+        restore_btn = wx.Button(self, label="Restore Discarded")
         self.static_image = Photo(self)
         group_label = wx.StaticText(self, label="Group Name:")
         self.group_name = wx.TextCtrl(self)
@@ -29,15 +31,18 @@ class EditPanel(wx.Panel):
         process_btn = wx.Button(self, label="Process")
 
         self.Bind(wx.EVT_BUTTON, self.on_open, open_btn)
+        self.Bind(wx.EVT_BUTTON, self.on_restore, restore_btn)
         self.Bind(wx.EVT_BUTTON, self.on_process, process_btn)
 
+        open_row.Add(open_btn, 1, wx.ALIGN_CENTER_VERTICAL)
+        open_row.Add(restore_btn, 2, wx.ALIGN_CENTER_VERTICAL)
         name_row.Add(group_label, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
         name_row.Add(self.group_name, 4, wx.ALIGN_CENTER_VERTICAL)
 
         bottom_row.Add(num_copies_label, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
         bottom_row.Add(self.num_copies, 1, wx.ALIGN_CENTER_VERTICAL)
         bottom_row.Add(process_btn, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
-        vert.Add(open_btn, 1, wx.TOP | wx.ALIGN_CENTER_HORIZONTAL)
+        vert.Add(open_row, 1, wx.TOP | wx.ALIGN_CENTER_HORIZONTAL)
         vert.Add(self.static_image, 0, wx.TOP | wx.ALIGN_CENTER_HORIZONTAL, 5)
         vert.Add(name_row, 1, wx.ALIGN_CENTER_HORIZONTAL)
         vert.Add(bottom_row, 1, wx.ALIGN_CENTER_HORIZONTAL)
@@ -50,6 +55,21 @@ class EditPanel(wx.Panel):
         initial_dir = os.path.join(cwd, 'outfiles/{}'.format(day))
         if not os.path.exists(initial_dir):
             initial_dir = os.path.join(cwd, 'outfiles')
+            if not os.path.exists(initial_dir):
+                os.mkdir(initial_dir)
+        dlg = wx.lib.imagebrowser.ImageDialog(self, initial_dir)
+        dlg.Centre()
+        if dlg.ShowModal() == wx.ID_OK:
+            self.filename = dlg.GetFile()
+            self.static_image.load_from_file(self.filename)
+        dlg.Destroy()
+
+    def on_restore(self, event_):
+        cwd = os.getcwd()
+        day = tools.get_day()
+        initial_dir = os.path.join(cwd, 'discard/{}'.format(day))
+        if not os.path.exists(initial_dir):
+            initial_dir = os.path.join(cwd, 'discard')
             if not os.path.exists(initial_dir):
                 os.mkdir(initial_dir)
         dlg = wx.lib.imagebrowser.ImageDialog(self, initial_dir)
