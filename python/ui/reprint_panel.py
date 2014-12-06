@@ -18,7 +18,7 @@ class ReprintPanel(wx.Panel):
         horiz = wx.BoxSizer(wx.HORIZONTAL)
         self.open_btn = wx.Button(self, label="Open")
         self.static_image = Photo(self)
-        self.num_copies_label = wx.StaticText(self, label="Number of copies:")
+        num_copies_label = wx.StaticText(self, label="Number of copies:")
         self.num_copies = wx.TextCtrl(self)
         self.num_copies.SetValue("1")
         self.reprint_btn = wx.Button(self, label="Reprint")
@@ -26,7 +26,7 @@ class ReprintPanel(wx.Panel):
         self.Bind(wx.EVT_BUTTON, self.on_open, self.open_btn)
         self.Bind(wx.EVT_BUTTON, self.on_reprint, self.reprint_btn)
 
-        horiz.Add(self.num_copies_label, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
+        horiz.Add(num_copies_label, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
         horiz.Add(self.num_copies, 1, wx.ALIGN_CENTER_VERTICAL)
         horiz.Add(self.reprint_btn, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
         vert.Add(self.open_btn, 1, wx.TOP | wx.ALIGN_CENTER_HORIZONTAL)
