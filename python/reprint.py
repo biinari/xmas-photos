@@ -19,7 +19,7 @@ def main():
         print "Usage: %s filename copies" % sys.argv[0]
         sys.exit(1)
     if len(sys.argv) > 2:
-        copies = sys.argv[2]
+        copies = int(sys.argv[2])
     else:
         copies = 1
 
