@@ -18,9 +18,10 @@ A5_WIDTH = 2480
 A5_HEIGHT = 1754
 
 def create_title(base, page_size, photo_rect, group_name, timeid):
+    year = tools.get_year()
     title = "Christmas Experience"
-    subtitle = "Bowley 2015"
-    copy = u"© 2015 East Lancashire Scouts"
+    subtitle = "Bowley {}".format(year)
+    copy = u"© {} East Lancashire Scouts".format(year)
     shadow = 2
     darkred = (176, 7, 7, 255)
     red = (238, 9, 9, 255)
