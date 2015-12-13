@@ -38,7 +38,7 @@ class GroupPanel(wx.Panel):
         num_copies_label = wx.StaticText(self, label="Number of copies:")
         self.num_copies = wx.TextCtrl(self)
         self.num_copies.SetValue("1")
-        process_btn = wx.Button(self, label="Process")
+        process_btn = wx.Button(self, label="Print")
 
         self.Bind(wx.EVT_BUTTON, self.on_get_photos, get_photos_btn)
         self.Bind(wx.EVT_BUTTON, self.on_discard, self.discard_btn)

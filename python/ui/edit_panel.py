@@ -28,7 +28,7 @@ class EditPanel(wx.Panel):
         num_copies_label = wx.StaticText(self, label="Number of copies:")
         self.num_copies = wx.TextCtrl(self)
         self.num_copies.SetValue("1")
-        process_btn = wx.Button(self, label="Process")
+        process_btn = wx.Button(self, label="Print")
 
         self.Bind(wx.EVT_BUTTON, self.on_open, open_btn)
         self.Bind(wx.EVT_BUTTON, self.on_restore, restore_btn)

@@ -32,7 +32,7 @@ class CalendarPanel(wx.Panel):
         self.next_btn = wx.Button(self, label=">")
         self.next_btn.Disable()
 
-        self.process_btn = wx.Button(self, label="Process")
+        self.process_btn = wx.Button(self, label="Print")
 
         self.Bind(wx.EVT_BUTTON, self.on_get_photos, self.get_photos_btn)
         self.Bind(wx.EVT_BUTTON, self.on_discard, self.discard_btn)
