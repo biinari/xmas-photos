@@ -24,7 +24,8 @@ class Photo(wx.StaticBitmap):
     def load_blank(self):
         """ Load a blank image. """
         (width, height) = self.GetSize()
-        bitmap = wx.EmptyBitmap(width, height)
+        image = wx.EmptyImage(width, height, True)
+        bitmap = wx.BitmapFromImage(image)
         self.SetBitmap(bitmap)
         self.path = None
 
