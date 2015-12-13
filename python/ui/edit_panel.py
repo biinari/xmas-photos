@@ -1,7 +1,9 @@
-import wx
 import os
 import shutil
 import time
+
+import wx
+
 from ui.photo import Photo
 import process
 import tools

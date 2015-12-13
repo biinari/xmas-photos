@@ -2,9 +2,11 @@
 # vim: set fileencoding=utf-8 :
 # Process photos for Bowley Christmas Experience
 import os
+import time
+
 from PIL import Image
 from PIL import ImageFont, ImageDraw
-import time
+
 from fade import Fade
 from textdraw import TextDraw
 import tools

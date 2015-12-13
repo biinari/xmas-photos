@@ -1,5 +1,7 @@
-import wx
 import os
+
+import wx
+
 from ui.photo import Photo
 import reprint
 import tools
