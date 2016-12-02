@@ -10,3 +10,11 @@ Add a line to `/etc/fstab` to identify the SD card. It helps to set the partitio
 
 * [Python 2.7](http://www.python.org/)
 * [Pillow](http://python-imaging.github.io/)
+
+### Configuration
+
+Use dotenv to configure settings. Copy the example file to `.env` and edit it:
+
+```sh
+cp .env.example .env
+```
