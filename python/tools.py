@@ -4,21 +4,30 @@ import os
 import shutil
 import subprocess
 import time
+import dotenv
 
-CAMERA_MOUNT = "/mnt/camera"
-CAMERA_SRC = CAMERA_MOUNT + "/DCIM/101___12"
-PRINTER = 'HP-Photosmart-C5280'
-#PRINTER = 'Kodak_ESP_5200_Series_AiO'
-#PRINTER = 'Brother-MFC-5840CN-USB'
-DO_CAMERA = True
-DO_PRINT = True
+dotenv.load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
+
+def env_to_bool(value):
+    return value.lower() in ['true', 't', 'yes', 'y']
+
+CAMERA_MOUNT = os.environ.get('CAMERA_MOUNT')
+CAMERA_SRC = os.environ.get('CAMERA_SRC')
+
+PRINTER = os.environ.get('PRINTER')
+
+DO_CAMERA = env_to_bool(os.environ.get('DO_CAMERA'))
+DO_PRINT = env_to_bool(os.environ.get('DO_PRINT'))
 
 def detect_gphoto():
     output = subprocess.check_output(['gphoto2', '--auto-detect'])
     return output.find('USB PTP Class Camera') != -1
 
-USE_GPHOTO = detect_gphoto()
-#USE_GPHOTO = False
+USE_OR_DETECT_GPHOTO = os.environ.get('USE_GPHOTO').lower()
+if USE_OR_DETECT_GPHOTO == 'detect':
+    USE_GPHOTO = detect_gphoto()
+else:
+    USE_GPHOTO = env_to_bool(USE_OR_DETECT_GPHOTO)
 
 class UnboundCallbackError(UnboundLocalError):
     """ Callback function not set error. """
