@@ -139,4 +139,3 @@ class CalendarPanel(wx.Panel):
 
     def SetStatusText(self, message):
         self.Parent.Parent.Parent.SetStatusText(message)
-

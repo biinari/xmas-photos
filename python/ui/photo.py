@@ -35,4 +35,3 @@ class Photo(wx.StaticBitmap):
         if not valid:
             wx.MessageBox("Please open an image", caption="No image open", parent=self.Parent)
         return valid
-
