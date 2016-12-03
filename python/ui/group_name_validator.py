@@ -1,4 +1,4 @@
 import wx
 
-class GroupNameValidator(wx.TextValidator):
+class GroupNameValidator(wx.Validator):
     pass
