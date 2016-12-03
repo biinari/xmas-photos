@@ -5,7 +5,7 @@ import re
 import sys
 
 import process
-import calendar
+import process_calendar
 import tools
 
 def main(use_calendar=False):
@@ -14,7 +14,7 @@ def main(use_calendar=False):
 
     tools.Logger.set_callback(cli_log)
     if use_calendar:
-        calendar.run()
+        process_calendar.run()
     else:
         process.run()
 

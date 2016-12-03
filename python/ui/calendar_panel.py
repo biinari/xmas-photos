@@ -5,7 +5,7 @@ import time
 import wx
 
 from ui.photo import Photo
-import calendar
+import process_calendar
 import tools
 
 class CalendarPanel(wx.Panel):
@@ -104,7 +104,7 @@ class CalendarPanel(wx.Panel):
         if self.static_image.validate_image():
             timeid = time.strftime('%a/%H%M%S', time.localtime())
             infile = self.names[self.index]
-            calendar.process(infile, timeid)
+            process_calendar.process(infile, timeid)
             os.rename('infiles/' + infile, 'outfiles/{}.jpg'.format(timeid))
             self.load_next_image()
 
