@@ -37,11 +37,11 @@ class Logger(object):
     _callback = None
 
     def set_callback(self, callback=None):
-        type(self)._callback = callback
+        type(self)._callback = callback # pylint: disable=protected-access
 
     def log(self, message):
         if self._callback != None:
-            self._callback(message)
+            self._callback(message) # pylint: disable=not-callable
         else:
             raise UnboundCallbackError("Callback function not set")
 
