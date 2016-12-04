@@ -37,12 +37,17 @@ class EditPanel(wx.Panel):
         self.Bind(wx.EVT_BUTTON, self.on_process, process_btn)
 
         open_row.Add(open_btn, 1, wx.ALIGN_CENTER_VERTICAL)
+        open_row.Add(wx.Size(10, 10))
         open_row.Add(restore_btn, 2, wx.ALIGN_CENTER_VERTICAL)
+
         name_row.Add(group_label, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
+        name_row.Add(wx.Size(10, 10))
         name_row.Add(self.group_name, 4, wx.ALIGN_CENTER_VERTICAL)
 
         bottom_row.Add(num_copies_label, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
+        bottom_row.Add(wx.Size(10, 10))
         bottom_row.Add(self.num_copies, 1, wx.ALIGN_CENTER_VERTICAL)
+        bottom_row.Add(wx.Size(10, 10))
         bottom_row.Add(process_btn, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
         vert.Add(open_row, 1, wx.TOP | wx.ALIGN_CENTER_HORIZONTAL)
         vert.Add(self.static_image, 0, wx.TOP | wx.ALIGN_CENTER_HORIZONTAL, 5)

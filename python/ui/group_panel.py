@@ -51,16 +51,28 @@ class GroupPanel(wx.Panel):
         top_row.Add(self.prev_btn, 1)
         top_row.Add(get_photos_btn, 2)
         top_row.Add(self.next_btn, 1)
+        top_row.Add(wx.Size(20, 10))
         top_row.Add(self.discard_btn, 2)
+
         name_row.Add(group_label, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
+        name_row.Add(wx.Size(10, 10))
         name_row.Add(self.group_name, 4, wx.ALIGN_CENTER_VERTICAL)
+
         bottom_row.Add(num_copies_label, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
+        bottom_row.Add(wx.Size(10, 10))
         bottom_row.Add(self.num_copies, 1, wx.ALIGN_CENTER_VERTICAL)
+        bottom_row.Add(wx.Size(10, 10))
         bottom_row.Add(process_btn, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
+
+        vert.Add(wx.Size(10, 10))
         vert.Add(top_row, 1, wx.ALIGN_CENTER_HORIZONTAL)
+        vert.Add(wx.Size(10, 10))
         vert.Add(self.static_image, 0, wx.TOP | wx.ALIGN_CENTER_HORIZONTAL, 5)
+        vert.Add(wx.Size(10, 10))
         vert.Add(name_row, 1, wx.ALIGN_CENTER_HORIZONTAL)
+        vert.Add(wx.Size(10, 10))
         vert.Add(bottom_row, 1, wx.ALIGN_CENTER_HORIZONTAL)
+        vert.Add(wx.Size(10, 10))
         self.SetSizer(vert)
         self.Centre()
 

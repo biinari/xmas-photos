@@ -17,7 +17,8 @@ class ReprintPanel(wx.Panel):
 
     def create_widgets(self):
         vert = wx.BoxSizer(wx.VERTICAL)
-        horiz = wx.BoxSizer(wx.HORIZONTAL)
+        open_row = wx.BoxSizer(wx.HORIZONTAL)
+        action_row = wx.BoxSizer(wx.HORIZONTAL)
         open_btn = wx.Button(self, label="Open")
         self.static_image = Photo(self)
         num_copies_label = wx.StaticText(self, label="Number of copies:")
@@ -28,12 +29,17 @@ class ReprintPanel(wx.Panel):
         self.Bind(wx.EVT_BUTTON, self.on_open, open_btn)
         self.Bind(wx.EVT_BUTTON, self.on_reprint, reprint_btn)
 
-        horiz.Add(num_copies_label, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
-        horiz.Add(self.num_copies, 1, wx.ALIGN_CENTER_VERTICAL)
-        horiz.Add(reprint_btn, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
-        vert.Add(open_btn, 1, wx.TOP | wx.ALIGN_CENTER_HORIZONTAL)
+        open_row.Add(open_btn, 1, wx.ALIGN_CENTER_VERTICAL)
+
+        action_row.Add(num_copies_label, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
+        action_row.Add(wx.Size(10, 10))
+        action_row.Add(self.num_copies, 1, wx.ALIGN_CENTER_VERTICAL)
+        action_row.Add(wx.Size(10, 10))
+        action_row.Add(reprint_btn, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
+
+        vert.Add(open_row, 1, wx.TOP | wx.ALIGN_CENTER_HORIZONTAL)
         vert.Add(self.static_image, 0, wx.TOP | wx.ALIGN_CENTER_HORIZONTAL, 5)
-        vert.Add(horiz, 1, wx.ALIGN_CENTER_HORIZONTAL)
+        vert.Add(action_row, 1, wx.ALIGN_CENTER_HORIZONTAL)
         self.SetSizer(vert)
         self.Centre()
 
