@@ -5,7 +5,7 @@ class Mask(object):
 
     PHOTO_WIDTH = 2533
     PHOTO_HEIGHT = 1899
-    PHOTO_LEFT = 832
+    PHOTO_LEFT = 804
     PHOTO_TOP = 428
 
     def __init__(self, paper_size):
