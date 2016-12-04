@@ -31,15 +31,19 @@ class ReprintPanel(wx.Panel):
 
         open_row.Add(open_btn, 1, wx.ALIGN_CENTER_VERTICAL)
 
-        action_row.Add(num_copies_label, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
+        action_row.Add(num_copies_label, 1, wx.ALIGN_CENTER_VERTICAL)
         action_row.Add(wx.Size(10, 10))
         action_row.Add(self.num_copies, 1, wx.ALIGN_CENTER_VERTICAL)
-        action_row.Add(wx.Size(10, 10))
-        action_row.Add(reprint_btn, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
+        action_row.Add(wx.Size(20, 10))
+        action_row.Add(reprint_btn, 1, wx.ALIGN_CENTER_VERTICAL)
 
-        vert.Add(open_row, 1, wx.TOP | wx.ALIGN_CENTER_HORIZONTAL)
-        vert.Add(self.static_image, 0, wx.TOP | wx.ALIGN_CENTER_HORIZONTAL, 5)
-        vert.Add(action_row, 1, wx.ALIGN_CENTER_HORIZONTAL)
+        vert.Add(wx.Size(10, 10))
+        vert.Add(open_row, 0, wx.ALIGN_CENTER_HORIZONTAL)
+        vert.Add(wx.Size(10, 10))
+        vert.Add(self.static_image, 1, wx.SHAPED | wx.ALIGN_CENTER)
+        vert.Add(wx.Size(10, 10))
+        vert.Add(action_row, 0, wx.ALIGN_CENTER_HORIZONTAL)
+        vert.Add(wx.Size(10, 10))
         self.SetSizer(vert)
         self.Centre()
 
