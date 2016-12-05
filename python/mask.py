@@ -3,10 +3,10 @@ from PIL import Image
 class Mask(object):
     """Manages mask for page"""
 
-    PHOTO_WIDTH = 2533
-    PHOTO_HEIGHT = 1899
-    PHOTO_LEFT = 804
-    PHOTO_TOP = 428
+    PHOTO_WIDTH = 2400
+    PHOTO_HEIGHT = 1800
+    PHOTO_LEFT = 852
+    PHOTO_TOP = 468
 
     def __init__(self, paper_size):
         (self.paper_width, self.paper_height) = paper_size

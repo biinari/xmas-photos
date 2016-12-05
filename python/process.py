@@ -24,10 +24,10 @@ def create_title(base, group_name, timeid):
     small_font = ImageFont.truetype('fonts/DejaVuSans.ttf', 42)
     textdraw = TextDraw(draw)
     group_rect = textdraw.centre(
-        (1113, 99, 3153, 389),
+        (1118, 158, 3053, 430),
         group_name, group_font)
     timeid_rect = textdraw.right(
-        (808, 2394, 3324, 2454),
+        (886, 2339, 3215, 2393),
         timeid, small_font)
     textdraw.text(group_rect, group_name, black, group_font)
     textdraw.text(timeid_rect, timeid, grey, small_font, shadow, white)
