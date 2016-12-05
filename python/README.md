@@ -4,7 +4,7 @@
 
 Add a line to `/etc/fstab` to identify the SD card. It helps to set the partition label first.
 
-    LABEL=xmascamera /mnt/camera vfat defaults,user,users,noauto 0 0
+    LABEL=xmascamera /mnt/camera vfat user,users,noauto,relatime 0 0
 
 ### Dependencies
 
