@@ -23,8 +23,8 @@ class CalendarPanel(wx.Panel):
     def create_widgets(self):
         vert = wx.BoxSizer(wx.VERTICAL)
         top_row = wx.BoxSizer(wx.HORIZONTAL)
-        horiz = wx.BoxSizer(wx.HORIZONTAL)
-        self.get_photos_btn = wx.Button(self, label="Get Photos")
+        bottom_row = wx.BoxSizer(wx.HORIZONTAL)
+        get_photos_btn = wx.Button(self, label="Get Photos")
         self.discard_btn = wx.Button(self, label="Discard")
         self.discard_btn.Disable()
 
@@ -34,22 +34,29 @@ class CalendarPanel(wx.Panel):
         self.next_btn = wx.Button(self, label=">")
         self.next_btn.Disable()
 
-        self.process_btn = wx.Button(self, label="Print")
+        process_btn = wx.Button(self, label="Print")
 
-        self.Bind(wx.EVT_BUTTON, self.on_get_photos, self.get_photos_btn)
+        self.Bind(wx.EVT_BUTTON, self.on_get_photos, get_photos_btn)
         self.Bind(wx.EVT_BUTTON, self.on_discard, self.discard_btn)
         self.Bind(wx.EVT_BUTTON, self.on_previous, self.prev_btn)
         self.Bind(wx.EVT_BUTTON, self.on_next, self.next_btn)
-        self.Bind(wx.EVT_BUTTON, self.on_process, self.process_btn)
+        self.Bind(wx.EVT_BUTTON, self.on_process, process_btn)
 
         top_row.Add(self.prev_btn, 1)
-        top_row.Add(self.get_photos_btn, 2)
+        top_row.Add(get_photos_btn, 2)
         top_row.Add(self.next_btn, 1)
+        top_row.Add(wx.Size(20, 10))
         top_row.Add(self.discard_btn, 2)
-        horiz.Add(self.process_btn, 1, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, 10)
-        vert.Add(top_row, 1, wx.ALIGN_CENTER_HORIZONTAL)
-        vert.Add(self.static_image, 0, wx.TOP | wx.ALIGN_CENTER_HORIZONTAL, 5)
-        vert.Add(horiz, 1, wx.ALIGN_CENTER_HORIZONTAL)
+
+        bottom_row.Add(process_btn, 1, wx.ALIGN_CENTER_VERTICAL)
+
+        vert.Add(wx.Size(10, 10))
+        vert.Add(top_row, 0, wx.ALIGN_CENTER_HORIZONTAL)
+        vert.Add(wx.Size(10, 10))
+        vert.Add(self.static_image, 1, wx.SHAPED | wx.ALIGN_CENTER)
+        vert.Add(wx.Size(10, 10))
+        vert.Add(bottom_row, 0, wx.ALIGN_CENTER_HORIZONTAL)
+        vert.Add(wx.Size(10, 10))
         self.SetSizer(vert)
         self.Centre()
 
