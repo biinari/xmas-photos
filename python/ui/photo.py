@@ -4,7 +4,7 @@ class Photo(wx.StaticBitmap):
 
     path = None
 
-    DEFAULT_SIZE = (600, 400)
+    DEFAULT_SIZE = (600, 450)
 
     def __init__(self, *args, **kwargs):
         """ View a photo selected for processing. """
