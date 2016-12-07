@@ -59,7 +59,7 @@ def run():
     for infile in names:
         group_name = raw_input('Group name: ')
         timeid = time.strftime('%a/%H%M%S', time.localtime())
-        process(infile, group_name, timeid)
+        process('infiles/' + infile, group_name, timeid)
         os.rename('infiles/' + infile,
                   'outfiles/{}_{}.jpg'.format(timeid, group_name.replace(' ', '_')))
     print 'Finished.'

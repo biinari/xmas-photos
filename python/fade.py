@@ -8,7 +8,7 @@ class Fade(object):
     def apply_mask(self, infile, size):
         (width, height) = size
         try:
-            photo = Image.open('infiles/' + infile)
+            photo = Image.open(infile)
         except IOError:
             print "Cannot open", infile
             return

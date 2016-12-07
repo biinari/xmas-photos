@@ -24,7 +24,7 @@ class Mask(object):
         return page
 
     def get_photo(self, infile):
-        photo = Image.open('infiles/' + infile)
+        photo = Image.open(infile)
         photo = photo.resize((self.PHOTO_WIDTH, self.PHOTO_HEIGHT), Image.NEAREST)
         return photo
 

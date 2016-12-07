@@ -130,9 +130,9 @@ class GroupPanel(wx.Panel):
             group_name = self.group_name.GetValue()
             num_copies = self.num_copies.GetValue()
             if num_copies != '':
-                process.process(infile, group_name, timeid, int(num_copies))
+                process.process('infiles/' + infile, group_name, timeid, int(num_copies))
             else:
-                process.process(infile, group_name, timeid)
+                process.process('infiles/' + infile, group_name, timeid)
             os.rename('infiles/' + infile,
                       'outfiles/{}_{}.jpg'.format(timeid, group_name.replace(' ', '_')))
             self.load_next_image()
