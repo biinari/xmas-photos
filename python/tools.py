@@ -1,6 +1,7 @@
 # vim: set fileencoding=utf-8 :
 # Mount and print functions
 import os
+import re
 import shutil
 import subprocess
 import time
@@ -98,3 +99,6 @@ def get_day():
 
 def get_year():
     return time.strftime('%Y', time.localtime())
+
+def safe_filename(name):
+    return re.sub('[^A-Za-z0-9-]', '_', name)

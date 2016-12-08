@@ -16,7 +16,7 @@ def run():
         #timeid = time.strftime('%a/%H%M%S', time.localtime())
         Process.process(infile, group_name, timeid)
         os.rename('infiles/' + infile,
-                  'outfiles/{}_{}.jpg'.format(timeid, group_name.replace(' ', '_')))
+                  'outfiles/{}_{}.jpg'.format(timeid, tools.safe_filename(group_name)))
     print 'Finished.'
 
 if __name__ == "__main__":

@@ -134,7 +134,7 @@ class GroupPanel(wx.Panel):
             else:
                 process.process('infiles/' + infile, group_name, timeid)
             os.rename('infiles/' + infile,
-                      'outfiles/{}_{}.jpg'.format(timeid, group_name.replace(' ', '_')))
+                      'outfiles/{}_{}.jpg'.format(timeid, tools.safe_filename(group_name)))
             self.load_next_image()
 
     def on_get_photos(self, event_):

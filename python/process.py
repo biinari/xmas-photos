@@ -39,7 +39,7 @@ def process(infile, group_name, timeid, copies=1):
     day = tools.get_day()
     if not os.path.exists('png/{}'.format(day)):
         os.mkdir('png/{}'.format(day))
-    png_file = 'png/{}_{}.jpg'.format(timeid, group_name.replace(' ', '_'))
+    png_file = 'png/{}_{}.jpg'.format(timeid, tools.safe_filename(group_name))
     page.save(png_file, quality=75)
     tools.print_image(png_file, copies)
 
@@ -61,7 +61,7 @@ def run():
         timeid = time.strftime('%a/%H%M%S', time.localtime())
         process('infiles/' + infile, group_name, timeid)
         os.rename('infiles/' + infile,
-                  'outfiles/{}_{}.jpg'.format(timeid, group_name.replace(' ', '_')))
+                  'outfiles/{}_{}.jpg'.format(timeid, tools.safe_filename(group_name)))
     print 'Finished.'
 
 if __name__ == "__main__":

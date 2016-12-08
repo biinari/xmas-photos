@@ -103,7 +103,7 @@ class EditPanel(wx.Panel):
             else:
                 process.process(infile, group_name, timeid)
             shutil.copyfile(self.filename,
-                            'outfiles/{}_{}.jpg'.format(timeid, group_name.replace(' ', '_')))
+                            'outfiles/{}_{}.jpg'.format(timeid, tools.safe_filename(group_name)))
 
     def validate(self):
         return self.static_image.validate_image() \
