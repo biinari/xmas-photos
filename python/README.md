@@ -18,3 +18,8 @@ Use dotenv to configure settings. Copy the example file to `.env` and edit it:
 ```sh
 cp .env.example .env
 ```
+
+
+Use Glossy paper only
+
+1 week ~= 2 packs of ink
