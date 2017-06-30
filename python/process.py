@@ -32,6 +32,11 @@ def create_title(base, group_name, timeid):
     textdraw.text(group_rect, group_name, black, group_font)
     textdraw.text(timeid_rect, timeid, grey, small_font, shadow, white)
 
+# Process photo from +infile+
+# - infile String Full path to input file
+# - group_name String Name of the group of people in the photo
+# - timeid String Identifier for photo
+# - copies Int Number of copies to print
 def process(infile, group_name, timeid, copies=1):
     mask = Mask((A4_WIDTH, A4_HEIGHT))
     page = mask.apply_mask(infile)
