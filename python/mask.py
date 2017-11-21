@@ -31,7 +31,7 @@ class Mask(object):
     # raises IOError
     @staticmethod
     def get_mask():
-        return Image.open('mask/christmas_mask_2016.png')
+        return Image.open('mask/christmas_mask_2017.png')
 
     def get_page(self):
         return Image.new(
