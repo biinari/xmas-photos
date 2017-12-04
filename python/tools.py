@@ -20,6 +20,8 @@ PRINTER = os.environ.get('PRINTER')
 DO_CAMERA = env_to_bool(os.environ.get('DO_CAMERA'))
 DO_PRINT = env_to_bool(os.environ.get('DO_PRINT'))
 
+SUPPORTED_FILES = re.compile('\\.jpe?g$', re.IGNORECASE)
+
 def detect_gphoto():
     output = subprocess.check_output(['gphoto2', '--auto-detect'])
     return output.find('USB PTP Class Camera') != -1
@@ -67,9 +69,18 @@ def get_camera_files():
             finally:
                 os.chdir(old_cwd)
         else:
-            if os.path.exists(CAMERA_SRC):
-                for src_file in os.listdir(CAMERA_SRC):
-                    shutil.move(CAMERA_SRC + '/' + src_file, 'infiles/')
+            load_photos_from_path(CAMERA_SRC)
+
+def load_photos_from_path(path):
+    if os.path.exists(path):
+        for entry in os.listdir(path):
+            if os.path.isdir(entry):
+                load_photos_from_path(entry)
+            else:
+                if re.search(SUPPORTED_FILES, entry) is not None:
+                    shutil.move(path + '/' + entry, 'infiles/')
+                else:
+                    print('File', entry, 'not supported')
 
 def umount_camera():
     if DO_CAMERA and not USE_GPHOTO:
@@ -82,17 +93,17 @@ def umount_camera():
         return True
 
 def print_image(filename, copies=1):
-    if DO_PRINT:
-        success = not subprocess.call([
-            'lp',
-            '-d', PRINTER,
-            '-o', 'media=a4',
-            '-o', 'scaling=100',
-            '-n', str(int(copies)), filename
-        ])
-        return success
-    else:
+    if not DO_PRINT:
         return True
+
+    success = not subprocess.call([
+        'lp',
+        '-d', PRINTER,
+        '-o', 'media=a4',
+        '-o', 'scaling=100',
+        '-n', str(int(copies)), filename
+    ])
+    return success
 
 def get_day():
     return time.strftime('%a', time.localtime())
