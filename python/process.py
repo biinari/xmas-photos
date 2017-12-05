@@ -20,8 +20,8 @@ def create_title(base, group_name, timeid):
     white = (255, 255, 255, 255)
     grey = (65, 90, 104, 255)
     draw = ImageDraw.Draw(base)
-    group_font = ImageFont.truetype('fonts/DejaVuSans.ttf', 120)
-    small_font = ImageFont.truetype('fonts/DejaVuSans.ttf', 42)
+    group_font = ImageFont.truetype(os.path.join('fonts', 'DejaVuSans.ttf'), 120)
+    small_font = ImageFont.truetype(os.path.join('fonts', 'DejaVuSans.ttf'), 42)
     textdraw = TextDraw(draw)
     group_rect = textdraw.centre(
         (1118, 158, 3053, 430),
@@ -42,9 +42,9 @@ def process(infile, group_name, timeid, copies=1):
     page = mask.apply_mask(infile)
     create_title(page, group_name, timeid)
     day = tools.get_day()
-    if not os.path.exists('png/{}'.format(day)):
-        os.mkdir('png/{}'.format(day))
-    png_file = 'png/{}_{}.jpg'.format(timeid, tools.safe_filename(group_name))
+    if not os.path.exists(os.path.join('png', day)):
+        os.mkdir(os.path.join('png', day))
+    png_file = os.path.join('png', '{}_{}.jpg'.format(timeid, tools.safe_filename(group_name)))
     page.save(png_file, quality=75)
     tools.print_image(png_file, copies)
 
@@ -56,17 +56,19 @@ def run():
         print 'You can disconnect the camera now.'
     else:
         print 'Could not disconnect from camera.'
-    names = os.listdir('infiles/')
+    names = os.listdir('infiles')
     names.sort()
     day = tools.get_day()
-    if not os.path.exists('outfiles/{}'.format(day)):
-        os.mkdir('outfiles/{}'.format(day))
+    if not os.path.exists(os.path.join('outfiles', day)):
+        os.mkdir(os.path.join('outfiles', day))
     for infile in names:
         group_name = raw_input('Group name: ')
-        timeid = time.strftime('%a/%H%M%S', time.localtime())
-        process('infiles/' + infile, group_name, timeid)
-        os.rename('infiles/' + infile,
-                  'outfiles/{}_{}.jpg'.format(timeid, tools.safe_filename(group_name)))
+        timeid = time.strftime('%H%M%S', time.localtime())
+        day_timeid = day + '/' + timeid
+        process(os.path.join('infiles', infile), group_name, day_timeid)
+        outfile_name = '{}_{}.jpg'.format(timeid, tools.safe_filename(group_name))
+        os.rename(os.path.join('infiles', infile),
+                  os.path.join('outfiles', day, outfile_name))
     print 'Finished.'
 
 if __name__ == "__main__":

@@ -22,7 +22,7 @@ def create_title(base, page_size, photo_rect, group_name):
     white = (255, 255, 255, 255)
     # margin = 48
     draw = ImageDraw.Draw(base)
-    group_font = ImageFont.truetype('fonts/CooperBlackStd-Italic.otf', 120)
+    group_font = ImageFont.truetype(os.path.join('fonts', 'CooperBlackStd-Italic.otf'), 120)
     textdraw = TextDraw(draw)
     group_rect = textdraw.centre(
         (0, photo_rect[3], page_size[0], page_size[1] - (page_size[1] - photo_rect[3]) / 3),
@@ -32,7 +32,7 @@ def create_title(base, page_size, photo_rect, group_name):
     textdraw.text(group_rect, group_name, darkgreen, group_font, shadow, green)
 
 def process(infile, group_name, timeid):
-    page = Image.open('infiles/' + infile)
+    page = Image.open(os.path.join('infiles', infile))
     photo_size = (A4_WIDTH * 3 / 4, A4_HEIGHT * 3 / 4)
     photo_left = (A4_WIDTH - photo_size[0]) / 2
     photo_top = (A4_HEIGHT - photo_size[1]) / 2 - A4_HEIGHT / 64
@@ -41,22 +41,23 @@ def process(infile, group_name, timeid):
     photo_rect = (photo_left, photo_top, photo_right, photo_bottom)
     create_title(page, (A4_WIDTH, A4_HEIGHT), photo_rect, group_name)
     day = tools.get_day()
-    if not os.path.exists('png/{}'.format(day)):
-        os.mkdir('png/{}'.format(day))
-    png_file = 'png/{}_{}.jpg'.format(timeid, tools.safe_filename(group_name))
+    if not os.path.exists(os.path.join('png', day)):
+        os.mkdir(os.path.join('png', day))
+    png_file = os.path.join('png', '{}_{}.jpg'.format(timeid, tools.safe_filename(group_name)))
     page.save(png_file, quality=75)
     tools.print_image(png_file)
 
 def run():
-    names = os.listdir('infiles/')
+    names = os.listdir('infiles')
     names.sort()
     for infile in names:
         day = tools.get_day()
         timeid = os.path.join(day, raw_input('Time id: '))
         group_name = raw_input('Group name: ')
         process(infile, group_name, timeid)
-        os.rename('infiles/' + infile,
-                  'outfiles/{}_{}.jpg'.format(timeid, tools.safe_filename(group_name)))
+        outfile_name = '{}_{}.jpg'.format(timeid, tools.safe_filename(group_name))
+        os.rename(os.path.join('infiles', infile),
+                  os.path.join('outfiles', outfile_name))
 
 if __name__ == "__main__":
     run()

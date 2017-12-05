@@ -10,7 +10,7 @@ import tools
 
 class GroupPanel(wx.Panel):
 
-    """ Files in infiles/ for choosing from (just the basenames) """
+    """ Files in infiles for choosing from (just the basenames) """
     names = []
     """ Current index into self.names """
     index = 0
@@ -78,7 +78,7 @@ class GroupPanel(wx.Panel):
 
     def load_image(self, index):
         self.index = index
-        self.static_image.load_from_file('infiles/' + self.names[index])
+        self.static_image.load_from_file(os.path.join('infiles', self.names[index]))
         self.discard_btn.Enable()
         if index >= len(self.names) - 1:
             self.next_btn.Disable()
@@ -102,15 +102,15 @@ class GroupPanel(wx.Panel):
         self.static_image.load_blank()
         self.discard_btn.Disable()
 
-    def on_next(self, event_):
+    def on_next(self, _event):
         if self.index + 1 < len(self.names):
             self.load_image(self.index + 1)
 
-    def on_previous(self, event_):
+    def on_previous(self, _event):
         if self.index > 0:
             self.load_image(self.index - 1)
 
-    def on_open(self, event_):
+    def on_open(self, _event):
         cwd = os.getcwd()
         initial_dir = os.path.join(cwd)
         dlg = wx.lib.imagebrowser.ImageDialog(self, initial_dir)
@@ -118,26 +118,30 @@ class GroupPanel(wx.Panel):
         if dlg.ShowModal() == wx.ID_OK:
             path = dlg.GetFile()
             name = os.path.basename(path)
-            shutil.copyfile(path, 'infiles/' + name)
+            shutil.copyfile(path, os.path.join('infiles', name))
             self.names.append(name)
             self.load_image(len(self.names) - 1)
         dlg.Destroy()
 
-    def on_process(self, event_):
+    def on_process(self, _event):
         if self.validate():
-            timeid = time.strftime('%a/%H%M%S', time.localtime())
+            day = tools.get_day()
+            timeid = time.strftime('%H%M%S', time.localtime())
+            day_timeid = day + '/' + timeid
             infile = self.names[self.index]
+            infile_path = os.path.join('infiles', infile)
             group_name = self.group_name.GetValue()
             num_copies = self.num_copies.GetValue()
             if num_copies != '':
-                process.process('infiles/' + infile, group_name, timeid, int(num_copies))
+                process.process(infile_path, group_name, day_timeid, int(num_copies))
             else:
-                process.process('infiles/' + infile, group_name, timeid)
-            os.rename('infiles/' + infile,
-                      'outfiles/{}_{}.jpg'.format(timeid, tools.safe_filename(group_name)))
+                process.process(infile_path, group_name, day_timeid)
+            outfile_name = '{}_{}.jpg'.format(timeid, tools.safe_filename(group_name))
+            outfile_path = os.path.join('outfiles', day, outfile_name)
+            os.rename(infile_path, outfile_path)
             self.load_next_image()
 
-    def on_get_photos(self, event_):
+    def on_get_photos(self, _event):
         if not tools.mount_camera():
             self.SetStatusText('Could not connect to camera. Try again.')
         tools.get_camera_files()
@@ -145,11 +149,11 @@ class GroupPanel(wx.Panel):
             self.SetStatusText('You can disconnect the camera now.')
         else:
             self.SetStatusText('Could not disconnect from camera.')
-        names = os.listdir('infiles/')
+        names = os.listdir('infiles')
         names.sort()
         day = tools.get_day()
-        if not os.path.exists('outfiles/{}'.format(day)):
-            os.mkdir('outfiles/{}'.format(day))
+        if not os.path.exists(os.path.join('outfiles', day)):
+            os.mkdir(os.path.join('outfiles', day))
         self.names = names
         if len(self.names) > 0:
             self.load_image(0)
@@ -158,12 +162,12 @@ class GroupPanel(wx.Panel):
             self.prev_btn.Disable()
             self.load_blank()
 
-    def on_discard(self, event_):
+    def on_discard(self, _event):
         name = self.names[self.index]
         day = tools.get_day()
-        if not os.path.exists('discard/{}'.format(day)):
-            os.mkdir('discard/{}'.format(day))
-        os.rename('infiles/' + name, 'discard/{}/{}'.format(day, name))
+        if not os.path.exists(os.path.join('discard', day)):
+            os.mkdir(os.path.join('discard', day))
+        os.rename(os.path.join('infiles', name), os.path.join('discard', day, name))
         self.load_next_image()
 
     def SetStatusText(self, message):

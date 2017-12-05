@@ -62,10 +62,10 @@ class EditPanel(wx.Panel):
         self.SetSizer(vert)
         self.Centre()
 
-    def on_open(self, event_):
+    def on_open(self, _event):
         cwd = os.getcwd()
         day = tools.get_day()
-        initial_dir = os.path.join(cwd, 'outfiles/{}'.format(day))
+        initial_dir = os.path.join(cwd, 'outfiles', day)
         if not os.path.exists(initial_dir):
             initial_dir = os.path.join(cwd, 'outfiles')
             if not os.path.exists(initial_dir):
@@ -77,10 +77,10 @@ class EditPanel(wx.Panel):
             self.static_image.load_from_file(self.filename)
         dlg.Destroy()
 
-    def on_restore(self, event_):
+    def on_restore(self, _event):
         cwd = os.getcwd()
         day = tools.get_day()
-        initial_dir = os.path.join(cwd, 'discard/{}'.format(day))
+        initial_dir = os.path.join(cwd, 'discard', day)
         if not os.path.exists(initial_dir):
             initial_dir = os.path.join(cwd, 'discard')
             if not os.path.exists(initial_dir):
@@ -92,18 +92,21 @@ class EditPanel(wx.Panel):
             self.static_image.load_from_file(self.filename)
         dlg.Destroy()
 
-    def on_process(self, event_):
+    def on_process(self, _event):
         if self.validate():
-            timeid = time.strftime('%a/%H%M%S', time.localtime())
+            day = tools.get_day()
+            timeid = time.strftime('%H%M%S', time.localtime())
+            day_timeid = day + '/' + timeid
             infile = self.filename
             group_name = self.group_name.GetValue()
             num_copies = self.num_copies.GetValue()
             if num_copies != '':
-                process.process(infile, group_name, timeid, int(num_copies))
+                process.process(infile, group_name, day_timeid, int(num_copies))
             else:
-                process.process(infile, group_name, timeid)
-            shutil.copyfile(self.filename,
-                            'outfiles/{}_{}.jpg'.format(timeid, tools.safe_filename(group_name)))
+                process.process(infile, group_name, day_timeid)
+            out_name = '{}_{}.jpg'.format(timeid, tools.safe_filename(group_name))
+            out_path = os.path.join('outfiles', day, out_name)
+            shutil.copyfile(self.filename, out_path)
 
     def validate(self):
         return self.static_image.validate_image() \

@@ -47,10 +47,10 @@ class ReprintPanel(wx.Panel):
         self.SetSizer(vert)
         self.Centre()
 
-    def on_open(self, event_):
+    def on_open(self, _event):
         cwd = os.getcwd()
         day = tools.get_day()
-        initial_dir = os.path.join(cwd, 'png/{}'.format(day))
+        initial_dir = os.path.join(cwd, 'png', day)
         if not os.path.exists(initial_dir):
             initial_dir = os.path.join(cwd, 'png')
             if not os.path.exists(initial_dir):
@@ -62,7 +62,7 @@ class ReprintPanel(wx.Panel):
             self.static_image.load_from_file(self.filename)
         dlg.Destroy()
 
-    def on_reprint(self, event_):
+    def on_reprint(self, _event):
         if self.validate():
             num_copies = self.num_copies.GetValue()
             if num_copies != '':

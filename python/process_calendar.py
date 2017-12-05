@@ -31,10 +31,10 @@ def create_title(base, page_size, photo_rect, timeid):
     cal_top = 2100
     cal_bottom = 3350
     draw = ImageDraw.Draw(base)
-    #titleFont = ImageFont.truetype('fonts/BookmanDemi.pfb', 144)
-    subtitle_font = ImageFont.truetype('fonts/BookmanDemi.pfb', 120)
-    #groupFont = ImageFont.truetype('fonts/CooperBlackStd-Italic.otf', 120)
-    small_font = ImageFont.truetype('fonts/DejaVuSans.ttf', 42)
+    #titleFont = ImageFont.truetype(os.path.join('fonts', 'BookmanDemi.pfb'), 144)
+    subtitle_font = ImageFont.truetype(os.path.join('fonts', 'BookmanDemi.pfb'), 120)
+    #groupFont = ImageFont.truetype(os.path.join('fonts', 'CooperBlackStd-Italic.otf'), 120)
+    small_font = ImageFont.truetype(os.path.join('fonts', 'DejaVuSans.ttf'), 42)
     textdraw = TextDraw(draw)
     #title_rect = textdraw.centre(
     #    (0, margin * 2, page_size[0], photo_rect[1] / 2),
@@ -59,7 +59,7 @@ def create_title(base, page_size, photo_rect, timeid):
 
 def process(infile, timeid):
     try:
-        page = Image.open('base/Calendar_2014.png')
+        page = Image.open(os.path.join('base', 'Calendar_2014.png'))
     except IOError:
         print "Cannot open calendar page base"
         return
@@ -74,9 +74,9 @@ def process(infile, timeid):
     page.paste(photo, photo_rect)
     create_title(page, (A4_WIDTH, A4_HEIGHT), photo_rect, timeid)
     day = tools.get_day()
-    if not os.path.exists('png/{}'.format(day)):
-        os.mkdir('png/{}'.format(day))
-    png_file = 'png/{}.jpg'.format(timeid)
+    if not os.path.exists(os.path.join('png', day)):
+        os.mkdir(os.path.join('png', day))
+    png_file = os.path.join('png', '{}.jpg'.format(timeid))
     page.save(png_file, quality=75)
     tools.print_image(png_file)
 
@@ -89,13 +89,17 @@ def run():
     else:
         print 'Could not disconnect from camera. Please use the software ' \
               'safely remove function before disconnecting.'
-    names = os.listdir('infiles/')
+    names = os.listdir('infiles')
     names.sort()
     for infile in names:
+        day = tools.get_day()
         #group_name = raw_input('Group name: ')
-        timeid = time.strftime('%a/%H%M%S', time.localtime())
-        process(infile, timeid)
-        os.rename('infiles/' + infile, 'outfiles/{}.jpg'.format(timeid))
+        timeid = time.strftime('%H%M%S', time.localtime())
+        day_timeid = day + '/' + timeid
+        process(infile, day_timeid)
+        outfile_name = '{}.jpg'.format(timeid)
+        os.rename(os.path.join('infiles', infile),
+                  os.path.join('outfiles', day, outfile_name))
     print "Finished."
 
 if __name__ == "__main__":

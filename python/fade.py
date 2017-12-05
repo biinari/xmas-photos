@@ -1,4 +1,5 @@
 import math
+import os
 
 from PIL import Image
 
@@ -40,12 +41,12 @@ class Fade(object):
                 data.append((255, 255, 255,
                              self.mask_pixel(row, col, width, height)))
         mask.putdata(data)
-        mask.save('mask/{0}x{1}.png'.format(width, height))
+        mask.save(os.path.join('mask', '{0}x{1}.png'.format(width, height)))
         return mask
 
     @staticmethod
     def _get_mask(width, height):
-        return Image.open('mask/{0}x{1}.png'.format(width, height))
+        return Image.open(os.path.join('mask', '{0}x{1}.png'.format(width, height)))
 
     def get_mask(self, width, height):
         try:
@@ -57,12 +58,12 @@ class Fade(object):
     @staticmethod
     def create_base(width, height):
         base = Image.new('RGBA', (width, height), (255, 255, 255, 255))
-        base.save('base/{0}x{1}.png'.format(width, height))
+        base.save(os.path.join('base', '{0}x{1}.png'.format(width, height)))
         return base
 
     @staticmethod
     def _get_base(width, height):
-        return Image.open('base/{0}x{1}.png'.format(width, height))
+        return Image.open(os.path.join('base', '{0}x{1}.png'.format(width, height)))
 
     def get_base(self, width, height):
         try:

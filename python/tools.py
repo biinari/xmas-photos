@@ -78,7 +78,7 @@ def load_photos_from_path(path):
             if os.path.isdir(entry_path):
                 load_photos_from_path(entry_path)
             elif re.search(SUPPORTED_FILES, entry) is not None:
-                shutil.move(entry_path, 'infiles/')
+                shutil.move(entry_path, 'infiles')
 
 def umount_camera():
     if DO_CAMERA and not USE_GPHOTO:

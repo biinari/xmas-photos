@@ -1,3 +1,5 @@
+import os
+
 from PIL import Image
 
 class Mask(object):
@@ -31,7 +33,7 @@ class Mask(object):
     # raises IOError
     @staticmethod
     def get_mask():
-        return Image.open('mask/christmas_mask_2017.png')
+        return Image.open(os.path.join('mask', 'christmas_mask_2017.png'))
 
     def get_page(self):
         return Image.new(
