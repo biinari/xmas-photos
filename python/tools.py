@@ -74,13 +74,11 @@ def get_camera_files():
 def load_photos_from_path(path):
     if os.path.exists(path):
         for entry in os.listdir(path):
-            if os.path.isdir(entry):
-                load_photos_from_path(entry)
-            else:
-                if re.search(SUPPORTED_FILES, entry) is not None:
-                    shutil.move(path + '/' + entry, 'infiles/')
-                else:
-                    print('File', entry, 'not supported')
+            entry_path = path + '/' + entry
+            if os.path.isdir(entry_path):
+                load_photos_from_path(entry_path)
+            elif re.search(SUPPORTED_FILES, entry) is not None:
+                shutil.move(entry_path, 'infiles/')
 
 def umount_camera():
     if DO_CAMERA and not USE_GPHOTO:
