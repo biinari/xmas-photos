@@ -74,7 +74,7 @@ def get_camera_files():
 def load_photos_from_path(path):
     if os.path.exists(path):
         for entry in os.listdir(path):
-            entry_path = path + '/' + entry
+            entry_path = os.path.join(path, entry)
             if os.path.isdir(entry_path):
                 load_photos_from_path(entry_path)
             elif re.search(SUPPORTED_FILES, entry) is not None:

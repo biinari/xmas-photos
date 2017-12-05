@@ -11,7 +11,7 @@ def run():
     names.sort()
     for infile in names:
         day = tools.get_day()
-        timeid = day + '/' + raw_input('Time id: ')
+        timeid = os.path.join(day, raw_input('Time id: '))
         group_name = raw_input('Group name: ')
         #timeid = time.strftime('%a/%H%M%S', time.localtime())
         Process.process(infile, group_name, timeid)
