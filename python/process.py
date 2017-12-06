@@ -14,7 +14,8 @@ import tools
 A4_WIDTH = 3508
 A4_HEIGHT = 2480
 
-def create_title(base, group_name, timeid):
+def create_title(base, group_name, day, timeid):
+    day_timeid = day + '/' + timeid
     shadow = 2
     black = (0, 0, 0, 255)
     white = (255, 255, 255, 255)
@@ -28,23 +29,24 @@ def create_title(base, group_name, timeid):
         group_name, group_font)
     timeid_rect = textdraw.right(
         (886, 2339, 3215, 2393),
-        timeid, small_font)
+        day_timeid, small_font)
     textdraw.text(group_rect, group_name, black, group_font)
-    textdraw.text(timeid_rect, timeid, grey, small_font, shadow, white)
+    textdraw.text(timeid_rect, day_timeid, grey, small_font, shadow, white)
 
 # Process photo from +infile+
 # - infile String Full path to input file
 # - group_name String Name of the group of people in the photo
+# - day String Day (3-letters) on which photo was processed
 # - timeid String Identifier for photo
 # - copies Int Number of copies to print
-def process(infile, group_name, timeid, copies=1):
+def process(infile, group_name, day, timeid, copies=1):
     mask = Mask((A4_WIDTH, A4_HEIGHT))
     page = mask.apply_mask(infile)
-    create_title(page, group_name, timeid)
+    create_title(page, group_name, day, timeid)
     day = tools.get_day()
     if not os.path.exists(os.path.join('png', day)):
         os.mkdir(os.path.join('png', day))
-    png_file = os.path.join('png', '{}_{}.jpg'.format(timeid, tools.safe_filename(group_name)))
+    png_file = os.path.join('png', day, '{}_{}.jpg'.format(timeid, tools.safe_filename(group_name)))
     page.save(png_file, quality=75)
     tools.print_image(png_file, copies)
 
@@ -64,8 +66,7 @@ def run():
     for infile in names:
         group_name = raw_input('Group name: ')
         timeid = time.strftime('%H%M%S', time.localtime())
-        day_timeid = day + '/' + timeid
-        process(os.path.join('infiles', infile), group_name, day_timeid)
+        process(os.path.join('infiles', infile), group_name, day, timeid)
         outfile_name = '{}_{}.jpg'.format(timeid, tools.safe_filename(group_name))
         os.rename(os.path.join('infiles', infile),
                   os.path.join('outfiles', day, outfile_name))

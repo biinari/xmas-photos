@@ -111,9 +111,8 @@ class CalendarPanel(wx.Panel):
         if self.static_image.validate_image():
             day = tools.get_day()
             timeid = time.strftime('%H%M%S', time.localtime())
-            day_timeid = day + '/' + timeid
             infile = self.names[self.index]
-            process_calendar.process(infile, day_timeid)
+            process_calendar.process(infile, day, timeid)
             out_path = os.path.join('outfiles', day, '{}.jpg'.format(timeid))
             os.rename(os.path.join('infiles', infile), out_path)
             self.load_next_image()

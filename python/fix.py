@@ -14,8 +14,7 @@ def run():
         timeid = raw_input('Time id: ')
         group_name = raw_input('Group name: ')
         #timeid = time.strftime('%H%M%S', time.localtime())
-        day_timeid = day + '/' + timeid
-        Process.process(infile, group_name, day_timeid)
+        Process.process(infile, group_name, day, timeid)
         outfile_name = '{}_{}.jpg'.format(timeid, tools.safe_filename(group_name))
         os.rename(os.path.join('infiles', infile),
                   os.path.join('outfiles', day, outfile_name))

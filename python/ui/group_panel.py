@@ -127,15 +127,14 @@ class GroupPanel(wx.Panel):
         if self.validate():
             day = tools.get_day()
             timeid = time.strftime('%H%M%S', time.localtime())
-            day_timeid = day + '/' + timeid
             infile = self.names[self.index]
             infile_path = os.path.join('infiles', infile)
             group_name = self.group_name.GetValue()
             num_copies = self.num_copies.GetValue()
             if num_copies != '':
-                process.process(infile_path, group_name, day_timeid, int(num_copies))
+                process.process(infile_path, group_name, day, timeid, int(num_copies)) # pylint: disable=too-many-function-args
             else:
-                process.process(infile_path, group_name, day_timeid)
+                process.process(infile_path, group_name, day, timeid)
             outfile_name = '{}_{}.jpg'.format(timeid, tools.safe_filename(group_name))
             outfile_path = os.path.join('outfiles', day, outfile_name)
             os.rename(infile_path, outfile_path)

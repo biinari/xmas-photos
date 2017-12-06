@@ -15,8 +15,9 @@ import tools
 A4_WIDTH = 2480
 A4_HEIGHT = 3508
 
-def create_title(base, page_size, photo_rect, timeid):
+def create_title(base, page_size, photo_rect, day, timeid):
     year = tools.get_year()
+    day_timeid = day + '/' + timeid
     # title = "Christmas Experience"
     subtitle = "December - {}".format(year)
     copy = u"© {} East Lancashire Scouts".format(year)
@@ -47,17 +48,17 @@ def create_title(base, page_size, photo_rect, timeid):
         subtitle, subtitle_font)
     timeid_rect = textdraw.left(
         (photo_rect[0], cal_bottom, page_size[0], page_size[1] - margin),
-        timeid, small_font)
+        day_timeid, small_font)
     copy_rect = textdraw.right(
         (0, cal_bottom, photo_rect[2], page_size[1] - margin),
         copy, small_font)
     #textdraw.text(title_rect, title, red, titleFont, shadow, darkred)
     #textdraw.text(group_rect, group_name, darkgreen, groupFont, shadow, green)
     textdraw.text(subtitle_rect, subtitle, red, subtitle_font, shadow, darkred)
-    textdraw.text(timeid_rect, timeid, grey, small_font)
+    textdraw.text(timeid_rect, day_timeid, grey, small_font)
     textdraw.text(copy_rect, copy, grey, small_font)
 
-def process(infile, timeid):
+def process(infile, day, timeid):
     try:
         page = Image.open(os.path.join('base', 'Calendar_2014.png'))
     except IOError:
@@ -72,11 +73,10 @@ def process(infile, timeid):
     photo_bottom = photo_top + photo_size[1]
     photo_rect = (photo_left, photo_top, photo_right, photo_bottom)
     page.paste(photo, photo_rect)
-    create_title(page, (A4_WIDTH, A4_HEIGHT), photo_rect, timeid)
-    day = tools.get_day()
+    create_title(page, (A4_WIDTH, A4_HEIGHT), photo_rect, day, timeid)
     if not os.path.exists(os.path.join('png', day)):
         os.mkdir(os.path.join('png', day))
-    png_file = os.path.join('png', '{}.jpg'.format(timeid))
+    png_file = os.path.join('png', day, '{}.jpg'.format(timeid))
     page.save(png_file, quality=75)
     tools.print_image(png_file)
 
@@ -95,8 +95,7 @@ def run():
         day = tools.get_day()
         #group_name = raw_input('Group name: ')
         timeid = time.strftime('%H%M%S', time.localtime())
-        day_timeid = day + '/' + timeid
-        process(infile, day_timeid)
+        process(infile, day, timeid)
         outfile_name = '{}.jpg'.format(timeid)
         os.rename(os.path.join('infiles', infile),
                   os.path.join('outfiles', day, outfile_name))

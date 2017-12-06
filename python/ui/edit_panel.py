@@ -96,14 +96,13 @@ class EditPanel(wx.Panel):
         if self.validate():
             day = tools.get_day()
             timeid = time.strftime('%H%M%S', time.localtime())
-            day_timeid = day + '/' + timeid
             infile = self.filename
             group_name = self.group_name.GetValue()
             num_copies = self.num_copies.GetValue()
             if num_copies != '':
-                process.process(infile, group_name, day_timeid, int(num_copies))
+                process.process(infile, group_name, day, timeid, int(num_copies)) # pylint: disable=too-many-function-args
             else:
-                process.process(infile, group_name, day_timeid)
+                process.process(infile, group_name, day, timeid)
             out_name = '{}_{}.jpg'.format(timeid, tools.safe_filename(group_name))
             out_path = os.path.join('outfiles', day, out_name)
             shutil.copyfile(self.filename, out_path)
