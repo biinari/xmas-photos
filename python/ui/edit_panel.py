@@ -27,6 +27,8 @@ class EditPanel(wx.Panel):
         self.static_image = Photo(self)
         group_label = wx.StaticText(self, label="Group Name:")
         self.group_name = wx.TextCtrl(self)
+        keep_timeid_label = wx.StaticText(self, label="Keep day/time ID?")
+        self.keep_timeid = wx.CheckBox(self)
         num_copies_label = wx.StaticText(self, label="Number of copies:")
         self.num_copies = wx.TextCtrl(self)
         self.num_copies.SetValue("1")
@@ -46,7 +48,11 @@ class EditPanel(wx.Panel):
 
         bottom_row.Add(num_copies_label, 1, wx.ALIGN_CENTER_VERTICAL)
         bottom_row.Add(wx.Size(10, 10))
-        bottom_row.Add(self.num_copies, 1, wx.ALIGN_CENTER_VERTICAL)
+        bottom_row.Add(self.num_copies, 0, wx.ALIGN_CENTER_VERTICAL)
+        bottom_row.Add(wx.Size(20, 10))
+        bottom_row.Add(keep_timeid_label, 1, wx.ALIGN_CENTER_VERTICAL)
+        bottom_row.Add(wx.Size(10, 10))
+        bottom_row.Add(self.keep_timeid, 0, wx.ALIGN_CENTER_VERTICAL)
         bottom_row.Add(wx.Size(20, 10))
         bottom_row.Add(process_btn, 1, wx.ALIGN_CENTER_VERTICAL)
 
@@ -94,8 +100,12 @@ class EditPanel(wx.Panel):
 
     def on_process(self, _event):
         if self.validate():
-            day = tools.get_day()
-            timeid = time.strftime('%H%M%S', time.localtime())
+            if self.keep_timeid.GetValue():
+                day = os.path.basename(os.path.dirname(self.filename))
+                timeid = os.path.basename(self.filename)[0:6]
+            else:
+                day = tools.get_day()
+                timeid = time.strftime('%H%M%S', time.localtime())
             infile = self.filename
             group_name = self.group_name.GetValue()
             num_copies = self.num_copies.GetValue()
