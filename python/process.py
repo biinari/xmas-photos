@@ -43,7 +43,6 @@ def process(infile, group_name, day, timeid, copies=1):
     mask = Mask((A4_WIDTH, A4_HEIGHT))
     page = mask.apply_mask(infile)
     create_title(page, group_name, day, timeid)
-    day = tools.get_day()
     if not os.path.exists(os.path.join('png', day)):
         os.mkdir(os.path.join('png', day))
     png_file = os.path.join('png', day, '{}_{}.jpg'.format(timeid, tools.safe_filename(group_name)))

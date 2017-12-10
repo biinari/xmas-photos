@@ -40,7 +40,6 @@ def process(infile, group_name, day, timeid):
     photo_bottom = photo_top + photo_size[1]
     photo_rect = (photo_left, photo_top, photo_right, photo_bottom)
     create_title(page, (A4_WIDTH, A4_HEIGHT), photo_rect, group_name)
-    day = tools.get_day()
     if not os.path.exists(os.path.join('png', day)):
         os.mkdir(os.path.join('png', day))
     png_file = os.path.join('png', day, '{}_{}.jpg'.format(timeid, tools.safe_filename(group_name)))
