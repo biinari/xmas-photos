@@ -26,7 +26,7 @@ class Photo(wx.StaticBitmap):
     def load_blank(self):
         """ Load a blank image. """
         (width, height) = self.GetClientSize()
-        scaled_image = self.image = wx.EmptyImage(width, height, True)
+        scaled_image = self.image = wx.Image(width, height, True)
         self.draw_image(scaled_image)
         self.path = None
 
@@ -55,7 +55,7 @@ class Photo(wx.StaticBitmap):
         return (width, height)
 
     def draw_image(self, scaled_image):
-        bitmap = wx.BitmapFromImage(scaled_image)
+        bitmap = wx.Bitmap(scaled_image)
         self.SetBitmap(bitmap)
 
     def on_size(self, event_):
