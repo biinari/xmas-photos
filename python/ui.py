@@ -19,13 +19,13 @@ class MainWindow(wx.Frame):
 
     def create_frames(self):
         self.notebook = wx.Notebook(self)
-        self.group_page = wx.NotebookPage(self.notebook)
+        self.group_page = wx.Window(self.notebook)
         self.group_panel = GroupPanel(self.group_page)
         self.notebook.AddPage(self.group_page, "Group")
-        self.reprint_page = wx.NotebookPage(self.notebook)
+        self.reprint_page = wx.Window(self.notebook)
         self.reprint_panel = ReprintPanel(self.reprint_page)
         self.notebook.AddPage(self.reprint_page, "Reprint")
-        self.edit_page = wx.NotebookPage(self.notebook)
+        self.edit_page = wx.Window(self.notebook)
         self.edit_panel = EditPanel(self.edit_page)
         self.notebook.AddPage(self.edit_page, "Edit")
 
