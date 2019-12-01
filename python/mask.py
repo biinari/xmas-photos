@@ -33,7 +33,7 @@ class Mask(object):
     # raises IOError
     @staticmethod
     def get_mask():
-        return Image.open(os.path.join('mask', 'christmas_mask_2018.png'))
+        return Image.open(os.path.join('mask', 'christmas_mask_2019.png'))
 
     def get_page(self):
         return Image.new(
