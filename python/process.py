@@ -43,8 +43,7 @@ def process(infile, group_name, day, timeid, copies=1):
     mask = Mask((A4_WIDTH, A4_HEIGHT))
     page = mask.apply_mask(infile)
     create_title(page, group_name, day, timeid)
-    if not os.path.exists(os.path.join('png', day)):
-        os.mkdir(os.path.join('png', day))
+    tools.mkdir_p(os.path.join('png', day))
     png_file = os.path.join('png', day, '{}_{}.jpg'.format(timeid, tools.safe_filename(group_name)))
     page.save(png_file, quality=75)
     tools.print_image(png_file, copies)
@@ -60,8 +59,7 @@ def run():
     names = os.listdir('infiles')
     names.sort()
     day = tools.get_day()
-    if not os.path.exists(os.path.join('outfiles', day)):
-        os.mkdir(os.path.join('outfiles', day))
+    tools.mkdir_p(os.path.join('outfiles', day))
     for infile in names:
         group_name = raw_input('Group name: ')
         timeid = time.strftime('%H%M%S', time.localtime())

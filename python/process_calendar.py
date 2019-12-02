@@ -74,8 +74,7 @@ def process(infile, day, timeid):
     photo_rect = (photo_left, photo_top, photo_right, photo_bottom)
     page.paste(photo, photo_rect)
     create_title(page, (A4_WIDTH, A4_HEIGHT), photo_rect, day, timeid)
-    if not os.path.exists(os.path.join('png', day)):
-        os.mkdir(os.path.join('png', day))
+    tools.mkdir_p(os.path.join('png', day))
     png_file = os.path.join('png', day, '{}.jpg'.format(timeid))
     page.save(png_file, quality=75)
     tools.print_image(png_file)

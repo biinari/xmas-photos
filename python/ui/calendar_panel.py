@@ -128,8 +128,7 @@ class CalendarPanel(wx.Panel):
         names = os.listdir('infiles')
         names.sort()
         day = tools.get_day()
-        if not os.path.exists(os.path.join('outfiles', day)):
-            os.mkdir(os.path.join('outfiles', day))
+        tools.mkdir_p(os.path.join('outfiles', day))
         self.names = names
         if len(self.names) > 0:
             self.load_image(0)
@@ -141,8 +140,7 @@ class CalendarPanel(wx.Panel):
     def on_discard(self, _event):
         name = self.names[self.index]
         day = tools.get_day()
-        if not os.path.exists(os.path.join('discard', day)):
-            os.mkdir(os.path.join('discard', day))
+        tools.mkdir_p(os.path.join('discard', day))
         os.rename(os.path.join('infiles', name), os.path.join('discard', day, name))
         self.load_next_image()
 

@@ -53,8 +53,7 @@ class ReprintPanel(wx.Panel):
         initial_dir = os.path.join(cwd, 'png', day)
         if not os.path.exists(initial_dir):
             initial_dir = os.path.join(cwd, 'png')
-            if not os.path.exists(initial_dir):
-                os.mkdir(initial_dir)
+            tools.mkdir_p(initial_dir)
         dlg = wx.lib.imagebrowser.ImageDialog(self, initial_dir)
         dlg.Centre()
         if dlg.ShowModal() == wx.ID_OK:

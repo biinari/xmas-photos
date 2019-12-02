@@ -151,8 +151,7 @@ class GroupPanel(wx.Panel):
         names = os.listdir('infiles')
         names.sort()
         day = tools.get_day()
-        if not os.path.exists(os.path.join('outfiles', day)):
-            os.mkdir(os.path.join('outfiles', day))
+        tools.mkdir_p(os.path.join('outfiles', day))
         self.names = names
         if len(self.names) > 0:
             self.load_image(0)

@@ -1,5 +1,6 @@
 # vim: set fileencoding=utf-8 :
 # Mount and print functions
+import errno
 import os
 import re
 import shutil
@@ -111,3 +112,12 @@ def get_year():
 
 def safe_filename(name):
     return re.sub('[^A-Za-z0-9-]', '_', name)
+
+def mkdir_p(path, mode=0775):
+    try:
+        os.makedirs(path, mode)
+    except OSError as exc:
+        if exc.errno == errno.EEXIST and os.path.isdir(path):
+            pass
+        else:
+            raise
